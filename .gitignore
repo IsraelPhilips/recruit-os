@@ -1,0 +1,17 @@
+node_modules
+.npm-cache
+.next
+.env*
+!.env.example
+*.tsbuildinfo
+.vercel
+*.log
+coverage
+playwright-report
+test-results
+.DS_Store
+*.pem
+*.p12
+*service-account*.json
+credentials*.json
+*.md

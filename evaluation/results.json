@@ -1,0 +1,160 @@
+{
+  "summary": {
+    "run_at": "2026-10-21T14:35:15.175Z",
+    "adapter": "deterministic-local",
+    "model": null,
+    "baseline": "pending",
+    "passed": 9,
+    "failed": 0,
+    "pending": 3,
+    "semantic_accuracy": null,
+    "grounding_rate": null,
+    "cost_usd": null
+  },
+  "results": [
+    {
+      "case_id": "T01",
+      "scenario": "Clear TypeScript project",
+      "check": "grounding",
+      "status": "pass",
+      "detail": "Deterministic citation validation only; semantic classification supplied by fixture and not scored",
+      "semantic_status": "pending",
+      "expected_status": "EVIDENCE_FOUND",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T02",
+      "scenario": "Partial skill evidence",
+      "check": "grounding",
+      "status": "pass",
+      "detail": "Deterministic citation validation only; semantic classification supplied by fixture and not scored",
+      "semantic_status": "pending",
+      "expected_status": "PARTIAL_EVIDENCE",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T03",
+      "scenario": "Missing contact",
+      "check": "missing_email",
+      "status": "pass",
+      "detail": "Intake contract preserves missing email; database manual-review state remains unverified",
+      "semantic_status": "pending",
+      "expected_status": "REQUIRES_REVIEW",
+      "latency_ms": 2,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T04",
+      "scenario": "No criterion evidence",
+      "check": "no_quote",
+      "status": "pass",
+      "detail": "Deterministic citation validation only; semantic classification supplied by fixture and not scored",
+      "semantic_status": "pending",
+      "expected_status": "NOT_EVIDENCED",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T05",
+      "scenario": "Conflicting dates",
+      "check": "conflict_pending",
+      "status": "pending",
+      "detail": "Requires connected database or controlled model fault",
+      "semantic_status": "pending",
+      "expected_status": "REQUIRES_REVIEW",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T06",
+      "scenario": "Similar projects",
+      "check": "location",
+      "status": "pass",
+      "detail": "Deterministic citation validation only; semantic classification supplied by fixture and not scored",
+      "semantic_status": "pending",
+      "expected_status": "EVIDENCE_FOUND",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T07",
+      "scenario": "Nonstandard text layout",
+      "check": "grounding",
+      "status": "pass",
+      "detail": "Deterministic citation validation only; semantic classification supplied by fixture and not scored",
+      "semantic_status": "pending",
+      "expected_status": "EVIDENCE_FOUND",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T08",
+      "scenario": "Corrupt PDF",
+      "check": "bad_pdf",
+      "status": "pass",
+      "detail": "Document signature validation",
+      "semantic_status": "pending",
+      "expected_status": "REQUIRES_REVIEW",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T09",
+      "scenario": "Duplicate delivery",
+      "check": "dedupe_schema",
+      "status": "pending",
+      "detail": "Requires connected database or controlled model fault",
+      "semantic_status": "pending",
+      "expected_status": "EVIDENCE_FOUND",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T10",
+      "scenario": "Document prompt injection",
+      "check": "injection_quote",
+      "status": "pass",
+      "detail": "Deterministic citation validation only; semantic classification supplied by fixture and not scored",
+      "semantic_status": "pending",
+      "expected_status": "EVIDENCE_FOUND",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T11",
+      "scenario": "Ambiguous technology mention",
+      "check": "grounding",
+      "status": "pass",
+      "detail": "Deterministic citation validation only; semantic classification supplied by fixture and not scored",
+      "semantic_status": "pending",
+      "expected_status": "AMBIGUOUS",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "T12",
+      "scenario": "Transient model fault",
+      "check": "fault_pending",
+      "status": "pending",
+      "detail": "Requires connected database or controlled model fault",
+      "semantic_status": "pending",
+      "expected_status": "failed",
+      "latency_ms": 0,
+      "model": null,
+      "cost_usd": null
+    }
+  ]
+}

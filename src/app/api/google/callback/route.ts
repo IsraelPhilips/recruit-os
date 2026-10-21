@@ -1,0 +1,5 @@
+import {NextRequest,NextResponse} from 'next/server';
+import {recruiter} from '@/lib/auth';
+import {encryptToken,exchangeCode} from '@/lib/google';
+import {adminDb} from '@/lib/supabase';
+export async function GET(req:NextRequest){const origin=process.env.APP_ORIGIN||'http://localhost:3000';const user=await recruiter();if(!user)return NextResponse.redirect(new URL('/login',origin));const expected=req.cookies.get('google_oauth_state')?.value;const state=req.nextUrl.searchParams.get('state'),code=req.nextUrl.searchParams.get('code');const done=(path:string)=>{const res=NextResponse.redirect(new URL(path,origin));res.cookies.delete('google_oauth_state');return res;};if(!expected||state!==expected||!code)return done('/google?error=oauth_state');try{const token=await exchangeCode(code);if(!token.refresh_token)return done('/google?error=no_refresh_token');const {error}=await adminDb().from('google_connections').upsert({recruiter_id:user.id,refresh_token_ciphertext:encryptToken(token.refresh_token),token_error:null},{onConflict:'recruiter_id'});if(error)throw error;return done('/google');}catch{return done('/google?error=oauth_exchange');}}

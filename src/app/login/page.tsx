@@ -1,0 +1,2 @@
+import { login } from '../actions';
+export default async function Login({searchParams}:{searchParams:Promise<{error?:string}>}){const p=await searchParams;return <div className="card" style={{maxWidth:450,margin:'80px auto'}}><h1>Recruiter sign in</h1><p className="muted">Use your authorized Supabase account.</p>{p.error&&<p role="alert">Sign in failed.</p>}<form action={login}><label>Email<input name="email" type="email" required/></label><label>Password<input name="password" type="password" required/></label><button>Sign in</button></form></div>}

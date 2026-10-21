@@ -1,0 +1,2 @@
+import { correctEmail } from '@/app/actions';
+export function CandidateCorrection({id,email}:{id:string,email:string}){return <div className="card"><h2>Form contact</h2><p>Original form email: {email||'Missing'}</p><form action={correctEmail}><input type="hidden" name="application_id" value={id}/><label>Correct email<input type="email" name="email" required defaultValue={email}/></label><button>Save contact correction</button></form></div>}

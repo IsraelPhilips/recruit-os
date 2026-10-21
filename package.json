@@ -1,0 +1,32 @@
+{
+  "name": "recruitos",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "eslint src evaluation/scripts",
+    "test": "vitest run",
+    "eval": "node --experimental-strip-types evaluation/scripts/run.ts",
+    "fixtures": "node evaluation/scripts/create-fixtures.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.76.1",
+    "mammoth": "1.10.0",
+    "next": "15.5.28",
+    "pdf-parse": "1.1.1",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.3.1",
+    "@types/node": "24.8.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "eslint": "9.38.0",
+    "eslint-config-next": "15.5.28",
+    "typescript": "5.9.3",
+    "vitest": "3.2.4"
+  }
+}
