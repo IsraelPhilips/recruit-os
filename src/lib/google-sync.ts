@@ -3,21 +3,29 @@ import {accessToken,createWatch,googleJson,renewWatch} from './google';
 import {persistIntake} from './intake';
 import {z} from 'zod';
 
-const mappingSchema=z.object({name:z.string().min(1),email:z.string().min(1),cv:z.string().min(1),consent:z.string().min(1),phone:z.string().optional(),portfolio:z.string().optional(),cover_letter:z.string().optional()});
+const mappingSchema=z.object({name:z.string().min(1),email:z.string().optional(),cv:z.string().min(1),consent:z.string().optional(),phone:z.string().optional(),portfolio:z.string().optional(),cover_letter:z.string().optional()}).refine(mapping=>{
+  const selected=Object.values(mapping).filter(Boolean);
+  return new Set(selected).size===selected.length;
+},{message:'Choose a different Form question for each application field.'});
 export type FieldMapping=z.infer<typeof mappingSchema>;
 export {mappingSchema};
 async function recordFailure(formId:string,responseId:string,error:unknown){
-  const db=adminDb();const message=(error instanceof Error?error.message:'Sync failure').slice(0,200);
+  const db=adminDb();const message=(error instanceof z.ZodError?'Application fields need review. Edit the Form mapping.':error instanceof Error?error.message:'Sync failure').slice(0,200);
   const permanent=/no single CV|unsupported|exceeds 3 MB|Invalid or oversized file|consent/i.test(message);
   const {data:prior}=await db.from('google_sync_failures').select('retry_count').eq('form_id',formId).eq('response_id',responseId).maybeSingle();
   const retry_count=permanent?3:Math.min((prior?.retry_count||0)+1,3);
   await db.from('google_sync_failures').upsert({form_id:formId,response_id:responseId,error_message:message,retry_count,last_attempt_at:new Date().toISOString(),resolved_at:null},{onConflict:'form_id,response_id'});
 }
 type Answer={textAnswers?:{answers?:Array<{value:string}>};fileUploadAnswers?:{answers?:Array<{fileId:string;fileName:string;mimeType:string}>}};
-type Response={responseId:string;lastSubmittedTime:string;answers?:Record<string,Answer>};
+type Response={responseId:string;lastSubmittedTime:string;respondentEmail?:string;answers?:Record<string,Answer>};
 function textAnswer(answers:Record<string,Answer>,id?:string){return id?answers[id]?.textAnswers?.answers?.[0]?.value||'':'';}
+function validEmail(value:string){const normalized=value.trim().toLowerCase();return z.email().safeParse(normalized).success?normalized:'';}
+function validUrl(value:string){const normalized=value.trim();return z.url().safeParse(normalized).success?normalized:null;}
 async function processResponse(formId:string,reference:string,mapping:FieldMapping,token:string,response:Response){
   const answers=response.answers||{};const uploaded=answers[mapping.cv]?.fileUploadAnswers?.answers||[];
+  const consentAnswer=textAnswer(answers,mapping.consent).trim();
+  if(mapping.consent&&/^(no|false|i disagree)$/i.test(consentAnswer))throw new Error('The applicant declined the optional consent question.');
+  const consent=mapping.consent&&/^(yes|true|i agree)$/i.test(consentAnswer)?true:null;
   if(uploaded.length!==1)throw new Error('Response has no single CV');
   const file=uploaded[0];if(!['application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.mimeType))throw new Error('CV type unsupported');
   const meta=await googleJson<{size?:string;mimeType:string;name:string}>(token,`https://www.googleapis.com/drive/v3/files/${encodeURIComponent(file.fileId)}?fields=size,mimeType,name`);
@@ -25,7 +33,9 @@ async function processResponse(formId:string,reference:string,mapping:FieldMappi
   const download=await fetch(`https://www.googleapis.com/drive/v3/files/${encodeURIComponent(file.fileId)}?alt=media`,{headers:{authorization:`Bearer ${token}`},cache:'no-store'});
   if(!download.ok)throw new Error(`Drive download HTTP ${download.status}`);
   const bytes=Buffer.from(await download.arrayBuffer());if(bytes.length>3_000_000)throw new Error('CV exceeds 3 MB');
-  const payload={form_id:formId,response_id:response.responseId,job_reference:reference,submitted_at:response.lastSubmittedTime,candidate:{full_name:textAnswer(answers,mapping.name),email:textAnswer(answers,mapping.email),phone:textAnswer(answers,mapping.phone)||null,portfolio_url:textAnswer(answers,mapping.portfolio)||null,cover_letter:textAnswer(answers,mapping.cover_letter)||null,consent:textAnswer(answers,mapping.consent).toLowerCase()==='yes'},cv:{name:meta.name||file.fileName,mime_type:meta.mimeType,content_base64:bytes.toString('base64')}};
+  const mappedEmail=validEmail(textAnswer(answers,mapping.email));
+  const email=mappedEmail||validEmail(response.respondentEmail||'');
+  const payload={form_id:formId,response_id:response.responseId,job_reference:reference,submitted_at:response.lastSubmittedTime,candidate:{full_name:textAnswer(answers,mapping.name).trim(),email,phone:textAnswer(answers,mapping.phone).trim()||null,portfolio_url:validUrl(textAnswer(answers,mapping.portfolio)),cover_letter:textAnswer(answers,mapping.cover_letter).trim()||null,consent},cv:{name:meta.name||file.fileName,mime_type:meta.mimeType,content_base64:bytes.toString('base64')}};
   const receipt=await persistIntake(payload);
   return !receipt.duplicate;
 }

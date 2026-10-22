@@ -19,8 +19,8 @@ export async function processApplication(id:string) {
     const source=await extractText(Buffer.from(await download.data.arrayBuffer()),doc.mime_type);
     await db.from('documents').update({extracted_text:source,extraction_status:'ready'}).eq('id',doc.id);
     const result=process.env.AI_PROVIDER==='nvidia'?await analyzeWithNvidia(source,criteria):await analyze(source,criteria);
-    const profile=await db.from('candidate_profiles').upsert({application_id:id,normalized:result.output.profile,warnings:result.output.profile.warnings,model:result.model,usage:result.usage});
-    if(profile.error) throw profile.error;
+    const {data:profileCorrection}=await db.from('workflow_events').select('id').eq('application_id',id).eq('event_type','profile_corrected').limit(1).maybeSingle();
+    if(!profileCorrection){const profile=await db.from('candidate_profiles').upsert({application_id:id,normalized:result.output.profile,warnings:result.output.profile.warnings,model:result.model,usage:result.usage});if(profile.error)throw profile.error;}
     const {data:reviewed}=await db.from('evidence_items').select('criterion_id,review_mark').eq('application_id',id).eq('criterion_version',claimed.criteria_version).in('review_mark',['confirmed','corrected']);
     const locked=new Set((reviewed||[]).map(e=>e.criterion_id));
     const fresh=result.output.evidence.filter(e=>!locked.has(e.criterion_id)).map(e=>({...e,application_id:id,criterion_version:claimed.criteria_version}));
@@ -47,7 +47,7 @@ export async function processPendingApplications(limit=1){
   const cutoff=new Date(Date.now()-10*60_000).toISOString();
   const {data:stale}=await db.from('applications').update({process_status:'failed',error_message:'Processing interrupted; retry available',updated_at:new Date().toISOString()}).eq('process_status','processing').lt('updated_at',cutoff).select('id');
   for(const row of stale||[])await db.from('workflow_events').insert({application_id:row.id,event_type:'processing_interrupted',metadata:{reason:'stale_timeout'}});
-  const {data:pending,error}=await db.from('applications').select('id').eq('process_status','received').lt('attempt_count',3).order('created_at',{ascending:true}).limit(limit);
+  const {data:pending,error}=await db.from('applications').select('id').or('process_status.eq.received,and(process_status.eq.manual_review,attempt_count.eq.0)').lt('attempt_count',3).order('created_at',{ascending:true}).limit(limit);
   if(error)throw error;
   const results=[];
   for(const row of pending||[])results.push({id:row.id,...await processApplication(row.id)});

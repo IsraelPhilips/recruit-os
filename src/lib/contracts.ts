@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const intakeSchema = z.object({
   form_id: z.string().min(1).max(200), response_id: z.string().min(1).max(200),
   job_reference: z.string().min(1).max(100), submitted_at: z.iso.datetime(),
-  candidate: z.object({ full_name: z.string().min(1).max(200), email: z.union([z.email(),z.literal('')]), phone: z.string().max(50).nullable(), portfolio_url: z.url().nullable(), cover_letter: z.string().max(10000).nullable(), consent: z.literal(true) }),
+  candidate: z.object({ full_name: z.string().min(1).max(200), email: z.union([z.email(),z.literal('')]), phone: z.string().max(50).nullable(), portfolio_url: z.url().nullable(), cover_letter: z.string().max(10000).nullable(), consent: z.union([z.literal(true),z.null()]) }),
   cv: z.object({ name: z.string().min(1).max(255), mime_type: z.enum(['application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document']), content_base64: z.string().min(1).max(4_300_000) })
 });
 export const criterionSchema = z.object({ id: z.string().min(1).max(50), label: z.string().min(1).max(200), kind: z.enum(['required','preferred','informational']) });

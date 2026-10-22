@@ -10,6 +10,6 @@ describe('Google connector contracts',()=>{
   });
   it('uses stable question IDs and finds the file upload question',()=>{
     const questions=formQuestions({formId:'synthetic-form',items:[{title:'Name',questionItem:{question:{questionId:'q1'}}},{title:'CV',questionItem:{question:{questionId:'q2',fileUploadQuestion:{}}}}]});
-    expect(questions).toEqual([{id:'q1',title:'Name',isFile:false},{id:'q2',title:'CV',isFile:true}]);
+    expect(questions).toEqual([{id:'q1',title:'Name',isFile:false,isConsent:false},{id:'q2',title:'CV',isFile:true,isConsent:false}]);
   });
 });

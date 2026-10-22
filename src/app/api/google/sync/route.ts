@@ -4,6 +4,7 @@ import {syncForm,renewDueWatches} from '@/lib/google-sync';
 import {adminDb} from '@/lib/supabase';
 import {processPendingApplications} from '@/lib/process';
 export const runtime='nodejs';
+export const maxDuration=60;
 export async function GET(req:NextRequest){
   const secret=process.env.CRON_SECRET;if(!secret||req.headers.get('authorization')!==`Bearer ${secret}`)return NextResponse.json({error:'Unauthorized'},{status:401});
   const results:Array<{form_id:string;status:string}>=[];let renewed=0;
