@@ -7,6 +7,8 @@ import { adminDb,publicDb } from '@/lib/supabase';
 import { criteriaSchema,validatedEvidenceCorrection } from '@/lib/contracts';
 import { z } from 'zod';
 import { processApplication } from '@/lib/process';
+import {deliverViaGmail,draftSchema,gmailRawMessage,hasTemplatePlaceholder} from '@/lib/outbound';
+import {gmailAccessToken} from '@/lib/google';
 
 export async function login(form:FormData){
   const email=String(form.get('email')||''); const password=String(form.get('password')||'');
@@ -50,11 +52,21 @@ export async function correctContact(form:FormData){
   const full_name=z.string().trim().min(1).max(200).parse(form.get('full_name'));
   const email=z.union([z.email(),z.literal('')]).parse(String(form.get('email')||'').trim().toLowerCase());
   const phone=z.string().trim().max(50).parse(String(form.get('phone')||''));
-  const db=adminDb();const {data:app,error:lookup}=await db.from('applications').select('candidate,process_status,attempt_count').eq('id',id).single();if(lookup||!app) throw new Error('Application not found');
+  const db=adminDb();const {data:app,error:lookup}=await db.from('applications').select('candidate,process_status,attempt_count,error_message').eq('id',id).single();if(lookup||!app) throw new Error('Application not found');
   const changed=['full_name','email','phone'].filter(key=>String(app.candidate?.[key]||'')!==String(({full_name,email,phone})[key as 'full_name'|'email'|'phone']||''));
   if(changed.length===0)return;
   const shouldAnalyze=Boolean(email&&!app.candidate?.email&&app.process_status==='manual_review'&&app.attempt_count===0);
-  const {error}=await db.from('applications').update({candidate:{...app.candidate,full_name,email,phone:phone||null},error_message:null,...(shouldAnalyze?{process_status:'received'}:{})}).eq('id',id);if(error) throw error;
+  let nextStatus=app.process_status;
+  if(shouldAnalyze)nextStatus='received';
+  else if(!email&&app.process_status==='ready')nextStatus='manual_review';
+  else if(email&&app.process_status==='manual_review'&&app.attempt_count>0&&!app.error_message){
+    const [profile,evidence]=await Promise.all([
+      db.from('candidate_profiles').select('application_id').eq('application_id',id).maybeSingle(),
+      db.from('evidence_items').select('status').eq('application_id',id),
+    ]);
+    if(profile.data&&evidence.data?.length&&!evidence.data.some(item=>['REQUIRES_REVIEW','AMBIGUOUS'].includes(item.status)))nextStatus='ready';
+  }
+  const {error}=await db.from('applications').update({candidate:{...app.candidate,full_name,email,phone:phone||null},process_status:nextStatus,...(shouldAnalyze?{error_message:null}:{})}).eq('id',id);if(error) throw error;
   await db.from('workflow_events').insert({application_id:id,event_type:'candidate_contact_corrected',metadata:{author_id:user.id,fields:changed}});
   if(shouldAnalyze)await processApplication(id);
   revalidatePath(`/applications/${id}`);revalidatePath('/applications');revalidatePath('/');
@@ -95,4 +107,53 @@ export async function saveAction(form:FormData){
   await db.from('applications').update({review_status:type==='mark_review_complete'?'reviewed':'in_review'}).eq('id',app);
   await db.from('workflow_events').insert({application_id:app,event_type:'review_action',metadata:{type,author_id:user.id}});
   revalidatePath(`/applications/${app}`);
+}
+
+export async function saveOutboundDraft(form:FormData){
+  const user=await requireRecruiter();
+  const draft=draftSchema.parse({applicationId:form.get('application_id'),id:form.get('message_id'),messageType:form.get('message_type'),recipient:form.get('recipient'),subject:form.get('subject'),body:form.get('body')});
+  const db=adminDb();
+  const {data:application,error:lookup}=await db.from('applications').select('id').eq('id',draft.applicationId).single();
+  if(lookup||!application)throw new Error('Application unavailable');
+  const values={application_id:draft.applicationId,author_id:user.id,message_type:draft.messageType,human_outcome:draft.messageType==='rejection'?'reject':null,recipient:draft.recipient.toLowerCase(),subject:draft.subject,body:draft.body,draft_source:'reviewer',updated_at:new Date().toISOString(),status:'draft',error_category:null};
+  const {data:existing}=await db.from('outbound_messages').select('id,status').eq('id',draft.id).eq('application_id',draft.applicationId).maybeSingle();
+  if(existing){
+    if(!['draft','failed'].includes(existing.status))throw new Error('This message cannot be edited after approval');
+    const {data,error}=await db.from('outbound_messages').update(values).eq('id',draft.id).eq('application_id',draft.applicationId).in('status',['draft','failed']).select('id').maybeSingle();
+    if(error||!data)throw new Error('Draft changed; refresh and try again');
+  }else{
+    const {error}=await db.from('outbound_messages').insert({id:draft.id,...values});
+    if(error)throw error;
+  }
+  await db.from('workflow_events').insert({application_id:draft.applicationId,event_type:'outbound_draft_saved',metadata:{message_id:draft.id,message_type:draft.messageType,author_id:user.id}});
+  revalidatePath(`/applications/${draft.applicationId}`);
+  redirect(`/applications/${draft.applicationId}?mail=draft_saved`);
+}
+
+export async function approveAndSendEmail(form:FormData){
+  const user=await requireRecruiter();
+  const applicationId=z.uuid().parse(form.get('application_id'));
+  const messageId=z.uuid().parse(form.get('message_id'));
+  if(form.get('approval')!=='yes')redirect(`/applications/${applicationId}?mail=approval_required`);
+  const db=adminDb();
+  const {data:connection}=await db.from('gmail_connections').select('email,token_error').eq('recruiter_id',user.id).maybeSingle();
+  if(!connection||connection.token_error)redirect(`/applications/${applicationId}?mail=connect_gmail`);
+  let token:string;
+  try{token=await gmailAccessToken(user.id);}catch(e){redirect(`/applications/${applicationId}?mail=${e instanceof Error&&/HTTP (400|401)/.test(e.message)?'connect_gmail':'token_unavailable'}`);}
+  const now=new Date().toISOString();
+  const {data:message,error:claimError}=await db.from('outbound_messages').update({status:'sending',sender:connection.email,approver_id:user.id,approved_at:now,send_started_at:now,error_category:null,updated_at:now}).eq('id',messageId).eq('application_id',applicationId).eq('status','draft').select('*').maybeSingle();
+  if(claimError)throw claimError;
+  if(!message)redirect(`/applications/${applicationId}?mail=already_handled`);
+  let delivery:{status:'sent'|'failed'|'uncertain';messageId:string|null;errorCategory:string|null};
+  try{if(hasTemplatePlaceholder(message.body))throw new Error('Incomplete template');const raw=gmailRawMessage(connection.email,message.recipient,message.subject,message.body);delivery=await deliverViaGmail(token,raw);}
+  catch{delivery={status:'failed',messageId:null,errorCategory:'invalid_message'};}
+  const outcome=delivery.status,errorCategory=delivery.errorCategory,gmailId=delivery.messageId;
+  if(errorCategory==='gmail_http_401')await db.from('gmail_connections').update({token_error:'Reconnect Gmail to send'}).eq('recruiter_id',user.id);
+  const completed=new Date().toISOString();
+  const {error:statusError}=await db.from('outbound_messages').update({status:outcome,gmail_message_id:gmailId,error_category:errorCategory,sent_at:outcome==='sent'?completed:null,updated_at:completed}).eq('id',messageId).eq('status','sending');
+  if(statusError)throw new Error('Delivery status could not be saved. Check Gmail Sent before retrying.');
+  await db.from('workflow_events').insert({application_id:applicationId,event_type:outcome==='sent'?'outbound_email_sent':outcome==='failed'?'outbound_email_failed':'outbound_email_uncertain',metadata:{message_id:messageId,message_type:message.message_type,author_id:user.id,error_category:errorCategory,gmail_message_id:gmailId}});
+  if(outcome==='sent'&&message.human_outcome==='reject')await db.from('applications').update({review_status:'reviewed'}).eq('id',applicationId);
+  revalidatePath(`/applications/${applicationId}`);
+  redirect(`/applications/${applicationId}?mail=${outcome}`);
 }
