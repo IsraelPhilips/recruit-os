@@ -1,4 +1,4 @@
-export type ReviewCriterion={id:string;label:string;kind:'required'|'preferred'|'informational'};
+export type ReviewCriterion={id:string;label:string;kind:'required'|'preferred'|'informational';category?:'skill'|'experience'|'achievement'|'other'};
 export type ReviewEvidence={criterion_id:string;status:string;excerpt:string|null;question?:string|null;review_mark?:string|null};
 export type Coverage={documented:number;total:number;percent:number|null};
 

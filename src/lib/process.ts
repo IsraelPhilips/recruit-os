@@ -22,7 +22,7 @@ export async function processApplication(id:string) {
     const result=process.env.AI_PROVIDER==='nvidia'?await analyzeWithNvidia(source,criteria):await analyze(source,criteria);
     const {data:profileCorrection}=await db.from('workflow_events').select('id').eq('application_id',id).eq('event_type','profile_corrected').limit(1).maybeSingle();
     if(!profileCorrection){const normalized=resolveProfile(result.output.profile,source,claimed.candidate,false).profile;const profile=await db.from('candidate_profiles').upsert({application_id:id,normalized,warnings:normalized?.warnings||[],model:result.model,usage:result.usage});if(profile.error)throw profile.error;}
-    const {data:reviewed}=await db.from('evidence_items').select('criterion_id,review_mark').eq('application_id',id).eq('criterion_version',claimed.criteria_version).in('review_mark',['confirmed','corrected']);
+    const {data:reviewed}=await db.from('evidence_items').select('criterion_id,review_mark').eq('application_id',id).eq('criterion_version',claimed.criteria_version).in('review_mark',['confirmed','corrected','needs_followup']);
     const locked=new Set((reviewed||[]).map(e=>e.criterion_id));
     const fresh=result.output.evidence.filter(e=>!locked.has(e.criterion_id)).map(e=>({...e,application_id:id,criterion_version:claimed.criteria_version}));
     if(fresh.length){const evidence=await db.from('evidence_items').upsert(fresh,{onConflict:'application_id,criterion_id,criterion_version'});if(evidence.error)throw evidence.error;}

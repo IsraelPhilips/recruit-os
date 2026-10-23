@@ -1,4 +1,5 @@
 import {sourceContains,reviewGuidance,type ReviewCriterion,type ReviewEvidence,reviewSummary} from './review-summary';
+import {jobFitMatch} from './job-fit';
 
 export type Profile={full_name:string|null;email:string|null;phone:string|null;skills:string[];history:string[];warnings:string[]};
 export type FormCandidate={full_name?:string|null;email?:string|null;phone?:string|null};
@@ -55,11 +56,12 @@ export function resolveProfile(stored:Profile|null,source:string,form:FormCandid
 
 export function candidateBrief(criteria:ReviewCriterion[],evidence:ReviewEvidence[],status:string,source:string,stored:Profile|null,form:FormCandidate,reviewerCorrected=false){
   const summary=reviewSummary(criteria,evidence,status,source);
+  const fit=jobFitMatch(criteria,evidence,status,source);
   const resolved=resolveProfile(stored,source,form,reviewerCorrected);
   const experience=resolved.profile?.history.slice(0,2)||[];
   const strengths=summary.documented.map(item=>item.label).slice(0,3);
   const gaps=[...summary.partial,...summary.followUp].map(item=>item.label).slice(0,3);
   const uncertainties=[...resolved.discrepancies,...(summary.available&&summary.followUp.length?['Some criteria lack a verified CV excerpt. This does not establish missing ability.']:[])];
   const nextStep=reviewGuidance(summary,Boolean(form.email));
-  return {summary,profile:resolved.profile,derivedFields:resolved.derivedFields,discrepancies:resolved.discrepancies,experience,strengths,gaps,uncertainties,nextStep,reviewerCorrected};
+  return {summary,fit,profile:resolved.profile,derivedFields:resolved.derivedFields,discrepancies:resolved.discrepancies,experience,strengths,gaps,uncertainties,nextStep,reviewerCorrected};
 }
