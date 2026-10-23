@@ -9,6 +9,7 @@ describe('transparent review summary',()=>{
     expect(result.total).toBe(2);
     expect(result.followUp.map(item=>item.label)).toEqual(['Customer support']);
     expect(reviewGuidance(result,true)).toContain('Missing evidence does not establish missing ability');
+    expect(reviewGuidance(result,true)).toContain('Customer support');
   });
   it('withholds a percentage before analysis and suggests an editable question, never rejection',()=>{
     expect(reviewSummary(criteria,[],'processing').percent).toBeNull();

@@ -16,8 +16,13 @@ export function reviewGuidance(summary:ReturnType<typeof reviewSummary>,hasEmail
   if(!summary.available)return 'Wait for CV analysis or resolve the processing issue before reviewing criteria.';
   if(!hasEmail)return 'Confirm the applicant email before sending any message.';
   if(summary.total===0)return 'Add job criteria before assessing the CV evidence.';
-  if(summary.followUp.length||summary.partial.length)return 'Check the cited excerpts, then ask the applicant for a specific example where the CV is unclear. Missing evidence does not establish missing ability.';
-  return 'Review the cited excerpts and confirm them before deciding the next human step.';
+  const unresolved=[...summary.partial,...summary.followUp];
+  if(unresolved.length){
+    const focus=unresolved[0].label;
+    if(summary.documented.length===0)return `No job criterion has a complete cited excerpt yet. Review the original CV, then ask for a concrete example of ${focus}. Missing evidence does not establish missing ability.`;
+    return `${summary.documented.length} of ${summary.total} job criteria have cited evidence. Confirm those excerpts, then clarify ${focus} before choosing the next human step. Missing evidence does not establish missing ability.`;
+  }
+  return `All ${summary.total} required or preferred job criteria have cited CV evidence. Verify the excerpts and context, then decide whether to move to an internal review or interview.`;
 }
 
 export function suggestedReviewEmail(summary:ReturnType<typeof reviewSummary>,name:string,job:string){
