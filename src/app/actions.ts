@@ -84,6 +84,7 @@ export async function saveProfile(form:FormData){
   const {error}=await db.from('candidate_profiles').update({normalized,warnings}).eq('application_id',id);if(error)throw error;
   await db.from('workflow_events').insert({application_id:id,event_type:'profile_corrected',metadata:{author_id:user.id,fields:['full_name','email','phone','skills','history','warnings']}});
   revalidatePath(`/applications/${id}`);
+  revalidatePath('/applications');
 }
 export async function saveEvidence(form:FormData){
   const user=await requireRecruiter(); const id=String(form.get('id')), app=String(form.get('application_id'));
@@ -98,6 +99,7 @@ export async function saveEvidence(form:FormData){
   if(error) throw error;
   await db.from('workflow_events').insert({application_id:app,event_type:'evidence_reviewed',metadata:{evidence_id:id,mark,changed,author_id:user.id}});
   revalidatePath(`/applications/${app}`);
+  revalidatePath('/applications');
 }
 export async function saveAction(form:FormData){
   const user=await requireRecruiter();const app=String(form.get('application_id')), type=String(form.get('action_type'));
@@ -107,6 +109,7 @@ export async function saveAction(form:FormData){
   await db.from('applications').update({review_status:type==='mark_review_complete'?'reviewed':'in_review'}).eq('id',app);
   await db.from('workflow_events').insert({application_id:app,event_type:'review_action',metadata:{type,author_id:user.id}});
   revalidatePath(`/applications/${app}`);
+  revalidatePath('/applications');
 }
 
 export async function saveOutboundDraft(form:FormData){

@@ -3,6 +3,7 @@ import { extractText } from './extract';
 import { analyze } from './gemini';
 import { analyzeWithNvidia } from './nvidia';
 import { criteriaSchema } from './contracts';
+import {resolveProfile} from './profile-grounding';
 
 export async function processApplication(id:string) {
   const db=adminDb();
@@ -20,7 +21,7 @@ export async function processApplication(id:string) {
     await db.from('documents').update({extracted_text:source,extraction_status:'ready'}).eq('id',doc.id);
     const result=process.env.AI_PROVIDER==='nvidia'?await analyzeWithNvidia(source,criteria):await analyze(source,criteria);
     const {data:profileCorrection}=await db.from('workflow_events').select('id').eq('application_id',id).eq('event_type','profile_corrected').limit(1).maybeSingle();
-    if(!profileCorrection){const profile=await db.from('candidate_profiles').upsert({application_id:id,normalized:result.output.profile,warnings:result.output.profile.warnings,model:result.model,usage:result.usage});if(profile.error)throw profile.error;}
+    if(!profileCorrection){const normalized=resolveProfile(result.output.profile,source,claimed.candidate,false).profile;const profile=await db.from('candidate_profiles').upsert({application_id:id,normalized,warnings:normalized?.warnings||[],model:result.model,usage:result.usage});if(profile.error)throw profile.error;}
     const {data:reviewed}=await db.from('evidence_items').select('criterion_id,review_mark').eq('application_id',id).eq('criterion_version',claimed.criteria_version).in('review_mark',['confirmed','corrected']);
     const locked=new Set((reviewed||[]).map(e=>e.criterion_id));
     const fresh=result.output.evidence.filter(e=>!locked.has(e.criterion_id)).map(e=>({...e,application_id:id,criterion_version:claimed.criteria_version}));

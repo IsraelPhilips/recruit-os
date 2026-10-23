@@ -1,15 +1,22 @@
 export type ReviewCriterion={id:string;label:string;kind:'required'|'preferred'|'informational'};
-export type ReviewEvidence={criterion_id:string;status:string;excerpt:string|null;question?:string|null};
+export type ReviewEvidence={criterion_id:string;status:string;excerpt:string|null;question?:string|null;review_mark?:string|null};
+export type Coverage={documented:number;total:number;percent:number|null};
 
-export function reviewSummary(criteria:ReviewCriterion[],evidence:ReviewEvidence[],processStatus:string){
+export function sourceContains(source:string,excerpt:string){
+  const compact=(value:string)=>value.replace(/\s+/g,' ').trim().toLocaleLowerCase();
+  return Boolean(excerpt.trim())&&compact(source).includes(compact(excerpt));
+}
+
+export function reviewSummary(criteria:ReviewCriterion[],evidence:ReviewEvidence[],processStatus:string,source=''){
   const assessed=criteria.filter(item=>item.kind!=='informational');
   const byId=new Map(evidence.map(item=>[item.criterion_id,item]));
-  const documented=assessed.filter(item=>{const match=byId.get(item.id);return match?.status==='EVIDENCE_FOUND'&&Boolean(match.excerpt?.trim());});
-  const partial=assessed.filter(item=>byId.get(item.id)?.status==='PARTIAL_EVIDENCE');
+  const documented=assessed.filter(item=>{const match=byId.get(item.id);return match?.status==='EVIDENCE_FOUND'&&match.review_mark!=='needs_followup'&&sourceContains(source,match.excerpt||'');});
+  const partial=assessed.filter(item=>!documented.includes(item)&&byId.get(item.id)?.status==='PARTIAL_EVIDENCE'&&sourceContains(source,byId.get(item.id)?.excerpt||''));
   const followUp=assessed.filter(item=>!documented.includes(item)&&!partial.includes(item));
-  const available=(processStatus==='ready'||processStatus==='manual_review')&&evidence.length>0;
+  const available=(processStatus==='ready'||processStatus==='manual_review')&&evidence.length>0&&Boolean(source.trim());
+  const coverage=(kind:'required'|'preferred'):Coverage=>{const subset=assessed.filter(item=>item.kind===kind);const count=subset.filter(item=>documented.includes(item)).length;return {documented:count,total:subset.length,percent:available&&subset.length?Math.round(count/subset.length*100):null};};
   const percent=available&&assessed.length?Math.round(documented.length/assessed.length*100):null;
-  return {total:assessed.length,documented,partial,followUp,percent,available};
+  return {total:assessed.length,documented,partial,followUp,percent,available,required:coverage('required'),preferred:coverage('preferred')};
 }
 
 export function reviewGuidance(summary:ReturnType<typeof reviewSummary>,hasEmail:boolean){
