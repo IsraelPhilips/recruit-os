@@ -1,23 +1,38 @@
 import {z} from 'zod';
+import type {jobFitMatch} from './job-fit';
 
 export const messageTypes=['acknowledgment','clarification','update','rejection'] as const;
+export const currentMessageTypes=['rejection','update'] as const;
 export const draftSchema=z.object({
   applicationId:z.uuid(),id:z.uuid(),
-  messageType:z.enum(messageTypes),
+  messageType:z.enum(currentMessageTypes),
   recipient:z.email().max(254),
   subject:z.string().trim().min(3).max(200).refine(value=>!/[\r\n]/.test(value)),
   body:z.string().trim().min(10).max(10000),
 });
 
-export function emailTemplate(type:(typeof messageTypes)[number],name:string,job:string){
-  const greeting=`Hello ${name||'Applicant'},`;
+export function emailTemplate(type:(typeof currentMessageTypes)[number],name:string,job:string){
+  const person=name.replace(/\s+/g,' ').trim().slice(0,100)||'Applicant';
+  const role=job.replace(/\s+/g,' ').trim().slice(0,140)||'the role';
+  const greeting=`Hello ${person},`;
   const footer='Best regards,\nRecruiting team';
   switch(type){
-    case 'acknowledgment':return {subject:`Application received: ${job}`,body:`${greeting}\n\nThank you for applying for ${job}. We have received your application and will be in touch when there is an update.\n\n${footer}`};
-    case 'clarification':return {subject:`A question about your ${job} application`,body:`${greeting}\n\nThank you for applying for ${job}. We would like to clarify a detail in your application:\n\n[Write your question here]\n\nPlease reply when convenient.\n\n${footer}`};
-    case 'update':return {subject:`Update on your ${job} application`,body:`${greeting}\n\nWe are writing with an update about your application for ${job}:\n\n[Write the update here]\n\n${footer}`};
-    case 'rejection':return {subject:`Your application for ${job}`,body:`${greeting}\n\nThank you for your interest in ${job} and the time you put into your application. After review, we will not be moving forward with your application for this role.\n\nWe appreciate your interest and wish you well in your search.\n\n${footer}`};
+    case 'update':return {subject:`Next stage for your ${role} application`,body:`${greeting}\n\nThank you for applying for ${role}. We would like to move your application to the next stage of our review process. We will reach out with details about the next steps.\n\nWe appreciate the time you spent on your application.\n\n${footer}`};
+    case 'rejection':return {subject:`Your application for ${role}`,body:`${greeting}\n\nThank you for your interest in ${role} and the time you put into your application. After review, we will not be moving forward with your application for this role.\n\nWe appreciate your interest and wish you well in your search.\n\n${footer}`};
   }
+}
+
+export function suggestedEmailType(percent:number|null){
+  if(percent===null)return null;
+  if(percent<50)return 'rejection' as const;
+  if(percent>=60)return 'update' as const;
+  return null;
+}
+
+export function suggestedApplicantEmail(fit:ReturnType<typeof jobFitMatch>,name:string,job:string){
+  const type=suggestedEmailType(fit.percent);
+  if(!type)return null;
+  return {type,...emailTemplate(type,name,job),reason:type==='rejection'?'Below 50% documented job match':'At least 60% documented job match'};
 }
 
 export function hasTemplatePlaceholder(body:string){return /\[(?:Write your question here|Write the update here)\]/i.test(body);}

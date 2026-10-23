@@ -25,22 +25,8 @@ export function reviewGuidance(summary:ReturnType<typeof reviewSummary>,hasEmail
   if(summary.total===0)return 'Add job criteria before assessing the CV evidence.';
   const unresolved=[...summary.partial,...summary.followUp];
   if(unresolved.length){
-    const focus=unresolved[0].label;
-    if(summary.documented.length===0)return `No job criterion has a complete cited excerpt yet. Review the original CV, then ask for a concrete example of ${focus}. Missing evidence does not establish missing ability.`;
-    return `${summary.documented.length} of ${summary.total} job criteria have cited evidence. Confirm those excerpts, then clarify ${focus} before choosing the next human step. Missing evidence does not establish missing ability.`;
+    if(summary.documented.length===0)return 'No job criterion has a complete cited excerpt yet. Verify the CV against the role, then choose the next human review step. Missing evidence does not establish missing ability.';
+    return `${summary.documented.length} of ${summary.total} job criteria have cited evidence. Confirm those excerpts and review the remaining gaps before choosing the next human step. Missing evidence does not establish missing ability.`;
   }
   return `All ${summary.total} required or preferred job criteria have cited CV evidence. Verify the excerpts and context, then decide whether to move to an internal review or interview.`;
-}
-
-export function suggestedReviewEmail(summary:ReturnType<typeof reviewSummary>,name:string,job:string){
-  const greeting=`Hello ${name||'Applicant'},`;
-  const footer='Best regards,\nRecruiting team';
-  const uncertain=[...summary.partial,...summary.followUp][0];
-  if(summary.available&&uncertain){
-    return {type:'clarification' as const,subject:`A question about your ${job} application`,body:`${greeting}\n\nThank you for applying for ${job}. As we review your application, could you share a brief example of your experience with ${uncertain.label}?\n\nPlease reply when convenient.\n\n${footer}`};
-  }
-  if(summary.available&&summary.total>0){
-    return {type:'update' as const,subject:`Update on your ${job} application`,body:`${greeting}\n\nThank you for applying for ${job}. We are reviewing the information you shared and will be in touch about the next step.\n\n${footer}`};
-  }
-  return {type:'acknowledgment' as const,subject:`Application received: ${job}`,body:`${greeting}\n\nThank you for applying for ${job}. We have received your application and will be in touch when there is an update.\n\n${footer}`};
 }

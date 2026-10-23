@@ -118,7 +118,7 @@ export async function saveOutboundDraft(form:FormData){
   const db=adminDb();
   const {data:application,error:lookup}=await db.from('applications').select('id').eq('id',draft.applicationId).single();
   if(lookup||!application)throw new Error('Application unavailable');
-  const values={application_id:draft.applicationId,author_id:user.id,message_type:draft.messageType,human_outcome:draft.messageType==='rejection'?'reject':null,recipient:draft.recipient.toLowerCase(),subject:draft.subject,body:draft.body,draft_source:'reviewer',updated_at:new Date().toISOString(),status:'draft',error_category:null};
+  const values={application_id:draft.applicationId,author_id:user.id,message_type:draft.messageType,human_outcome:draft.messageType==='rejection'?'reject':draft.messageType==='update'?'continue':null,recipient:draft.recipient.toLowerCase(),subject:draft.subject,body:draft.body,draft_source:'reviewer',updated_at:new Date().toISOString(),status:'draft',error_category:null};
   const {data:existing}=await db.from('outbound_messages').select('id,status').eq('id',draft.id).eq('application_id',draft.applicationId).maybeSingle();
   if(existing){
     if(!['draft','failed'].includes(existing.status))throw new Error('This message cannot be edited after approval');
@@ -144,7 +144,7 @@ export async function approveAndSendEmail(form:FormData){
   let token:string;
   try{token=await gmailAccessToken(user.id);}catch(e){redirect(`/applications/${applicationId}?mail=${e instanceof Error&&/HTTP (400|401)/.test(e.message)?'connect_gmail':'token_unavailable'}`);}
   const now=new Date().toISOString();
-  const {data:message,error:claimError}=await db.from('outbound_messages').update({status:'sending',sender:connection.email,approver_id:user.id,approved_at:now,send_started_at:now,error_category:null,updated_at:now}).eq('id',messageId).eq('application_id',applicationId).eq('status','draft').select('*').maybeSingle();
+  const {data:message,error:claimError}=await db.from('outbound_messages').update({status:'sending',sender:connection.email,approver_id:user.id,approved_at:now,send_started_at:now,error_category:null,updated_at:now}).eq('id',messageId).eq('application_id',applicationId).eq('status','draft').in('message_type',['update','rejection']).select('*').maybeSingle();
   if(claimError)throw claimError;
   if(!message)redirect(`/applications/${applicationId}?mail=already_handled`);
   let delivery:{status:'sent'|'failed'|'uncertain';messageId:string|null;errorCategory:string|null};
@@ -155,8 +155,8 @@ export async function approveAndSendEmail(form:FormData){
   const completed=new Date().toISOString();
   const {error:statusError}=await db.from('outbound_messages').update({status:outcome,gmail_message_id:gmailId,error_category:errorCategory,sent_at:outcome==='sent'?completed:null,updated_at:completed}).eq('id',messageId).eq('status','sending');
   if(statusError)throw new Error('Delivery status could not be saved. Check Gmail Sent before retrying.');
-  await db.from('workflow_events').insert({application_id:applicationId,event_type:outcome==='sent'?'outbound_email_sent':outcome==='failed'?'outbound_email_failed':'outbound_email_uncertain',metadata:{message_id:messageId,message_type:message.message_type,author_id:user.id,error_category:errorCategory,gmail_message_id:gmailId}});
-  if(outcome==='sent'&&message.human_outcome==='reject')await db.from('applications').update({review_status:'reviewed'}).eq('id',applicationId);
+  await db.from('workflow_events').insert({application_id:applicationId,event_type:outcome==='sent'?'outbound_email_sent':outcome==='failed'?'outbound_email_failed':'outbound_email_uncertain',metadata:{message_id:messageId,message_type:message.message_type,human_outcome:message.human_outcome,author_id:user.id,error_category:errorCategory,gmail_message_id:gmailId}});
+  if(outcome==='sent'&&(message.human_outcome==='reject'||message.human_outcome==='continue'))await db.from('applications').update({review_status:'reviewed'}).eq('id',applicationId);
   revalidatePath(`/applications/${applicationId}`);
   redirect(`/applications/${applicationId}?mail=${outcome}`);
 }

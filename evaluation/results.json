@@ -1,6 +1,6 @@
 {
   "summary": {
-    "run_at": "2026-10-23T06:58:37.416Z",
+    "run_at": "2026-10-23T07:21:48.404Z",
     "adapter": "deterministic-local",
     "model": null,
     "baseline": "pending",
@@ -20,7 +20,7 @@
       "detail": "Deterministic citation validation only; semantic classification supplied by fixture and not scored",
       "semantic_status": "pending",
       "expected_status": "EVIDENCE_FOUND",
-      "latency_ms": 1,
+      "latency_ms": 0,
       "model": null,
       "cost_usd": null
     },
@@ -44,7 +44,7 @@
       "detail": "Intake contract preserves missing email; database manual-review state remains unverified",
       "semantic_status": "pending",
       "expected_status": "REQUIRES_REVIEW",
-      "latency_ms": 8,
+      "latency_ms": 2,
       "model": null,
       "cost_usd": null
     },
@@ -104,7 +104,7 @@
       "detail": "Document signature validation",
       "semantic_status": "pending",
       "expected_status": "REQUIRES_REVIEW",
-      "latency_ms": 1,
+      "latency_ms": 0,
       "model": null,
       "cost_usd": null
     },

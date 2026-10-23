@@ -1,5 +1,5 @@
 import {describe,expect,it} from 'vitest';
-import {deliverViaGmail,draftSchema,emailTemplate,gmailRawMessage,hasTemplatePlaceholder} from './outbound';
+import {deliverViaGmail,draftSchema,emailTemplate,gmailRawMessage,hasTemplatePlaceholder,suggestedEmailType} from './outbound';
 
 describe('outbound mail boundaries',()=>{
   it('creates an editable rejection template without a model verdict',()=>{
@@ -7,6 +7,18 @@ describe('outbound mail boundaries',()=>{
     expect(draft.body).toContain('Hello Synthetic Applicant');
     expect(draft.body).toContain('we will not be moving forward');
     expect(draft.body).not.toMatch(/AI|score|ranking/i);
+  });
+  it('offers only rejection below 50 and next stage from 60, leaving the middle band to a reviewer',()=>{
+    expect(suggestedEmailType(null)).toBeNull();
+    expect(suggestedEmailType(49)).toBe('rejection');
+    expect(suggestedEmailType(50)).toBeNull();
+    expect(suggestedEmailType(59)).toBeNull();
+    expect(suggestedEmailType(60)).toBe('update');
+    const next=emailTemplate('update','Synthetic Applicant','Support Specialist');
+    expect(next.subject).toContain('Next stage');
+    expect(next.body).toContain('Hello Synthetic Applicant');
+    expect(next.body).toContain('reach out with details');
+    expect(next.body).not.toMatch(/\b(score|percent|AI)\b/i);
   });
   it('encodes a UTF-8 MIME message and rejects header injection',()=>{
     const raw=gmailRawMessage('reviewer@example.com','synthetic@example.com','Your application','Hello, synthetic applicant.');
@@ -19,9 +31,10 @@ describe('outbound mail boundaries',()=>{
     const base={applicationId:crypto.randomUUID(),id:crypto.randomUUID(),messageType:'rejection',recipient:'',subject:'Application',body:'A proper rejection message.'};
     expect(draftSchema.safeParse(base).success).toBe(false);
     expect(draftSchema.safeParse({...base,recipient:'synthetic@example.com'}).success).toBe(true);
+    expect(draftSchema.safeParse({...base,messageType:'clarification',recipient:'synthetic@example.com'}).success).toBe(false);
   });
-  it('blocks a saved template with its instruction placeholder still present',()=>{
-    expect(hasTemplatePlaceholder(emailTemplate('clarification','Synthetic Applicant','Support').body)).toBe(true);
+  it('blocks a saved legacy template with its instruction placeholder still present',()=>{
+    expect(hasTemplatePlaceholder('Please answer: [Write your question here]')).toBe(true);
     expect(hasTemplatePlaceholder(emailTemplate('rejection','Synthetic Applicant','Support').body)).toBe(false);
   });
   it('distinguishes confirmed delivery, definite rejection, and unknown delivery',async()=>{

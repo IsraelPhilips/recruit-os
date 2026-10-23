@@ -1,5 +1,5 @@
 import {describe,expect,it} from 'vitest';
-import {reviewGuidance,reviewSummary,suggestedReviewEmail} from './review-summary';
+import {reviewGuidance,reviewSummary} from './review-summary';
 
 const criteria=[{id:'a',label:'TypeScript',kind:'required' as const},{id:'b',label:'Customer support',kind:'preferred' as const},{id:'c',label:'Availability',kind:'informational' as const}];
 describe('transparent review summary',()=>{
@@ -11,16 +11,14 @@ describe('transparent review summary',()=>{
     expect(result.total).toBe(2);
     expect(result.followUp.map(item=>item.label)).toEqual(['Customer support']);
     expect(reviewGuidance(result,true)).toContain('Missing evidence does not establish missing ability');
-    expect(reviewGuidance(result,true)).toContain('Customer support');
+    expect(reviewGuidance(result,true)).toContain('review the remaining gaps');
   });
-  it('withholds a percentage before analysis and suggests an editable question, never rejection',()=>{
+  it('withholds a percentage before analysis and avoids applicant-by-applicant questions',()=>{
     expect(reviewSummary(criteria,[],'processing').percent).toBeNull();
     expect(reviewSummary(criteria,[],'manual_review').percent).toBeNull();
     const result=reviewSummary(criteria,[{criterion_id:'a',status:'PARTIAL_EVIDENCE',excerpt:'TypeScript'},{criterion_id:'b',status:'EVIDENCE_FOUND',excerpt:'Handled support tickets'}],'ready','Studied TypeScript. Handled support tickets.');
-    const suggestion=suggestedReviewEmail(result,'Synthetic Applicant','Support');
-    expect(suggestion.type).toBe('clarification');
-    expect(suggestion.body).toContain('TypeScript');
-    expect(suggestion.body).not.toMatch(/reject|match score|percent/i);
+    expect(reviewGuidance(result,true)).toContain('review the remaining gaps');
+    expect(reviewGuidance(result,true)).not.toContain('ask for');
   });
   it('does not count an invented quote or reviewer follow-up as documented',()=>{
     const result=reviewSummary(criteria,[{criterion_id:'a',status:'EVIDENCE_FOUND',excerpt:'Invented quote'},{criterion_id:'b',status:'EVIDENCE_FOUND',excerpt:'Handled support tickets',review_mark:'needs_followup'}],'ready','Handled support tickets.');

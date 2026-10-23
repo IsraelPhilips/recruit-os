@@ -5,7 +5,8 @@ import {adminDb} from '@/lib/supabase';
 import {retry,saveAction,saveProfile} from '@/app/actions';
 import {SubmitButton} from '@/app/components/SubmitButton';
 import {candidateBrief,type Profile} from '@/lib/profile-grounding';
-import {suggestedReviewEmail,type ReviewCriterion} from '@/lib/review-summary';
+import type {ReviewCriterion} from '@/lib/review-summary';
+import {suggestedApplicantEmail} from '@/lib/outbound';
 import {CandidateCorrection} from './CandidateCorrection';
 import {EvidenceHistory} from './EvidenceHistory';
 import {EvidenceMatrix} from './EvidenceMatrix';
@@ -26,7 +27,7 @@ export default async function Detail({params,searchParams}:{params:Promise<{id:s
     db.from('review_actions').select('*').eq('application_id',id).order('created_at',{ascending:false}),
     db.from('workflow_events').select('id,event_type,created_at').eq('application_id',id).order('created_at',{ascending:false}).limit(25),
     db.from('documents').select('id,mime_type,extraction_status,extracted_text').eq('application_id',id).maybeSingle(),
-    db.from('outbound_messages').select('id,message_type,recipient,subject,body,status,created_at,send_started_at,sent_at,gmail_message_id,error_category').eq('application_id',id).order('created_at',{ascending:false}).limit(15),
+    db.from('outbound_messages').select('id,message_type,human_outcome,recipient,subject,body,status,created_at,send_started_at,sent_at,gmail_message_id,error_category').eq('application_id',id).order('created_at',{ascending:false}).limit(15),
     db.from('gmail_connections').select('email,token_error').eq('recruiter_id',user.id).maybeSingle(),
     db.from('workflow_events').select('id').eq('application_id',id).eq('event_type','profile_corrected').limit(1).maybeSingle(),
   ]);
@@ -37,7 +38,7 @@ export default async function Detail({params,searchParams}:{params:Promise<{id:s
   const brief=candidateBrief(criteria,evidence,application.process_status,source,profileResult.data?.normalized as Profile||null,application.candidate||{},Boolean(profileCorrectionResult.data));
   const profile=brief.profile;
   const job=(application.jobs as {title:string})?.title||'the role';
-  const suggestion=suggestedReviewEmail(brief.summary,application.candidate?.full_name||'Applicant',job);
+  const suggestion=suggestedApplicantEmail(brief.fit,application.candidate?.full_name||'Applicant',job);
   return <div className="page-stack"><MailToast status={mail}/><div><Link href="/applications" className="eyebrow">← Back to applications</Link><div className="page-heading"><div><h1>{application.candidate?.full_name||'Applicant details needed'}</h1><p>{job} · Submitted {readableDate(application.submitted_at)}</p></div><div className="review-status-group"><span className={`badge ${application.process_status==='ready'?'badge-success':application.process_status==='failed'?'badge-warning':'badge-muted'}`}>{processNames[application.process_status]||application.process_status}</span><span className="badge badge-muted">Human review: {application.review_status.replaceAll('_',' ')}</span>{messagesResult.data?.some(message=>message.status==='sent'&&message.message_type==='rejection')&&<span className="badge badge-warning">Reviewer declined</span>}</div></div></div>
     {application.error_message&&<div className="notice notice-warning" role="alert"><strong>Analysis needs attention</strong><p>{application.error_message}</p></div>}
     {(['received','failed'].includes(application.process_status)||(application.process_status==='manual_review'&&!profile))&&application.attempt_count<3&&<form action={retry} className="inline-actions"><input type="hidden" name="id" value={id}/><SubmitButton pendingText="Analyzing CV...">{application.attempt_count?'Retry CV analysis':'Analyze CV now'}</SubmitButton><span className="field-help">The result will show source excerpts for human review.</span></form>}
