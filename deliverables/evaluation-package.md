@@ -1,10 +1,10 @@
 # Evaluation package
 
-The MUST screenshots require 8 to 12 cases, a baseline/final comparison, pass/fail analysis, and suitable quality, speed, cost, and human-intervention metrics. They do not define a Job Fit Match formula. RecruitOS's documented formula is therefore the scoring source of truth, not a claim about a MUST-mandated weighting.
+The evaluation uses 12 synthetic cases and reports deterministic scoring separately from workflow and model results. Job Fit Match follows the scoring rules documented for RecruitOS: required criteria carry four times the weight of preferred criteria, with credit adjusted for evidence status and source verification. These are RecruitOS rules; the evaluation does not attribute a scoring formula to MUST.
 
 ## Reproduce deterministic scoring
 
-Run `npm run eval:job-fit`. Vitest reads the independent synthetic labels in `evaluation/job-fit-cases.json`, calls the production scorer in `src/lib/job-fit.ts`, and writes per-case JSON, CSV, and Markdown output. The scorer uses 4 points per required criterion and 1 per preferred criterion; exact source presence is required for credit, while full, partial, ambiguous, and other evidence states earn 1, 0.5, 0.25, and 0 of the applicable weight. Informational criteria are excluded. These rules were not tuned to the fixtures.
+Run `npm run eval:job-fit`. Vitest reads the reference labels in `evaluation/job-fit-cases.json`, calls the production scorer in `src/lib/job-fit.ts`, and writes per-case JSON, CSV, and Markdown output. The scorer uses 4 points per required criterion and 1 per preferred criterion; exact source presence is required for credit, while full, partial, ambiguous, and other evidence states earn 1, 0.5, 0.25, and 0 of the applicable weight. Informational criteria are excluded. The evaluation cases do not change these scoring rules.
 
 Current deterministic run: 10 applicable cases passed with expected scores, 0 failed, and 2 were blocked from numeric scoring by design because the CV is unreadable (T08) or processing failed (T12). Scores by case are in `evaluation/job-fit-results.json` and `evaluation/job-fit-results.csv`; detailed methods and risks are in `evaluation/job-fit-report.md`. The 12-case workflow suite is separate: `npm run eval` currently reports 9 checks passed, 0 failed, and T05/T09/T12 blocked. Its archived 2026-10-23 run also reported 9/12, so the pass count did not change. These suites test different behaviors and must not be combined.
 
