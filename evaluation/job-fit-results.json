@@ -1,0 +1,1035 @@
+{
+  "summary": {
+    "run_at": "2026-10-24T16:14:32.737Z",
+    "suite": "job-fit-deterministic",
+    "source_of_truth": "src/lib/job-fit.ts and docs/PROJECT_SPEC.md section 15",
+    "model": null,
+    "model_evaluation": "not run in this command; separate historical Nemotron results are preserved",
+    "cases": 12,
+    "passed": 10,
+    "failed": 0,
+    "blocked": 2,
+    "applicable_pass_rate": "10/10",
+    "semantic_model_accuracy": null,
+    "human_time_savings": null,
+    "cost_usd": null
+  },
+  "rubric": {
+    "source": "src/lib/job-fit.ts and docs/PROJECT_SPEC.md section 15",
+    "criteria": [
+      {
+        "id": "typescript_services",
+        "label": "Build TypeScript services",
+        "kind": "required",
+        "category": "skill"
+      },
+      {
+        "id": "production_reliability",
+        "label": "Operate reliable production services",
+        "kind": "required",
+        "category": "experience"
+      },
+      {
+        "id": "backend_experience",
+        "label": "Relevant backend/API experience",
+        "kind": "required",
+        "category": "experience"
+      },
+      {
+        "id": "measurable_outcome",
+        "label": "Demonstrate measurable outcomes",
+        "kind": "preferred",
+        "category": "achievement"
+      },
+      {
+        "id": "cloud_deployment",
+        "label": "Deploy services to cloud infrastructure",
+        "kind": "preferred",
+        "category": "skill"
+      }
+    ],
+    "weights": {
+      "required": 4,
+      "preferred": 1
+    },
+    "status_credit": {
+      "EVIDENCE_FOUND": 1,
+      "PARTIAL_EVIDENCE": 0.5,
+      "AMBIGUOUS": 0.25,
+      "NOT_EVIDENCED": 0,
+      "REQUIRES_REVIEW": 0
+    },
+    "thresholds": {
+      "strong_min": 75,
+      "moderate_min": 45
+    },
+    "notes": "Expected criterion labels are independent synthetic ground truth. This suite tests the deterministic scorer, not whether a language model assigns the correct label."
+  },
+  "results": [
+    {
+      "case_id": "T01",
+      "scenario": "Strong documented match",
+      "status": "pass",
+      "expected_percent": 100,
+      "actual_percent": 100,
+      "expected_tone": "strong",
+      "actual_tone": "strong",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 3,
+        "total": 3
+      },
+      "preferred": {
+        "met": 2,
+        "total": 2
+      },
+      "evidence_gaps": 0,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Built TypeScript service APIs for four years.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Operated production services with alerts and incident runbooks.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Maintained backend APIs across four years.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "Reduced p95 latency by 32%.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "Deployed services to AWS.",
+          "reason": "Documented with a verified excerpt"
+        }
+      ]
+    },
+    {
+      "case_id": "T02",
+      "scenario": "Borderline, mixed required evidence",
+      "status": "pass",
+      "expected_percent": 57,
+      "actual_percent": 57,
+      "expected_tone": "moderate",
+      "actual_tone": "moderate",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 1,
+        "total": 3
+      },
+      "preferred": {
+        "met": 0,
+        "total": 2
+      },
+      "evidence_gaps": 4,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "PARTIAL_EVIDENCE",
+          "weight": 4,
+          "fraction": 0.5,
+          "points": 2,
+          "excerpt": "Completed a TypeScript fundamentals course.",
+          "reason": "Partial evidence with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "PARTIAL_EVIDENCE",
+          "weight": 4,
+          "fraction": 0.5,
+          "points": 2,
+          "excerpt": "Joined an on-call rotation but has not owned an incident.",
+          "reason": "Partial evidence with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Maintained an internal REST endpoint for six months.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "NOT_EVIDENCED",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "NOT_EVIDENCED",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        }
+      ]
+    },
+    {
+      "case_id": "T03",
+      "scenario": "Missing contact does not change CV evidence score",
+      "status": "pass",
+      "expected_percent": 100,
+      "actual_percent": 100,
+      "expected_tone": "strong",
+      "actual_tone": "strong",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 3,
+        "total": 3
+      },
+      "preferred": {
+        "met": 2,
+        "total": 2
+      },
+      "evidence_gaps": 0,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "metadata_issue": "Email missing from application form",
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Built TypeScript service APIs.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Operated production services with alerts and runbooks.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Worked four years maintaining backend APIs.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "Reduced checkout errors by 18%.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "Deployed services to AWS.",
+          "reason": "Documented with a verified excerpt"
+        }
+      ]
+    },
+    {
+      "case_id": "T04",
+      "scenario": "No CV evidence is not a finding of no competence",
+      "status": "pass",
+      "expected_percent": 0,
+      "actual_percent": 0,
+      "expected_tone": "weak",
+      "actual_tone": "weak",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 0,
+        "total": 3
+      },
+      "preferred": {
+        "met": 0,
+        "total": 2
+      },
+      "evidence_gaps": 5,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "NOT_EVIDENCED",
+          "weight": 4,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "NOT_EVIDENCED",
+          "weight": 4,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "NOT_EVIDENCED",
+          "weight": 4,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "NOT_EVIDENCED",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "NOT_EVIDENCED",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        }
+      ]
+    },
+    {
+      "case_id": "T05",
+      "scenario": "Contradictory employment dates receive no experience credit",
+      "status": "pass",
+      "expected_percent": 57,
+      "actual_percent": 57,
+      "expected_tone": "moderate",
+      "actual_tone": "moderate",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 2,
+        "total": 3
+      },
+      "preferred": {
+        "met": 0,
+        "total": 2
+      },
+      "evidence_gaps": 3,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Built TypeScript APIs",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "configured production alerts.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "REQUIRES_REVIEW",
+          "weight": 4,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": "Backend Engineer at Northstar, 2020 to 2022.",
+          "reason": "Not documented in the available CV"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "NOT_EVIDENCED",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "NOT_EVIDENCED",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        }
+      ]
+    },
+    {
+      "case_id": "T06",
+      "scenario": "Similar projects are credited only through criterion-linked excerpts",
+      "status": "pass",
+      "expected_percent": 100,
+      "actual_percent": 100,
+      "expected_tone": "strong",
+      "actual_tone": "strong",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 3,
+        "total": 3
+      },
+      "preferred": {
+        "met": 2,
+        "total": 2
+      },
+      "evidence_gaps": 0,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "built a TypeScript API with retries.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "wrote incident runbooks.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "built a TypeScript API with retries.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "Reduced API errors by 12%.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "deployed a production TypeScript service to AWS",
+          "reason": "Documented with a verified excerpt"
+        }
+      ]
+    },
+    {
+      "case_id": "T07",
+      "scenario": "Whitespace-heavy CV text still verifies exact evidence",
+      "status": "pass",
+      "expected_percent": 96,
+      "actual_percent": 96,
+      "expected_tone": "strong",
+      "actual_tone": "strong",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 3,
+        "total": 3
+      },
+      "preferred": {
+        "met": 1,
+        "total": 2
+      },
+      "evidence_gaps": 1,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Delivered a TypeScript API.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Added alerts and incident runbooks.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Maintained backend services for three years.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "PARTIAL_EVIDENCE",
+          "weight": 1,
+          "fraction": 0.5,
+          "points": 0.5,
+          "excerpt": "Reduced failed requests by 8%.",
+          "reason": "Partial evidence with a verified excerpt"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "Deployed to AWS.",
+          "reason": "Documented with a verified excerpt"
+        }
+      ]
+    },
+    {
+      "case_id": "T08",
+      "scenario": "Unsupported or unreadable CV keeps score pending",
+      "status": "blocked",
+      "expected_percent": null,
+      "actual_percent": null,
+      "expected_tone": "pending",
+      "actual_tone": "pending",
+      "expected_case_status": "blocked",
+      "required": {
+        "met": 0,
+        "total": 3
+      },
+      "preferred": {
+        "met": 0,
+        "total": 2
+      },
+      "evidence_gaps": null,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "PENDING",
+          "weight": 4,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Analysis pending"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "PENDING",
+          "weight": 4,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Analysis pending"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "PENDING",
+          "weight": 4,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Analysis pending"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "PENDING",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Analysis pending"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "PENDING",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Analysis pending"
+        }
+      ]
+    },
+    {
+      "case_id": "T09",
+      "scenario": "Duplicate delivery does not change the pure scoring result",
+      "status": "pass",
+      "expected_percent": 100,
+      "actual_percent": 100,
+      "expected_tone": "strong",
+      "actual_tone": "strong",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 3,
+        "total": 3
+      },
+      "preferred": {
+        "met": 2,
+        "total": 2
+      },
+      "evidence_gaps": 0,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true,
+        "repeatability": true
+      },
+      "repeat_percent": 100,
+      "limitation": "This checks deterministic scorer repeatability only. Intake/database deduplication is a separate workflow assertion.",
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Built TypeScript services.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Managed production reliability and incidents.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Maintained backend APIs.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "Improved request success by 9%.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "Deployed to AWS.",
+          "reason": "Documented with a verified excerpt"
+        }
+      ]
+    },
+    {
+      "case_id": "T10",
+      "scenario": "Prompt injection text is not itself evidence",
+      "status": "pass",
+      "expected_percent": 93,
+      "actual_percent": 93,
+      "expected_tone": "strong",
+      "actual_tone": "strong",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 3,
+        "total": 3
+      },
+      "preferred": {
+        "met": 1,
+        "total": 2
+      },
+      "evidence_gaps": 1,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "limitation": "This scorer test checks only the supplied independent labels and quotes. It does not test model prompt-injection resistance.",
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Built TypeScript service APIs.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Added production alerts and runbooks.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Maintained backend services for three years.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "NOT_EVIDENCED",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "EVIDENCE_FOUND",
+          "weight": 1,
+          "fraction": 1,
+          "points": 1,
+          "excerpt": "Deployed to AWS.",
+          "reason": "Documented with a verified excerpt"
+        }
+      ]
+    },
+    {
+      "case_id": "T11",
+      "scenario": "Keyword-heavy claims receive partial or ambiguous credit, not full credit",
+      "status": "pass",
+      "expected_percent": 29,
+      "actual_percent": 29,
+      "expected_tone": "weak",
+      "actual_tone": "weak",
+      "expected_case_status": "pass",
+      "required": {
+        "met": 0,
+        "total": 3
+      },
+      "preferred": {
+        "met": 0,
+        "total": 2
+      },
+      "evidence_gaps": 5,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "AMBIGUOUS",
+          "weight": 4,
+          "fraction": 0.25,
+          "points": 1,
+          "excerpt": "Familiar with TypeScript.",
+          "reason": "Ambiguous evidence with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "PARTIAL_EVIDENCE",
+          "weight": 4,
+          "fraction": 0.5,
+          "points": 2,
+          "excerpt": "Read a blog about reliability.",
+          "reason": "Partial evidence with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "AMBIGUOUS",
+          "weight": 4,
+          "fraction": 0.25,
+          "points": 1,
+          "excerpt": "Interested in backend services.",
+          "reason": "Ambiguous evidence with a verified excerpt"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "NOT_EVIDENCED",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "NOT_EVIDENCED",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
+        }
+      ]
+    },
+    {
+      "case_id": "T12",
+      "scenario": "Transient processing failure keeps score pending until recoverable processing completes",
+      "status": "blocked",
+      "expected_percent": null,
+      "actual_percent": null,
+      "expected_tone": "pending",
+      "actual_tone": "pending",
+      "expected_case_status": "blocked",
+      "required": {
+        "met": 2,
+        "total": 3
+      },
+      "preferred": {
+        "met": 0,
+        "total": 2
+      },
+      "evidence_gaps": null,
+      "checks": {
+        "score": true,
+        "tone": true,
+        "range": true,
+        "weight": true,
+        "credits": true,
+        "citedCredit": true,
+        "pendingWhenUnusable": true
+      },
+      "rows": [
+        {
+          "criterion_id": "typescript_services",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "Built TypeScript services",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "kind": "required",
+          "status": "EVIDENCE_FOUND",
+          "weight": 4,
+          "fraction": 1,
+          "points": 4,
+          "excerpt": "operated production APIs.",
+          "reason": "Documented with a verified excerpt"
+        },
+        {
+          "criterion_id": "backend_experience",
+          "kind": "required",
+          "status": "PENDING",
+          "weight": 4,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Analysis pending"
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "kind": "preferred",
+          "status": "PENDING",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Analysis pending"
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "kind": "preferred",
+          "status": "PENDING",
+          "weight": 1,
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Analysis pending"
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,7 @@
     "lint": "eslint src evaluation/scripts",
     "test": "vitest run",
     "eval": "node --experimental-strip-types evaluation/scripts/run.ts",
+    "eval:job-fit": "vitest run evaluation/job-fit.evaluation.test.ts",
     "fixtures": "node evaluation/scripts/create-fixtures.mjs"
   },
   "dependencies": {

@@ -1,352 +1,164 @@
 {
   "summary": {
-    "run_at": "2026-10-21T14:27:37.096Z",
+    "run_at": "2026-10-24T16:11:41.078Z",
+    "run_status": "blocked",
     "provider": "nvidia",
     "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
     "synthetic_cases": 9,
-    "completed": 9,
-    "errors": 0,
-    "status_matches": 7,
-    "grounded_citations": 6,
-    "citations": 6,
+    "completed": 0,
+    "errors": 9,
+    "status_matches": 0,
+    "grounded_citations": 0,
+    "citations": 0,
     "baseline": "pending",
     "human_correction": "pending",
     "cost_usd": null,
-    "cost_note": "NVIDIA free development endpoint; no observed billing amount"
+    "cost_note": "No calls completed; no observed billing amount"
   },
   "results": [
     {
       "case_id": "T01",
       "scenario": "Clear TypeScript project",
       "expected_status": "EVIDENCE_FOUND",
-      "actual_status": "EVIDENCE_FOUND",
-      "status_match": true,
+      "actual_status": null,
+      "status_match": false,
       "expected_excerpt": "Built a TypeScript API for order tracking.",
-      "actual_excerpt": "Built a TypeScript API for order tracking.",
-      "location": "Page 1",
-      "quote_grounded": true,
-      "profile": {
-        "full_name": null,
-        "email": null,
-        "phone": null,
-        "skills": [],
-        "history": [],
-        "warnings": []
-      },
-      "usage": {
-        "prompt_tokens": 278,
-        "completion_tokens": 127,
-        "total_tokens": 405,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "accepted_prediction_tokens": null,
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": null
-        }
-      },
+      "actual_excerpt": null,
+      "location": null,
+      "quote_grounded": null,
+      "profile": null,
+      "usage": null,
       "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "latency_ms": 2677,
-      "error": null
+      "latency_ms": 36,
+      "error": "fetch failed"
     },
     {
       "case_id": "T02",
       "scenario": "Partial skill evidence",
       "expected_status": "PARTIAL_EVIDENCE",
-      "actual_status": "PARTIAL_EVIDENCE",
-      "status_match": true,
+      "actual_status": null,
+      "status_match": false,
       "expected_excerpt": "Studied TypeScript syntax in a course.",
-      "actual_excerpt": "Studied TypeScript syntax in a course.",
-      "location": "Page 1",
-      "quote_grounded": true,
-      "profile": {
-        "full_name": null,
-        "email": null,
-        "phone": null,
-        "skills": [],
-        "history": [],
-        "warnings": []
-      },
-      "usage": {
-        "prompt_tokens": 278,
-        "completion_tokens": 135,
-        "total_tokens": 413,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "accepted_prediction_tokens": null,
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": null
-        }
-      },
+      "actual_excerpt": null,
+      "location": null,
+      "quote_grounded": null,
+      "profile": null,
+      "usage": null,
       "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "latency_ms": 2228,
-      "error": null
+      "latency_ms": 4,
+      "error": "fetch failed"
     },
     {
       "case_id": "T03",
       "scenario": "Missing contact",
       "expected_status": "REQUIRES_REVIEW",
-      "actual_status": "NOT_EVIDENCED",
+      "actual_status": null,
       "status_match": false,
       "expected_excerpt": null,
       "actual_excerpt": null,
       "location": null,
-      "quote_grounded": true,
-      "profile": {
-        "full_name": null,
-        "email": null,
-        "phone": null,
-        "skills": [],
-        "history": [],
-        "warnings": []
-      },
-      "usage": {
-        "prompt_tokens": 274,
-        "completion_tokens": 144,
-        "total_tokens": 418,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "accepted_prediction_tokens": null,
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": null
-        }
-      },
+      "quote_grounded": null,
+      "profile": null,
+      "usage": null,
       "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "latency_ms": 13067,
-      "error": null
+      "latency_ms": 4,
+      "error": "fetch failed"
     },
     {
       "case_id": "T04",
       "scenario": "No criterion evidence",
       "expected_status": "NOT_EVIDENCED",
-      "actual_status": "NOT_EVIDENCED",
-      "status_match": true,
+      "actual_status": null,
+      "status_match": false,
       "expected_excerpt": null,
       "actual_excerpt": null,
       "location": null,
-      "quote_grounded": true,
-      "profile": {
-        "full_name": null,
-        "email": null,
-        "phone": null,
-        "skills": [],
-        "history": [],
-        "warnings": []
-      },
-      "usage": {
-        "prompt_tokens": 275,
-        "completion_tokens": 112,
-        "total_tokens": 387,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "accepted_prediction_tokens": null,
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": null
-        }
-      },
+      "quote_grounded": null,
+      "profile": null,
+      "usage": null,
       "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "latency_ms": 2157,
-      "error": null
+      "latency_ms": 3,
+      "error": "fetch failed"
     },
     {
       "case_id": "T05",
       "scenario": "Conflicting dates",
       "expected_status": "REQUIRES_REVIEW",
-      "actual_status": "NOT_EVIDENCED",
+      "actual_status": null,
       "status_match": false,
       "expected_excerpt": null,
       "actual_excerpt": null,
       "location": null,
-      "quote_grounded": true,
-      "profile": {
-        "full_name": null,
-        "email": null,
-        "phone": null,
-        "skills": [],
-        "history": [],
-        "warnings": []
-      },
-      "usage": {
-        "prompt_tokens": 297,
-        "completion_tokens": 160,
-        "total_tokens": 457,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "accepted_prediction_tokens": null,
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": null
-        }
-      },
+      "quote_grounded": null,
+      "profile": null,
+      "usage": null,
       "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "latency_ms": 1992,
-      "error": null
+      "latency_ms": 3,
+      "error": "fetch failed"
     },
     {
       "case_id": "T06",
       "scenario": "Similar projects",
       "expected_status": "EVIDENCE_FOUND",
-      "actual_status": "EVIDENCE_FOUND",
-      "status_match": true,
+      "actual_status": null,
+      "status_match": false,
       "expected_excerpt": "TypeScript API.",
-      "actual_excerpt": "TypeScript API",
-      "location": "Page 2",
-      "quote_grounded": true,
-      "profile": {
-        "full_name": null,
-        "email": null,
-        "phone": null,
-        "skills": [],
-        "history": [],
-        "warnings": []
-      },
-      "usage": {
-        "prompt_tokens": 282,
-        "completion_tokens": 128,
-        "total_tokens": 410,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "accepted_prediction_tokens": null,
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": null
-        }
-      },
+      "actual_excerpt": null,
+      "location": null,
+      "quote_grounded": null,
+      "profile": null,
+      "usage": null,
       "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "latency_ms": 1609,
-      "error": null
+      "latency_ms": 3,
+      "error": "fetch failed"
     },
     {
       "case_id": "T07",
       "scenario": "Nonstandard text layout",
       "expected_status": "EVIDENCE_FOUND",
-      "actual_status": "EVIDENCE_FOUND",
-      "status_match": true,
+      "actual_status": null,
+      "status_match": false,
       "expected_excerpt": "TypeScript API delivery.",
-      "actual_excerpt": "TypeScript     API delivery.",
-      "location": "Page 1",
-      "quote_grounded": true,
-      "profile": {
-        "full_name": null,
-        "email": null,
-        "phone": null,
-        "skills": [],
-        "history": [],
-        "warnings": []
-      },
-      "usage": {
-        "prompt_tokens": 277,
-        "completion_tokens": 127,
-        "total_tokens": 404,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "accepted_prediction_tokens": null,
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": null
-        }
-      },
+      "actual_excerpt": null,
+      "location": null,
+      "quote_grounded": null,
+      "profile": null,
+      "usage": null,
       "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "latency_ms": 1629,
-      "error": null
+      "latency_ms": 3,
+      "error": "fetch failed"
     },
     {
       "case_id": "T10",
       "scenario": "Document prompt injection",
       "expected_status": "EVIDENCE_FOUND",
-      "actual_status": "EVIDENCE_FOUND",
-      "status_match": true,
+      "actual_status": null,
+      "status_match": false,
       "expected_excerpt": "Built a TypeScript API.",
-      "actual_excerpt": "Synthetic J. Built a TypeScript API.",
-      "location": "Page 1",
-      "quote_grounded": true,
-      "profile": {
-        "full_name": null,
-        "email": null,
-        "phone": null,
-        "skills": [],
-        "history": [],
-        "warnings": []
-      },
-      "usage": {
-        "prompt_tokens": 284,
-        "completion_tokens": 129,
-        "total_tokens": 413,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "accepted_prediction_tokens": null,
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": null
-        }
-      },
+      "actual_excerpt": null,
+      "location": null,
+      "quote_grounded": null,
+      "profile": null,
+      "usage": null,
       "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "latency_ms": 1379,
-      "error": null
+      "latency_ms": 4,
+      "error": "fetch failed"
     },
     {
       "case_id": "T11",
       "scenario": "Ambiguous technology mention",
       "expected_status": "AMBIGUOUS",
-      "actual_status": "AMBIGUOUS",
-      "status_match": true,
+      "actual_status": null,
+      "status_match": false,
       "expected_excerpt": "Familiar with TypeScript.",
-      "actual_excerpt": "Familiar with TypeScript.",
-      "location": "Page 1",
-      "quote_grounded": true,
-      "profile": {
-        "full_name": null,
-        "email": null,
-        "phone": null,
-        "skills": [],
-        "history": [],
-        "warnings": []
-      },
-      "usage": {
-        "prompt_tokens": 275,
-        "completion_tokens": 138,
-        "total_tokens": 413,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "accepted_prediction_tokens": null,
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": null
-        }
-      },
+      "actual_excerpt": null,
+      "location": null,
+      "quote_grounded": null,
+      "profile": null,
+      "usage": null,
       "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "latency_ms": 1551,
-      "error": null
+      "latency_ms": 3,
+      "error": "fetch failed"
     }
   ]
 }

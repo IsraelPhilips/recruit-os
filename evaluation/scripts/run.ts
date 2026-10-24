@@ -3,7 +3,7 @@ import {grounded,intakeSchema,validateDocument} from '../../src/lib/contracts.ts
 type Case={case_id:string;scenario:string;source:string;criterion_id:string;expected_status:string;expected_excerpt:string|null;expected_location?:string;check:string};
 const cases:Case[]=JSON.parse(fs.readFileSync(path.join('evaluation','cases','cases.json'),'utf8'));
 const results=cases.map(c=>{
-  const start=performance.now(); let status:'pass'|'fail'|'pending'='pending';let detail='Live Gemini and persistence not configured';
+  const start=performance.now(); let status:'pass'|'fail'|'blocked'='blocked';let detail='Requires connected database or controlled model fault';
   try {
     if(['grounding','location','no_quote','injection_quote'].includes(c.check)) {
       const proposed={profile:{full_name:null,email:null,phone:null,skills:[],history:[],warnings:[]},evidence:[{criterion_id:c.criterion_id,status:c.expected_status as 'EVIDENCE_FOUND',excerpt:c.expected_excerpt,location:'fabricated page',reasoning:'Synthetic test',question:null}]};
@@ -18,11 +18,11 @@ const results=cases.map(c=>{
       try{validateDocument({name:'x.pdf',mime_type:'application/pdf',content_base64:Buffer.from('not a pdf'.repeat(4)).toString('base64')});status='fail';}catch{status='pass';}detail='Document signature validation';
     } else {detail='Requires connected database or controlled model fault';}
   } catch(e){status='fail';detail=String(e);}
-  return {case_id:c.case_id,scenario:c.scenario,check:c.check,status,detail,semantic_status:'pending',expected_status:c.expected_status,latency_ms:Math.round(performance.now()-start),model:null,cost_usd:null};
+  return {case_id:c.case_id,scenario:c.scenario,check:c.check,status,detail,semantic_status:'not_run',expected_status:c.expected_status,latency_ms:Math.round(performance.now()-start),model:null,cost_usd:null};
 });
-const summary={run_at:new Date().toISOString(),adapter:'deterministic-local',model:null,baseline:'pending',passed:results.filter(r=>r.status==='pass').length,failed:results.filter(r=>r.status==='fail').length,pending:results.filter(r=>r.status==='pending').length,semantic_accuracy:null,grounding_rate:null,cost_usd:null};
+const summary={run_at:new Date().toISOString(),adapter:'deterministic-local',model:null,baseline:'pending',passed:results.filter(r=>r.status==='pass').length,failed:results.filter(r=>r.status==='fail').length,blocked:results.filter(r=>r.status==='blocked').length,semantic_accuracy:null,grounding_rate:null,cost_usd:null};
 fs.writeFileSync('evaluation/results.json',JSON.stringify({summary,results},null,2));
 fs.writeFileSync('evaluation/results.csv','case_id,check,status,semantic_status,latency_ms\n'+results.map(r=>`${r.case_id},${r.check},${r.status},${r.semantic_status},${r.latency_ms}`).join('\n')+'\n');
-fs.writeFileSync('evaluation/report.md',`# Evaluation report\n\nRun at: ${summary.run_at}. Adapter: ${summary.adapter}.\n\nDeterministic local checks: ${summary.passed} pass, ${summary.failed} fail, ${summary.pending} pending out of 12. These are check outcomes, not full scenario success. This adapter does not measure model accuracy, human time, or cost. A separate NVIDIA model run is in evaluation/nvidia-report.md; the Supabase synthetic intake test and observed failures are documented in docs/day-4-evaluation.md. Gemini and live Google integration remain unverified.\n\n| Case | Check | Outcome |\n|---|---|---|\n${results.map(r=>`| ${r.case_id} | ${r.check} | ${r.status} |`).join('\n')}\n\nObserved failures and before/after results are documented in docs/day-4-evaluation.md.\n`);
+fs.writeFileSync('evaluation/report.md',`# Evaluation report\n\nRun at: ${summary.run_at}. Adapter: ${summary.adapter}.\n\nDeterministic local checks: ${summary.passed} pass, ${summary.failed} fail, ${summary.blocked} blocked out of 12. These are check outcomes, not full scenario success. T05 requires a focused contradiction/model check, T09 requires connected database persistence, and T12 requires a controlled transient model fault. This adapter does not measure model accuracy, human time, or cost. A separate NVIDIA model run is in evaluation/nvidia-report.md; the Supabase synthetic intake test and observed failures are documented in docs/day-4-evaluation.md. Gemini and live Google integration remain unverified.\n\n| Case | Check | Outcome |\n|---|---|---|\n${results.map(r=>`| ${r.case_id} | ${r.check} | ${r.status} |`).join('\n')}\n\nObserved failures and before/after results are documented in docs/day-4-evaluation.md.\n`);
 console.log(summary);
 
