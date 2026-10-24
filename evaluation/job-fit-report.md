@@ -1,6 +1,6 @@
 # Job Fit Match deterministic evaluation
 
-Run: 2026-10-24T16:39:33.550Z. Command: `npm run eval:job-fit`.
+Run: 2026-10-24T16:42:37.865Z. Command: `npm run eval:job-fit`.
 
 10 passed, 0 failed, 2 blocked/not scoreable across 12 cases. Applicable-case pass rate: 10/10. The blocked cases correctly remain blocked because an unreadable CV (T08) or failed processing (T12) cannot support a score.
 
@@ -10,7 +10,7 @@ The application scorer is `src/lib/job-fit.ts`, called through `candidateBrief` 
 
 This 12-case evaluation reports deterministic scoring separately from workflow and model results. Job Fit Match follows the scoring rules documented for RecruitOS: required criteria carry four times the weight of preferred criteria, with credit adjusted for evidence status and source verification. These rules belong to RecruitOS; no scoring formula is attributed to MUST.
 
-Each case's evidence labels are independently authored synthetic ground truth and quotes are checked against its CV text. This evaluates arithmetic, eligibility, quote grounding, and pending behavior. It does not establish that Gemini or Nemotron would assign the right semantic evidence label.
+Each case's evidence labels are independently authored synthetic ground truth and quotes are checked against its CV text. This evaluates arithmetic, eligibility, quote grounding, and pending behavior. It does not establish whether the production model assigns the right semantic evidence label.
 
 ## Case results
 
@@ -31,7 +31,7 @@ Each case's evidence labels are independently authored synthetic ground truth an
 
 ## Historical comparisons and boundaries
 
-The historical local workflow run remains in `evaluation/history/deterministic-workflow-2026-10-23.json`: 9 passed, 0 failed, 3 pending. It tested citation/contract checks, not Job Fit Match arithmetic, so it is not a comparable baseline for this scoring suite. The current workflow run reports 9 passed, 0 failed, 3 blocked. The historical synthetic Nemotron runs are preserved separately: initial 5/9 expected status matches and 4/4 grounded citations; revised 7/9 status matches and 6/6 grounded citations. They tested model labels/citations, not the deterministic scorer, so this run cannot be described as a model regression or gain. Gemini remains unverified because prior provider calls were blocked by account quota.
+The historical local workflow run remains in `evaluation/history/deterministic-workflow-2026-10-23.json`: 9 passed, 0 failed, 3 pending. It tested citation/contract checks, not Job Fit Match arithmetic, so it is not a comparable baseline for this scoring suite. The current workflow run reports 9 passed, 0 failed, 3 blocked. The historical synthetic Nemotron runs are preserved separately: initial 5/9 expected status matches and 4/4 grounded citations; revised 7/9 status matches and 6/6 grounded citations. They tested model labels/citations, not the deterministic scorer, so this run cannot be described as a model regression or gain. The current Nemotron attempt produced no model outputs and remains blocked.
 
 Operational planning remains a projection only: assumptions of 1 minute initial plus 5 minutes deep manual review versus 10 seconds initial plus 2 minutes deeper review, for 100 applications with 20 deep reviews, yield 200 manual minutes. The stated RecruitOS assumptions total 56.7 minutes, or 71.7% modeled savings. The 50-minute/75% estimate is inconsistent with those inputs. This remains a projection, not a RecruitOS measurement. Human workflow timing, production accuracy, and observed billing remain pending.
 

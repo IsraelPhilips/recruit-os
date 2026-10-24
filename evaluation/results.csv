@@ -1,7 +1,7 @@
 case_id,check,status,semantic_status,latency_ms
-T01,grounding,pass,not_run,1
+T01,grounding,pass,not_run,0
 T02,grounding,pass,not_run,0
-T03,missing_email,pass,not_run,4
+T03,missing_email,pass,not_run,2
 T04,no_quote,pass,not_run,0
 T05,conflict_pending,blocked,not_run,0
 T06,location,pass,not_run,0

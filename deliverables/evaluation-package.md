@@ -1,6 +1,6 @@
 # Evaluation package
 
-The evaluation uses 12 synthetic cases and reports deterministic scoring separately from workflow and model results. Job Fit Match follows the scoring rules documented for RecruitOS: required criteria carry four times the weight of preferred criteria, with credit adjusted for evidence status and source verification. These are RecruitOS rules; the evaluation does not attribute a scoring formula to MUST.
+The evaluation uses 12 synthetic cases and reports deterministic scoring separately from workflow and Nemotron results. Job Fit Match follows the scoring rules documented for RecruitOS: required criteria carry four times the weight of preferred criteria, with credit adjusted for evidence status and source verification. These are RecruitOS rules; the evaluation does not attribute a scoring formula to MUST.
 
 ## Reproduce deterministic scoring
 
@@ -10,7 +10,7 @@ Current deterministic run: 10 applicable cases passed with expected scores, 0 fa
 
 ## Model evaluation and limitations
 
-The historical Nemotron synthetic run improved from 5/9 to 7/9 expected-status matches, with grounded citations increasing from 4/4 to 6/6. The current model attempt is blocked: the NVIDIA key is configured, but all 9 requests returned `fetch failed` before any model output. Gemini remains unverified because prior calls returned HTTP 402 for depleted credits. Historical raw outputs and the failed attempt are retained in `evaluation/history/` and the NVIDIA result files.
+The historical Nemotron synthetic run improved from 5/9 to 7/9 expected-status matches, with grounded citations increasing from 4/4 to 6/6. The current model attempt is blocked: the NVIDIA key is configured, but all 9 requests returned `fetch failed` before any model output. Historical raw outputs and the failed attempt are retained in `evaluation/history/` and the NVIDIA result files.
 
 The deterministic suite proves scoring arithmetic and source quote checks for these fixtures. It does not prove the model chooses semantically correct evidence labels. A false `EVIDENCE_FOUND` label can still earn full credit if its excerpt is present. Recruiter review and corrections remain necessary. No baseline timing, recruiter study, current model accuracy, production accuracy, human correction count, or observed API cost was measured. The supplied 75% time-saving figure is a planning projection, not a measurement, and its arithmetic does not match the stated assumptions. Those inputs calculate to 200 manual minutes versus 56.7 modeled RecruitOS minutes, about 71.7% potential savings, for 100 applications and 20 deeper reviews.
 

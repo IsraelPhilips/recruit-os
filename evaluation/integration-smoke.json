@@ -1,9 +1,0 @@
-{
-  "recorded_at":"2026-10-21T14:05:09Z",
-  "source":"actual Google Gemini REST smoke calls with synthetic prompts; no candidate data",
-  "runs":[
-    {"model":"gemini-2.5-flash","operation":"generateContent","http_status":404,"observed_error":"Model no longer available to new users","fix":"Set default to gemini-3.8-flash","regression":"Blocked by account credit state"},
-    {"model":"gemini-3.8-flash","operation":"generateContent","http_status":402,"observed_error":"Prepayment credits depleted","fix":"Requires account quota or new key","regression":"Pending user account change"},
-    {"model":"gemini-3.1-flash-lite","operation":"generateContent","http_status":402,"observed_error":"Prepayment credits depleted","fix":"Requires account quota or new key","regression":"Pending user account change"}
-  ]
-}
