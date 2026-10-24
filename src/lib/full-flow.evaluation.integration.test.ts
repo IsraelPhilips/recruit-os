@@ -6,7 +6,7 @@ import {processApplication} from './process';
 import {candidateBrief} from './profile-grounding';
 import {sourceContains,type ReviewCriterion,type ReviewEvidence} from './review-summary';
 
-type EvalCase={case_id:string;scenario:string;source:string;process_status:string;evidence:{criterion_id:string;status:string;excerpt:string|null}[];expected_percent:number|null;expected_tone:string;expected_case_status?:string;metadata_issue?:string;repeat_score?:boolean};
+type EvalCase={case_id:string;scenario:string;source:string;process_status:string;evidence:{criterion_id:string;status:string;excerpt:string|null}[];expected_percent:number|null;expected_tone:string;expected_case_status?:string;metadata_issue?:string;repeat_score?:boolean;expected_profile_warning?:string[];expected_profile_fact?:string};
 type EvalSet={rubric:{criteria:ReviewCriterion[]};cases:EvalCase[]};
 const apiUnavailable=(error:string)=>/fetch failed|network|timeout|aborted|NVIDIA HTTP (401|403|404|408|429|5\d\d)/i.test(error);
 
@@ -100,7 +100,11 @@ it.skipIf(process.env.RUN_FULL_EVALUATION_FLOW!=='1')('runs all 12 synthetic eva
         const sourceReady=source.trim()&&extracted.trim();checks.cv_extracted=Boolean(isUnreadable?retryStatus?sourceContains(extracted,name):!sourceReady:sourceReady&&sourceContains(extracted,item.source));
         const normalizedProfile=profile.data?.normalized as {full_name?:string|null;email?:string|null;skills?:string[];history?:string[]}|undefined;
         checks.profile_name_grounded=isUnreadable&&!retryStatus?true:Boolean(normalizedProfile?.full_name&&sourceContains(extracted,normalizedProfile.full_name));
-        checks.profile_facts_grounded=isUnreadable&&!retryStatus?true:[...(normalizedProfile?.skills||[]),...(normalizedProfile?.history||[])].every(value=>sourceContains(extracted,value));
+        const profileFacts=[...(normalizedProfile?.skills||[]),...(normalizedProfile?.history||[])];
+        const profileFactsGrounded=profileFacts.every(value=>sourceContains(extracted,value));
+        const expectedProfileFactPresent=!item.expected_profile_fact||profileFacts.some(value=>value.toLowerCase().includes(item.expected_profile_fact!.toLowerCase()));
+        checks.profile_facts_grounded=isUnreadable&&!retryStatus?true:profileFactsGrounded&&expectedProfileFactPresent;
+        if(item.expected_profile_warning)checks.expected_profile_warning=Boolean(normalizedProfile?.warnings?.some(value=>item.expected_profile_warning!.every(token=>value.toLowerCase().includes(token.toLowerCase()))));
         if(outcomeStatus==='ready'||outcomeStatus==='manual_review')checks.profile_persisted=Boolean(profile.data?.normalized);
         checks.form_email_state=missingEmail?app.data?.process_status==='manual_review'&&!app.data?.candidate?.email:app.data?.candidate?.email===email;
         if(outcomeStatus==='ready'||outcomeStatus==='manual_review'){
@@ -121,7 +125,7 @@ it.skipIf(process.env.RUN_FULL_EVALUATION_FLOW!=='1')('runs all 12 synthetic eva
       }catch(error){errorText=error instanceof Error?error.message:'Unknown integration error';checks.pipeline_completed=false;}
       const checkValues=Object.values(checks);const blocked=Boolean(errorText&&apiUnavailable(errorText));
       const status=blocked?'blocked':checkValues.length&&checkValues.every(Boolean)?'passed':'failed';
-      results.push({case_id:item.case_id,scenario:item.scenario,expected_percent:item.expected_percent,expected_tone:item.expected_tone,expected_case_status:item.expected_case_status||'scored',status,checks,initial_status:initialStatus,initial_score_pending:initialPendingScore,application_status:outcomeStatus,retry_status:retryStatus,duplicate_delivery:duplicate,extracted_characters:extracted.length,extraction_status:extractionStatus,pipeline_attempts:processAttempts,model_usage:modelUsage,profile:actualProfile,evidence:actualEvidence.map(actual=>({criterion_id:actual.criterion_id,status:actual.status,excerpt:actual.excerpt,citation_grounded:actual.excerpt?sourceContains(extracted,actual.excerpt):null})),actual_brief:actualBrief?{fit:actualBrief.fit,strengths:actualBrief.strengths,gaps:actualBrief.gaps,uncertainties:actualBrief.uncertainties,next_step:actualBrief.nextStep}:null,error:errorText,initial_failure_error:initialError,expected_evidence:item.evidence});
+      results.push({case_id:item.case_id,scenario:item.scenario,expected_percent:item.expected_percent,expected_tone:item.expected_tone,expected_profile_warning:item.expected_profile_warning||null,expected_profile_fact:item.expected_profile_fact||null,expected_case_status:item.expected_case_status||'scored',status,checks,initial_status:initialStatus,initial_score_pending:initialPendingScore,application_status:outcomeStatus,retry_status:retryStatus,duplicate_delivery:duplicate,extracted_characters:extracted.length,extraction_status:extractionStatus,pipeline_attempts:processAttempts,model_usage:modelUsage,profile:actualProfile,evidence:actualEvidence.map(actual=>({criterion_id:actual.criterion_id,status:actual.status,excerpt:actual.excerpt,citation_grounded:actual.excerpt?sourceContains(extracted,actual.excerpt):null})),actual_brief:actualBrief?{fit:actualBrief.fit,strengths:actualBrief.strengths,gaps:actualBrief.gaps,uncertainties:actualBrief.uncertainties,next_step:actualBrief.nextStep}:null,error:errorText,initial_failure_error:initialError,expected_evidence:item.evidence});
       if(storageKey)await db.storage.from('private-cvs').remove([storageKey]);if(appId)await db.from('applications').delete().eq('id',appId);
     }
   }finally{if(jobId)await db.from('jobs').delete().eq('id',jobId);}

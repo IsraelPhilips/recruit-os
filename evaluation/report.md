@@ -1,6 +1,6 @@
 # Evaluation report
 
-Run at: 2026-10-24T17:25:41.665Z. Adapter: deterministic-local.
+Run at: 2026-10-24T17:54:41.549Z. Adapter: deterministic-local.
 
 Deterministic local checks: 9 pass, 0 fail, 3 blocked out of 12. These are check outcomes, not full scenario success. T05 requires a focused contradiction/model check, T09 requires connected database persistence, and T12 requires a controlled transient model fault. This adapter does not measure model accuracy, human time, or cost. A separate NVIDIA Nemotron run is in evaluation/nvidia-report.md; the Supabase synthetic intake test and observed failures are documented in docs/day-4-evaluation.md. Current model execution and live Google notification delivery remain unverified.
 

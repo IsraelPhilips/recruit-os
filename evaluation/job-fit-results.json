@@ -1,6 +1,6 @@
 {
   "summary": {
-    "run_at": "2026-10-24T17:25:52.427Z",
+    "run_at": "2026-10-24T20:35:42.820Z",
     "suite": "job-fit-deterministic",
     "source_of_truth": "src/lib/job-fit.ts and docs/PROJECT_SPEC.md section 15",
     "model": null,
@@ -389,22 +389,22 @@
     },
     {
       "case_id": "T05",
-      "scenario": "Contradictory employment dates receive no experience credit",
+      "scenario": "Conflicting dates are surfaced while independently documented backend work remains evidence",
       "status": "pass",
-      "expected_percent": 57,
-      "actual_percent": 57,
-      "expected_tone": "moderate",
-      "actual_tone": "moderate",
+      "expected_percent": 86,
+      "actual_percent": 86,
+      "expected_tone": "strong",
+      "actual_tone": "strong",
       "expected_case_status": "pass",
       "required": {
-        "met": 2,
+        "met": 3,
         "total": 3
       },
       "preferred": {
         "met": 0,
         "total": 2
       },
-      "evidence_gaps": 3,
+      "evidence_gaps": 2,
       "checks": {
         "score": true,
         "tone": true,
@@ -438,12 +438,12 @@
         {
           "criterion_id": "backend_experience",
           "kind": "required",
-          "status": "REQUIRES_REVIEW",
+          "status": "EVIDENCE_FOUND",
           "weight": 4,
-          "fraction": 0,
-          "points": 0,
+          "fraction": 1,
+          "points": 4,
           "excerpt": "Backend Engineer at Northstar, 2020 to 2022.",
-          "reason": "Not documented in the available CV"
+          "reason": "Documented with a verified excerpt"
         },
         {
           "criterion_id": "measurable_outcome",
@@ -551,8 +551,8 @@
       "case_id": "T07",
       "scenario": "Whitespace-heavy CV text still verifies exact evidence",
       "status": "pass",
-      "expected_percent": 96,
-      "actual_percent": 96,
+      "expected_percent": 100,
+      "actual_percent": 100,
       "expected_tone": "strong",
       "actual_tone": "strong",
       "expected_case_status": "pass",
@@ -561,10 +561,10 @@
         "total": 3
       },
       "preferred": {
-        "met": 1,
+        "met": 2,
         "total": 2
       },
-      "evidence_gaps": 1,
+      "evidence_gaps": 0,
       "checks": {
         "score": true,
         "tone": true,
@@ -608,12 +608,12 @@
         {
           "criterion_id": "measurable_outcome",
           "kind": "preferred",
-          "status": "PARTIAL_EVIDENCE",
+          "status": "EVIDENCE_FOUND",
           "weight": 1,
-          "fraction": 0.5,
-          "points": 0.5,
+          "fraction": 1,
+          "points": 1,
           "excerpt": "Reduced failed requests by 8%.",
-          "reason": "Partial evidence with a verified excerpt"
+          "reason": "Documented with a verified excerpt"
         },
         {
           "criterion_id": "cloud_deployment",
@@ -875,8 +875,8 @@
       "case_id": "T11",
       "scenario": "Keyword-heavy claims receive partial or ambiguous credit, not full credit",
       "status": "pass",
-      "expected_percent": 29,
-      "actual_percent": 29,
+      "expected_percent": 7,
+      "actual_percent": 7,
       "expected_tone": "weak",
       "actual_tone": "weak",
       "expected_case_status": "pass",
@@ -912,22 +912,22 @@
         {
           "criterion_id": "production_reliability",
           "kind": "required",
-          "status": "PARTIAL_EVIDENCE",
+          "status": "NOT_EVIDENCED",
           "weight": 4,
-          "fraction": 0.5,
-          "points": 2,
-          "excerpt": "Read a blog about reliability.",
-          "reason": "Partial evidence with a verified excerpt"
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
         },
         {
           "criterion_id": "backend_experience",
           "kind": "required",
-          "status": "AMBIGUOUS",
+          "status": "NOT_EVIDENCED",
           "weight": 4,
-          "fraction": 0.25,
-          "points": 1,
-          "excerpt": "Interested in backend services.",
-          "reason": "Ambiguous evidence with a verified excerpt"
+          "fraction": 0,
+          "points": 0,
+          "excerpt": null,
+          "reason": "Not documented in the available CV"
         },
         {
           "criterion_id": "measurable_outcome",
@@ -961,7 +961,7 @@
       "actual_tone": "pending",
       "expected_case_status": "blocked",
       "required": {
-        "met": 2,
+        "met": 1,
         "total": 3
       },
       "preferred": {
@@ -992,12 +992,12 @@
         {
           "criterion_id": "production_reliability",
           "kind": "required",
-          "status": "EVIDENCE_FOUND",
+          "status": "PARTIAL_EVIDENCE",
           "weight": 4,
-          "fraction": 1,
-          "points": 4,
+          "fraction": 0.5,
+          "points": 2,
           "excerpt": "operated production APIs.",
-          "reason": "Documented with a verified excerpt"
+          "reason": "Partial evidence with a verified excerpt"
         },
         {
           "criterion_id": "backend_experience",

@@ -27,7 +27,8 @@
         { "criterion_id": "cloud_deployment", "status": "EVIDENCE_FOUND", "excerpt": "Deployed services to AWS." }
       ],
       "expected_percent": 100,
-      "expected_tone": "strong"
+      "expected_tone": "strong",
+      "expected_profile_fact": "TypeScript"
     },
     {
       "case_id": "T02",
@@ -42,7 +43,8 @@
         { "criterion_id": "cloud_deployment", "status": "NOT_EVIDENCED", "excerpt": null }
       ],
       "expected_percent": 57,
-      "expected_tone": "moderate"
+      "expected_tone": "moderate",
+      "expected_profile_fact": "TypeScript"
     },
     {
       "case_id": "T03",
@@ -58,7 +60,8 @@
         { "criterion_id": "cloud_deployment", "status": "EVIDENCE_FOUND", "excerpt": "Deployed services to AWS." }
       ],
       "expected_percent": 100,
-      "expected_tone": "strong"
+      "expected_tone": "strong",
+      "expected_profile_fact": "TypeScript"
     },
     {
       "case_id": "T04",
@@ -77,18 +80,20 @@
     },
     {
       "case_id": "T05",
-      "scenario": "Contradictory employment dates receive no experience credit",
+      "scenario": "Conflicting dates are surfaced while independently documented backend work remains evidence",
       "source": "Backend Engineer at Northstar, 2020 to 2022. The same role is listed elsewhere as 2021 to 2023. Built TypeScript APIs and configured production alerts.",
       "process_status": "ready",
       "evidence": [
         { "criterion_id": "typescript_services", "status": "EVIDENCE_FOUND", "excerpt": "Built TypeScript APIs" },
         { "criterion_id": "production_reliability", "status": "EVIDENCE_FOUND", "excerpt": "configured production alerts." },
-        { "criterion_id": "backend_experience", "status": "REQUIRES_REVIEW", "excerpt": "Backend Engineer at Northstar, 2020 to 2022." },
+        { "criterion_id": "backend_experience", "status": "EVIDENCE_FOUND", "excerpt": "Backend Engineer at Northstar, 2020 to 2022." },
         { "criterion_id": "measurable_outcome", "status": "NOT_EVIDENCED", "excerpt": null },
         { "criterion_id": "cloud_deployment", "status": "NOT_EVIDENCED", "excerpt": null }
       ],
-      "expected_percent": 57,
-      "expected_tone": "moderate"
+      "expected_percent": 86,
+      "expected_tone": "strong",
+      "expected_profile_warning": ["Conflicting dates", "2022", "2023"],
+      "expected_profile_fact": "TypeScript"
     },
     {
       "case_id": "T06",
@@ -103,7 +108,8 @@
         { "criterion_id": "cloud_deployment", "status": "EVIDENCE_FOUND", "excerpt": "deployed a production TypeScript service to AWS" }
       ],
       "expected_percent": 100,
-      "expected_tone": "strong"
+      "expected_tone": "strong",
+      "expected_profile_fact": "TypeScript"
     },
     {
       "case_id": "T07",
@@ -114,11 +120,12 @@
         { "criterion_id": "typescript_services", "status": "EVIDENCE_FOUND", "excerpt": "Delivered a TypeScript API." },
         { "criterion_id": "production_reliability", "status": "EVIDENCE_FOUND", "excerpt": "Added alerts and incident runbooks." },
         { "criterion_id": "backend_experience", "status": "EVIDENCE_FOUND", "excerpt": "Maintained backend services for three years." },
-        { "criterion_id": "measurable_outcome", "status": "PARTIAL_EVIDENCE", "excerpt": "Reduced failed requests by 8%." },
+        { "criterion_id": "measurable_outcome", "status": "EVIDENCE_FOUND", "excerpt": "Reduced failed requests by 8%." },
         { "criterion_id": "cloud_deployment", "status": "EVIDENCE_FOUND", "excerpt": "Deployed to AWS." }
       ],
-      "expected_percent": 96,
-      "expected_tone": "strong"
+      "expected_percent": 100,
+      "expected_tone": "strong",
+      "expected_profile_fact": "TypeScript"
     },
     {
       "case_id": "T08",
@@ -144,6 +151,7 @@
       ],
       "expected_percent": 100,
       "expected_tone": "strong",
+      "expected_profile_fact": "TypeScript",
       "repeat_score": true,
       "limitation": "This checks deterministic scorer repeatability only. Intake/database deduplication is a separate workflow assertion."
     },
@@ -161,6 +169,7 @@
       ],
       "expected_percent": 93,
       "expected_tone": "strong",
+      "expected_profile_fact": "TypeScript",
       "limitation": "This scorer test checks only the supplied independent labels and quotes. It does not test model prompt-injection resistance."
     },
     {
@@ -170,12 +179,12 @@
       "process_status": "ready",
       "evidence": [
         { "criterion_id": "typescript_services", "status": "AMBIGUOUS", "excerpt": "Familiar with TypeScript." },
-        { "criterion_id": "production_reliability", "status": "PARTIAL_EVIDENCE", "excerpt": "Read a blog about reliability." },
-        { "criterion_id": "backend_experience", "status": "AMBIGUOUS", "excerpt": "Interested in backend services." },
+        { "criterion_id": "production_reliability", "status": "NOT_EVIDENCED", "excerpt": null },
+        { "criterion_id": "backend_experience", "status": "NOT_EVIDENCED", "excerpt": null },
         { "criterion_id": "measurable_outcome", "status": "NOT_EVIDENCED", "excerpt": null },
         { "criterion_id": "cloud_deployment", "status": "NOT_EVIDENCED", "excerpt": null }
       ],
-      "expected_percent": 29,
+      "expected_percent": 7,
       "expected_tone": "weak"
     },
     {
@@ -185,10 +194,11 @@
       "process_status": "failed",
       "evidence": [
         { "criterion_id": "typescript_services", "status": "EVIDENCE_FOUND", "excerpt": "Built TypeScript services" },
-        { "criterion_id": "production_reliability", "status": "EVIDENCE_FOUND", "excerpt": "operated production APIs." }
+        { "criterion_id": "production_reliability", "status": "PARTIAL_EVIDENCE", "excerpt": "operated production APIs." }
       ],
       "expected_percent": null,
       "expected_tone": "pending",
+      "expected_profile_fact": "TypeScript",
       "expected_case_status": "blocked"
     }
   ]
