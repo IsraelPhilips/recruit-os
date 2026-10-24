@@ -9,6 +9,7 @@
     "test": "vitest run",
     "eval": "node --experimental-strip-types evaluation/scripts/run.ts",
     "eval:job-fit": "vitest run evaluation/job-fit.evaluation.test.ts",
+    "eval:full-flow": "vitest run src/lib/full-flow.evaluation.integration.test.ts",
     "fixtures": "node evaluation/scripts/create-fixtures.mjs"
   },
   "dependencies": {

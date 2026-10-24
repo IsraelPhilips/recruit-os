@@ -1,0 +1,255 @@
+{
+  "run_at": "2026-10-24T17:23:24.118Z",
+  "provider": "NVIDIA Nemotron",
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "run_status": "completed",
+  "total_cases": 1,
+  "passed": 1,
+  "failed": 0,
+  "blocked": 0,
+  "metrics": {
+    "scoring_cases": 1,
+    "semantic_status_matches": 1,
+    "semantic_cases_completed": 1,
+    "job_fit_score_matches": 1,
+    "job_fit_cases_completed": 1,
+    "persisted_citations_grounded": 0,
+    "persisted_citation_count": 0,
+    "processing_recovery_cases": 0,
+    "processing_recoveries_succeeded": 0,
+    "median_processing_attempt_ms": 9244,
+    "token_usage_captured": 1,
+    "model_total_tokens": 773,
+    "observed_billing_usd": null,
+    "human_review_time": "pending: automated synthetic evaluation only"
+  },
+  "notes": "Synthetic inputs only. T08 checks unreadable-document handling without AI. T09 checks duplicate intake before one AI processing pass. T12 checks failure persistence and retry after restoring the CV. Job Fit expectations are the frozen independent values from evaluation/job-fit-cases.json.",
+  "results": [
+    {
+      "case_id": "T04",
+      "scenario": "No CV evidence is not a finding of no competence",
+      "expected_percent": 0,
+      "expected_tone": "weak",
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "ready",
+      "initial_score_pending": false,
+      "application_status": "ready",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 128,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "ready",
+          "duration_ms": 9244,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 773,
+        "prompt_tokens": 404,
+        "completion_tokens": 369,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "accepted_prediction_tokens": null,
+          "rejected_prediction_tokens": null
+        }
+      },
+      "profile": {
+        "email": "synthetic-t04@example.test",
+        "phone": null,
+        "skills": [],
+        "history": [],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T04"
+      },
+      "evidence": [
+        {
+          "criterion_id": "backend_experience",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "typescript_services",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 0,
+          "tone": "weak",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            }
+          ],
+          "earnedPoints": 0,
+          "maxPoints": 14,
+          "required": {
+            "met": 0,
+            "total": 3
+          },
+          "preferred": {
+            "met": 0,
+            "total": 2
+          },
+          "gapCount": 5,
+          "criticalGaps": [
+            "Build TypeScript services",
+            "Operate reliable production services",
+            "Relevant backend/API experience"
+          ]
+        },
+        "strengths": [],
+        "gaps": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "uncertainties": [
+          "Some criteria lack a verified CV excerpt. This does not establish missing ability."
+        ],
+        "next_step": "No job criterion has a complete cited excerpt yet. Verify the CV against the role, then choose the next human review step. Missing evidence does not establish missing ability."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        }
+      ]
+    }
+  ]
+}

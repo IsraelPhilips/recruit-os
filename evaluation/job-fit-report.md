@@ -1,6 +1,6 @@
 # Job Fit Match deterministic evaluation
 
-Run: 2026-10-24T16:42:37.865Z. Command: `npm run eval:job-fit`.
+Run: 2026-10-24T17:25:52.427Z. Command: `npm run eval:job-fit`.
 
 10 passed, 0 failed, 2 blocked/not scoreable across 12 cases. Applicable-case pass rate: 10/10. The blocked cases correctly remain blocked because an unreadable CV (T08) or failed processing (T12) cannot support a score.
 
@@ -8,7 +8,7 @@ Run: 2026-10-24T16:42:37.865Z. Command: `npm run eval:job-fit`.
 
 The application scorer is `src/lib/job-fit.ts`, called through `candidateBrief` for both the Applications card and candidate detail view. Its existing product rule is documented in `docs/PROJECT_SPEC.md` section 15: required criteria weigh 4, preferred criteria weigh 1; source-verified `EVIDENCE_FOUND` receives full credit, `PARTIAL_EVIDENCE` half, `AMBIGUOUS` one quarter, and other states zero. Follow-up marks remove credit. Informational criteria are excluded. Score bands are presentational only. This suite changes none of these rules.
 
-This 12-case evaluation reports deterministic scoring separately from workflow and model results. Job Fit Match follows the scoring rules documented for RecruitOS: required criteria carry four times the weight of preferred criteria, with credit adjusted for evidence status and source verification. These rules belong to RecruitOS; no scoring formula is attributed to MUST.
+This 12-case evaluation reports deterministic scoring separately from workflow and model results. Job Fit Match follows the scoring rules documented for RecruitOS: required criteria carry four times the weight of preferred criteria, with credit adjusted for evidence status and source verification. The suite applies these rules without changing them.
 
 Each case's evidence labels are independently authored synthetic ground truth and quotes are checked against its CV text. This evaluates arithmetic, eligibility, quote grounding, and pending behavior. It does not establish whether the production model assigns the right semantic evidence label.
 

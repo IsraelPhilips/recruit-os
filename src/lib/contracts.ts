@@ -10,7 +10,7 @@ export const criterionSchema = z.object({ id: z.string().min(1).max(50), label: 
 export const criteriaSchema = z.array(criterionSchema).min(1).max(10);
 export const analysisSchema = z.object({
   profile: z.object({ full_name: z.string().nullable(), email: z.string().nullable(), phone: z.string().nullable(), skills: z.array(z.string()), history: z.array(z.string()), warnings: z.array(z.string()) }),
-  evidence: z.array(z.object({ criterion_id: z.string(), status: z.enum(['EVIDENCE_FOUND','PARTIAL_EVIDENCE','NOT_EVIDENCED','AMBIGUOUS','REQUIRES_REVIEW']), excerpt: z.string().nullable(), location: z.string().nullable(), reasoning: z.string(), question: z.string().nullable() }))
+  evidence: z.array(z.object({ criterion_id: z.string(), status: z.enum(['EVIDENCE_FOUND','PARTIAL_EVIDENCE','NOT_EVIDENCED','AMBIGUOUS','REQUIRES_REVIEW']), excerpt: z.string().nullable().default(null), location: z.string().nullable().default(null), reasoning: z.string(), question: z.string().nullable().default(null) }))
 });
 export type Intake = z.infer<typeof intakeSchema>;
 export type Analysis = z.infer<typeof analysisSchema>;

@@ -1,6 +1,6 @@
 {
   "summary": {
-    "run_at": "2026-10-24T16:42:34.821Z",
+    "run_at": "2026-10-24T17:25:41.665Z",
     "adapter": "deterministic-local",
     "model": null,
     "baseline": "pending",
@@ -44,7 +44,7 @@
       "detail": "Intake contract preserves missing email; database manual-review state remains unverified",
       "semantic_status": "not_run",
       "expected_status": "REQUIRES_REVIEW",
-      "latency_ms": 2,
+      "latency_ms": 4,
       "model": null,
       "cost_usd": null
     },
