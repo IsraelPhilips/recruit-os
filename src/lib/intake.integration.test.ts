@@ -7,7 +7,8 @@ it.skipIf(process.env.RUN_SUPABASE_INTEGRATION!=='1')('persists one synthetic ap
   const env=fs.readFileSync('.env.local','utf8');for(const line of env.split(/\r?\n/)){const i=line.indexOf('=');if(i>0&&line.slice(i+1))process.env[line.slice(0,i)]=line.slice(i+1);}
   const db=adminDb();const reference=`SYNTH-${crypto.randomUUID().slice(0,8)}`;let jobId='';let appId='';let storageKey='';
   try{
-    const job=await db.from('jobs').insert({title:'Synthetic test role',reference,description:'Synthetic role for intake verification.',criteria:[{id:'c1',label:'TypeScript',kind:'required'}],approved_at:new Date().toISOString()}).select('id').single();if(job.error)throw job.error;jobId=job.data.id;
+    const {data:workspace,error:workspaceError}=await db.from('workspaces').select('id').limit(1).single();if(workspaceError||!workspace)throw workspaceError||new Error('No test workspace');
+    const job=await db.from('jobs').insert({workspace_id:workspace.id,title:'Synthetic test role',reference,description:'Synthetic role for intake verification.',criteria:[{id:'c1',label:'TypeScript',kind:'required'}],approved_at:new Date().toISOString()}).select('id').single();if(job.error)throw job.error;jobId=job.data.id;
     const payload={form_id:'synthetic-integration-form',response_id:crypto.randomUUID(),job_reference:reference,submitted_at:new Date().toISOString(),candidate:{full_name:'Synthetic Applicant',email:'applicant@example.test',phone:null,portfolio_url:null,cover_letter:null,consent:true},cv:{name:'synthetic.pdf',mime_type:'application/pdf' as const,content_base64:Buffer.from('%PDF-1.4\nSynthetic fixture only.').toString('base64')}};
     const first=await persistIntake(payload);expect(first.duplicate).toBe(false);expect(first.application_id).toBeTruthy();appId=first.application_id!;
     const duplicate=await persistIntake(payload);expect(duplicate.duplicate).toBe(true);expect(duplicate.application_id).toBe(appId);

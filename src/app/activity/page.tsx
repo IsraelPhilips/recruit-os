@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import {requireRecruiter} from '@/lib/auth';
+import {requireWorkspace,workspaceJobIds} from '@/lib/auth';
 import {adminDb} from '@/lib/supabase';
 
 const eventLabels:Record<string,string>={application_received:'Application received',application_processing:'CV analysis started',application_processed:'CV analysis completed',application_failed:'CV analysis needs attention',candidate_contact_corrected:'Applicant details corrected',profile_corrected:'Extracted profile corrected',evidence_reviewed:'Evidence reviewed',review_action:'Next action recorded',google_response_received:'Google Form response received',google_response_synced:'Google Form response imported'};
@@ -7,10 +7,12 @@ const stageLabels:Record<string,string>={extract:'Read CV',extract_text:'Read CV
 function when(value:string){return new Date(value).toLocaleString('en-NG',{dateStyle:'medium',timeStyle:'short'});}
 
 export default async function Activity(){
-  await requireRecruiter();const db=adminDb();
+  const {workspaceId}=await requireWorkspace();const db=adminDb();const jobIds=await workspaceJobIds(db,workspaceId);
+  const {data:applications}=jobIds.length?await db.from('applications').select('id').in('job_id',jobIds):{data:[]};
+  const applicationIds=(applications||[]).map(application=>application.id);
   const [attemptResult,eventResult]=await Promise.all([
-    db.from('processing_attempts').select('id,application_id,stage,outcome,error_category,created_at').order('created_at',{ascending:false}).limit(30),
-    db.from('workflow_events').select('id,application_id,event_type,created_at').order('created_at',{ascending:false}).limit(50),
+    applicationIds.length?db.from('processing_attempts').select('id,application_id,stage,outcome,error_category,created_at').in('application_id',applicationIds).order('created_at',{ascending:false}).limit(30):Promise.resolve({data:[],error:null}),
+    applicationIds.length?db.from('workflow_events').select('id,application_id,event_type,created_at').in('application_id',applicationIds).order('created_at',{ascending:false}).limit(50):Promise.resolve({data:[],error:null}),
   ]);
   if(attemptResult.error||eventResult.error)throw new Error('Could not load activity');
   const attempts=attemptResult.data||[];const events=eventResult.data||[];

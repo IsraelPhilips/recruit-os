@@ -43,12 +43,14 @@ export async function processApplication(id:string) {
   }
 }
 
-export async function processPendingApplications(limit=1){
+export async function processPendingApplications(limit=1,workspaceId?:string){
   const db=adminDb();
+  let jobIds:string[]|null=null;
+  if(workspaceId){const {data:jobs,error}=await db.from('jobs').select('id').eq('workspace_id',workspaceId);if(error)throw error;jobIds=(jobs||[]).map(job=>job.id);if(!jobIds.length)return {recovered:0,results:[]};}
   const cutoff=new Date(Date.now()-10*60_000).toISOString();
-  const {data:stale}=await db.from('applications').update({process_status:'failed',error_message:'Processing interrupted; retry available',updated_at:new Date().toISOString()}).eq('process_status','processing').lt('updated_at',cutoff).select('id');
+  let staleQuery=db.from('applications').update({process_status:'failed',error_message:'Processing interrupted; retry available',updated_at:new Date().toISOString()}).eq('process_status','processing').lt('updated_at',cutoff);if(jobIds)staleQuery=staleQuery.in('job_id',jobIds);const {data:stale}=await staleQuery.select('id');
   for(const row of stale||[])await db.from('workflow_events').insert({application_id:row.id,event_type:'processing_interrupted',metadata:{reason:'stale_timeout'}});
-  const {data:pending,error}=await db.from('applications').select('id').or('process_status.eq.received,and(process_status.eq.manual_review,attempt_count.eq.0)').lt('attempt_count',3).order('created_at',{ascending:true}).limit(limit);
+  let pendingQuery=db.from('applications').select('id').or('process_status.eq.received,and(process_status.eq.manual_review,attempt_count.eq.0)').lt('attempt_count',3);if(jobIds)pendingQuery=pendingQuery.in('job_id',jobIds);const {data:pending,error}=await pendingQuery.order('created_at',{ascending:true}).limit(limit);
   if(error)throw error;
   const results=[];
   for(const row of pending||[])results.push({id:row.id,...await processApplication(row.id)});

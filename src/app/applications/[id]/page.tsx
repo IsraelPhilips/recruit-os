@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
-import {requireRecruiter} from '@/lib/auth';
+import {applicationInWorkspace,requireWorkspace} from '@/lib/auth';
 import {adminDb} from '@/lib/supabase';
 import {retry,saveAction,saveProfile} from '@/app/actions';
 import {SubmitButton} from '@/app/components/SubmitButton';
@@ -19,7 +19,8 @@ const actionNames:Record<string,string>={request_clarification:'Clarification pl
 function readableDate(value:string){return new Date(value).toLocaleString('en-NG',{dateStyle:'medium',timeStyle:'short'});}
 
 export default async function Detail({params,searchParams}:{params:Promise<{id:string}>;searchParams:Promise<{mail?:string}>}){
-  const user=await requireRecruiter();const {id}=await params;const {mail}=await searchParams;const db=adminDb();
+  const {user,workspaceId}=await requireWorkspace();const {id}=await params;const {mail}=await searchParams;const db=adminDb();
+  if(!await applicationInWorkspace(db,id,workspaceId))notFound();
   const {data:application}=await db.from('applications').select('*,jobs(title)').eq('id',id).single();if(!application)notFound();
   const [profileResult,evidenceResult,actionsResult,eventsResult,documentResult,messagesResult,gmailResult,profileCorrectionResult]=await Promise.all([
     db.from('candidate_profiles').select('normalized,warnings,model').eq('application_id',id).maybeSingle(),

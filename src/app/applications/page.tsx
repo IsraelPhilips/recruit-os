@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import {requireRecruiter} from '@/lib/auth';
+import {requireWorkspace,workspaceJobIds} from '@/lib/auth';
 import {adminDb} from '@/lib/supabase';
 import {candidateBrief,type Profile} from '@/lib/profile-grounding';
 import type {ReviewCriterion,ReviewEvidence} from '@/lib/review-summary';
@@ -9,11 +9,14 @@ const statusNames:Record<string,string>={received:'Received',processing:'Analyzi
 function issueMessage(raw:string){if(raw.startsWith('[')||raw.includes('invalid_format'))return 'A Form answer did not match its mapped field. Review the Form field mapping.';if(raw.includes('Consent'))return 'The Form answer needs a review before importing.';if(raw.includes('CV'))return 'The CV upload needs attention. Check the file and Form question.';return raw;}
 
 export default async function Applications({searchParams}:{searchParams:Promise<{q?:string;status?:string}>}){
-  await requireRecruiter();const params=await searchParams;const db=adminDb();
+  const {user,workspaceId}=await requireWorkspace();const params=await searchParams;const db=adminDb();const jobIds=await workspaceJobIds(db,workspaceId);
+  const {data:connection}=await db.from('google_connections').select('id').eq('recruiter_id',user.id).maybeSingle();
+  const {data:forms}=connection?await db.from('google_forms').select('form_id,form_title').eq('connection_id',connection.id):{data:[]};
+  const formIds=(forms||[]).map(item=>item.form_id);
   const [appsResult,issuesResult,formsResult]=await Promise.all([
-    db.from('applications').select('id,candidate,criteria_snapshot,criteria_version,process_status,review_status,submitted_at,jobs(title)').order('created_at',{ascending:false}).limit(100),
-    db.from('google_sync_failures').select('id,form_id,error_message,last_attempt_at').is('resolved_at',null).order('last_attempt_at',{ascending:false}).limit(50),
-    db.from('google_forms').select('form_id,form_title'),
+    jobIds.length?db.from('applications').select('id,candidate,criteria_snapshot,criteria_version,process_status,review_status,submitted_at,jobs(title)').in('job_id',jobIds).order('created_at',{ascending:false}).limit(100):Promise.resolve({data:[],error:null}),
+    formIds.length?db.from('google_sync_failures').select('id,form_id,error_message,last_attempt_at').in('form_id',formIds).is('resolved_at',null).order('last_attempt_at',{ascending:false}).limit(50):Promise.resolve({data:[],error:null}),
+    Promise.resolve({data:forms||[],error:null}),
   ]);
   if(appsResult.error||issuesResult.error)throw new Error('Could not load applications');
   const ids=(appsResult.data||[]).map(item=>item.id);

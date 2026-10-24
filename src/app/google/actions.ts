@@ -1,5 +1,5 @@
 'use server';
-import {requireRecruiter} from '@/lib/auth';
+import {requireWorkspace} from '@/lib/auth';
 import {adminDb} from '@/lib/supabase';
 import {accessToken,createWatch,renewWatch,getForm,formQuestions} from '@/lib/google';
 import {mappingSchema,syncForm} from '@/lib/google-sync';
@@ -7,7 +7,7 @@ import {revalidatePath} from 'next/cache';
 import {processPendingApplications} from '@/lib/process';
 
 export async function connectForm(form:FormData){
-  const user=await requireRecruiter();const db=adminDb();const {data:connection}=await db.from('google_connections').select('id').eq('recruiter_id',user.id).single();if(!connection)throw new Error('Connect Google first');
+  const {user,workspaceId}=await requireWorkspace();const db=adminDb();const {data:connection}=await db.from('google_connections').select('id').eq('recruiter_id',user.id).single();if(!connection)throw new Error('Connect Google first');
   const formId=String(form.get('form_id')||''),jobId=String(form.get('job_id')||'');
   const mapping=mappingSchema.parse(Object.fromEntries(['name','email','cv','consent','phone','portfolio','cover_letter'].map(k=>[k,String(form.get(k)||'')||undefined])));
   const token=await accessToken(connection.id);const info=await getForm(token,formId);const questions=formQuestions(info);
@@ -15,7 +15,7 @@ export async function connectForm(form:FormData){
   if(!questions.find(q=>q.id===mapping.cv)?.isFile)throw new Error('CV field must be a File upload question');
   if(mapping.consent&&!questions.find(q=>q.id===mapping.consent)?.isConsent)throw new Error('Consent must use a Yes/No or agreement question');
   for(const field of ['name','email','consent','phone','portfolio','cover_letter'] as const)if(mapping[field]&&questions.find(q=>q.id===mapping[field])?.isFile)throw new Error('Only the CV field can use a File upload question');
-  const {data:job}=await db.from('jobs').select('id,approved_at').eq('id',jobId).single();if(!job?.approved_at)throw new Error('Choose an approved role');
+  const {data:job}=await db.from('jobs').select('id,approved_at').eq('id',jobId).eq('workspace_id',workspaceId).single();if(!job?.approved_at)throw new Error('Choose an approved role');
   const {data:existing}=await db.from('google_forms').select('id,connection_id,watch_id,watch_expires_at').eq('form_id',formId).maybeSingle();
   if(existing&&existing.connection_id!==connection.id)throw new Error('This Form is connected to another account');
   let watch:{id:string;expireTime:string};
@@ -26,4 +26,4 @@ export async function connectForm(form:FormData){
   await db.from('google_sync_failures').update({retry_count:0,resolved_at:null}).eq('form_id',formId).is('resolved_at',null);
   revalidatePath('/google');
 }
-export async function syncSelected(form:FormData){await requireRecruiter();const id=String(form.get('form_id')||'');await syncForm(id);await processPendingApplications(1);revalidatePath('/google');revalidatePath('/applications');}
+export async function syncSelected(form:FormData){const {user,workspaceId}=await requireWorkspace();const db=adminDb();const {data:connection}=await db.from('google_connections').select('id').eq('recruiter_id',user.id).single();const id=String(form.get('form_id')||'');const {data:owned}=connection?await db.from('google_forms').select('id').eq('form_id',id).eq('connection_id',connection.id).maybeSingle():{data:null};if(!owned)throw new Error('Form not found');await syncForm(id);await processPendingApplications(1,workspaceId);revalidatePath('/google');revalidatePath('/applications');}

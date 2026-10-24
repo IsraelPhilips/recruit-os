@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import {requireRecruiter} from '@/lib/auth';
+import {requireWorkspace} from '@/lib/auth';
 import {adminDb} from '@/lib/supabase';
 import {accessToken,listForms,getForm,formQuestions} from '@/lib/google';
 import {mappingSchema} from '@/lib/google-sync';
@@ -21,15 +21,17 @@ function displayDate(value:string|null){return value?new Date(value).toLocaleStr
 function questionOptions(questions:Question[],field:string){return questions.filter(q=>field==='cv'?q.isFile:field==='consent'?q.isConsent:!q.isFile&&!q.isConsent);}
 
 export default async function GooglePage({searchParams}:{searchParams:Promise<{form?:string;error?:string}>}){
-  const user=await requireRecruiter();const params=await searchParams;const db=adminDb();
+  const {user,workspaceId}=await requireWorkspace();const params=await searchParams;const db=adminDb();
   const {data:connection}=await db.from('google_connections').select('id,token_error').eq('recruiter_id',user.id).maybeSingle();
   const [linkedResult,jobsResult,failuresResult]=await Promise.all([
     connection?db.from('google_forms').select('id,form_id,form_title,job_id,field_mapping,watch_expires_at,last_sync_at,sync_error').eq('connection_id',connection.id).order('created_at',{ascending:false}):Promise.resolve({data:[]}),
-    db.from('jobs').select('id,title').not('approved_at','is',null).order('created_at',{ascending:false}),
-    db.from('google_sync_failures').select('form_id,error_message').is('resolved_at',null).limit(100),
+    db.from('jobs').select('id,title').eq('workspace_id',workspaceId).not('approved_at','is',null).order('created_at',{ascending:false}),
+    connection?db.from('google_forms').select('form_id').eq('connection_id',connection.id):Promise.resolve({data:[]}),
   ]);
   const linked=(linkedResult.data||[]) as LinkedForm[];const jobs=jobsResult.data||[];
-  const failures=failuresResult.data||[];let forms:Array<{id:string;name:string}>=[];let questions:Question[]=[];let googleError='';
+  const ownedFormIds=(failuresResult.data||[]).map(item=>item.form_id);
+  const {data:failureRows}=ownedFormIds.length?await db.from('google_sync_failures').select('form_id,error_message').in('form_id',ownedFormIds).is('resolved_at',null).limit(100):{data:[]};
+  const failures=failureRows||[];let forms:Array<{id:string;name:string}>=[];let questions:Question[]=[];let googleError='';
   if(connection)try{const token=await accessToken(connection.id);forms=await listForms(token);if(params.form)questions=formQuestions(await getForm(token,params.form));}catch{googleError='Google could not load your Forms. Reconnect your account or try again.';}
   const selected=linked.find(item=>item.form_id===params.form);const saved=selected?.field_mapping||{};
   const savedMappingValid=selected?mappingSchema.safeParse(saved).success:false;

@@ -9,7 +9,8 @@ it.skipIf(process.env.RUN_FULL_INTEGRATION!=='1')('processes a synthetic PDF fro
   process.env.AI_PROVIDER='nvidia';
   const db=adminDb(),reference=`SYNTH-FLOW-${crypto.randomUUID().slice(0,8)}`;let jobId='',appId='',key='';
   try{
-    const job=await db.from('jobs').insert({title:'Synthetic developer role',reference,description:'Synthetic role for end-to-end verification.',criteria:[{id:'typescript',label:'TypeScript',kind:'required'}],approved_at:new Date().toISOString()}).select('id').single();if(job.error)throw job.error;jobId=job.data.id;
+    const {data:workspace,error:workspaceError}=await db.from('workspaces').select('id').limit(1).single();if(workspaceError||!workspace)throw workspaceError||new Error('No test workspace');
+    const job=await db.from('jobs').insert({workspace_id:workspace.id,title:'Synthetic developer role',reference,description:'Synthetic role for end-to-end verification.',criteria:[{id:'typescript',label:'TypeScript',kind:'required'}],approved_at:new Date().toISOString()}).select('id').single();if(job.error)throw job.error;jobId=job.data.id;
     const bytes=fs.readFileSync('evaluation/fixtures/synthetic-cv.pdf');
     const intake=await persistIntake({form_id:'synthetic-full-flow',response_id:crypto.randomUUID(),job_reference:reference,submitted_at:new Date().toISOString(),candidate:{full_name:'Synthetic Applicant',email:'synthetic@example.test',phone:null,portfolio_url:null,cover_letter:null,consent:true},cv:{name:'synthetic-cv.pdf',mime_type:'application/pdf',content_base64:bytes.toString('base64')}});
     appId=intake.application_id!;expect(intake.status).toBe('received');

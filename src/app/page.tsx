@@ -1,16 +1,19 @@
 import Link from 'next/link';
-import {requireRecruiter} from '@/lib/auth';
+import {requireWorkspace,workspaceJobIds} from '@/lib/auth';
 import {adminDb} from '@/lib/supabase';
 
 const cards=[{key:'received',label:'Received',hint:'Waiting for analysis'},{key:'processing',label:'Analyzing',hint:'CV extraction in progress'},{key:'ready',label:'Ready to review',hint:'Evidence available'},{key:'manual_review',label:'Needs details',hint:'A person should check this'},{key:'failed',label:'Processing issues',hint:'Retry or inspect the error'}];
 const names:Record<string,string>={received:'Received',processing:'Analyzing',ready:'Ready for review',manual_review:'Needs details',failed:'Processing issue'};
 export default async function Home(){
-  await requireRecruiter();const db=adminDb();
+  const {user,workspaceId}=await requireWorkspace();const db=adminDb();const jobIds=await workspaceJobIds(db,workspaceId);
+  const {data:connection}=await db.from('google_connections').select('id').eq('recruiter_id',user.id).maybeSingle();
+  const {data:forms}=connection?await db.from('google_forms').select('id,form_id').eq('connection_id',connection.id):{data:[]};
+  const formIds=(forms||[]).map(form=>form.form_id);
   const [appsResult,issuesResult,jobsResult,formsResult]=await Promise.all([
-    db.from('applications').select('id,process_status,review_status,created_at,candidate,jobs(title)').order('created_at',{ascending:false}).limit(100),
-    db.from('google_sync_failures').select('id',{count:'exact',head:true}).is('resolved_at',null),
-    db.from('jobs').select('id',{count:'exact',head:true}),
-    db.from('google_forms').select('id',{count:'exact',head:true}),
+    jobIds.length?db.from('applications').select('id,process_status,review_status,created_at,candidate,jobs(title)').in('job_id',jobIds).order('created_at',{ascending:false}).limit(100):Promise.resolve({data:[],error:null}),
+    formIds.length?db.from('google_sync_failures').select('id',{count:'exact',head:true}).in('form_id',formIds).is('resolved_at',null):Promise.resolve({count:0,error:null}),
+    jobIds.length?db.from('jobs').select('id',{count:'exact',head:true}).in('id',jobIds):Promise.resolve({count:0,error:null}),
+    forms?.length?db.from('google_forms').select('id',{count:'exact',head:true}).in('id',forms.map(form=>form.id)):Promise.resolve({count:0,error:null}),
   ]);
   const applications=appsResult.data||[];const issues=issuesResult.count||0;
   return <div className="page-stack"><div className="page-heading"><div><span className="eyebrow">Recruiter workspace</span><h1>Good to see you.</h1><p>Track each application from Form submission to a source-grounded human review.</p></div><Link className="inline-button" href="/applications">View applications</Link></div>
