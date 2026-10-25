@@ -1,0 +1,51 @@
+{
+  "provider": "NVIDIA Nemotron",
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "network_limited_attempt": {
+    "status": "blocked_before_cases",
+    "cases_created": 0,
+    "model_calls": 0,
+    "failure": "TypeError: fetch failed during initial Supabase workspace lookup"
+  },
+  "previous_completed_run": {
+    "artifact": "evaluation/full-flow-results.json",
+    "run_at": "2026-10-25T03:12:34.164Z",
+    "passed": 10,
+    "failed": 2,
+    "blocked": 0,
+    "evidence_status_agreement": "9/10",
+    "job_fit_score_agreement": "9/10",
+    "grounded_citations": "39/39",
+    "processing_recovery": "2/2",
+    "median_processing_attempt_ms": 9049,
+    "model_tokens": 16866,
+    "remaining_failures": ["T02", "T12"]
+  },
+  "final_run": {
+    "artifact": "evaluation/full-flow-results-post-evidence-safeguards.json",
+    "report": "evaluation/full-flow-report-post-evidence-safeguards.md",
+    "run_at": "2026-10-25T03:27:51.994Z",
+    "command": "RUN_FULL_EVALUATION_FLOW=1 FULL_FLOW_RUN_TAG=post-evidence-safeguards npx vitest run src/lib/full-flow.evaluation.integration.test.ts --testTimeout=900000",
+    "status": "completed",
+    "cases": 12,
+    "passed": 12,
+    "failed": 0,
+    "blocked": 0,
+    "evidence_status_agreement": "10/10",
+    "job_fit_score_agreement": "10/10",
+    "grounded_citations": "39/39",
+    "processing_recovery": "2/2",
+    "median_processing_attempt_ms": 9445,
+    "model_tokens": 18087,
+    "retry_model_calls": 3,
+    "retried_criteria": 6,
+    "observed_cost": null,
+    "human_review_time": "pending"
+  },
+  "changes_verified": [
+    "T02 completed TypeScript coursework is classified PARTIAL_EVIDENCE and the existing scorer returns the independent expected 57%.",
+    "T12 production API operation without documented reliability practices is classified PARTIAL_EVIDENCE; processing failure remains score-pending until recovery.",
+    "Scoring weights and the production scorer were unchanged."
+  ],
+  "note": "This is one successful synthetic run. It does not establish stable model behavior, production accuracy, measured recruiter time savings, or MUST alignment."
+}

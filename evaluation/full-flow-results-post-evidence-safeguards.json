@@ -1,0 +1,2719 @@
+{
+  "run_at": "2026-10-25T03:27:51.994Z",
+  "provider": "NVIDIA Nemotron",
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "run_status": "completed",
+  "total_cases": 12,
+  "passed": 12,
+  "failed": 0,
+  "blocked": 0,
+  "metrics": {
+    "scoring_cases": 10,
+    "semantic_status_matches": 10,
+    "semantic_cases_completed": 10,
+    "job_fit_score_matches": 10,
+    "job_fit_cases_completed": 10,
+    "persisted_citations_grounded": 39,
+    "persisted_citation_count": 39,
+    "processing_recovery_cases": 2,
+    "processing_recoveries_succeeded": 2,
+    "median_processing_attempt_ms": 9445,
+    "token_usage_captured": 12,
+    "model_total_tokens": 18087,
+    "retry_model_calls": 3,
+    "retried_criteria": 6,
+    "observed_billing_usd": null,
+    "human_review_time": "pending: automated synthetic evaluation only"
+  },
+  "notes": "Synthetic inputs only. Provider-specific system prompts/output normalization are used; the case set, extraction, persistence, scorer, and assertions are shared. Nemotron focused retry calls and criteria are counted separately from initial calls. T08 checks unreadable-document handling without AI. T09 checks duplicate intake before one AI processing pass. T12 checks failure persistence and retry after restoring the CV. Job Fit expectations are the frozen independent values from evaluation/job-fit-cases.json.",
+  "results": [
+    {
+      "case_id": "T01",
+      "scenario": "Strong documented match",
+      "expected_percent": 100,
+      "expected_tone": "strong",
+      "expected_profile_warning": null,
+      "expected_profile_fact": "TypeScript",
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "ready",
+      "initial_score_pending": false,
+      "application_status": "ready",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 271,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "ready",
+          "duration_ms": 7340,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 1126,
+        "prompt_tokens": 772,
+        "retried_criteria": 0,
+        "completion_tokens": 354,
+        "retry_model_calls": 0,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t01@example.test",
+        "phone": null,
+        "skills": [
+          "TypeScript",
+          "Built TypeScript service APIs for four years.",
+          "Deployed services to AWS."
+        ],
+        "history": [
+          "Operated production services with alerts and incident runbooks.",
+          "Maintained backend APIs across four years.",
+          "Reduced p95 latency by 32%."
+        ],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T01"
+      },
+      "evidence": [
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained backend APIs across four years.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed services to AWS.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Reduced p95 latency by 32%.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Operated production services with alerts and incident runbooks.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript service APIs for four years.",
+          "citation_grounded": true
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 100,
+          "tone": "strong",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Built TypeScript service APIs for four years.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Operated production services with alerts and incident runbooks.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Maintained backend APIs across four years.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Reduced p95 latency by 32%.",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Deployed services to AWS.",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            }
+          ],
+          "earnedPoints": 14,
+          "maxPoints": 14,
+          "required": {
+            "met": 3,
+            "total": 3
+          },
+          "preferred": {
+            "met": 2,
+            "total": 2
+          },
+          "gapCount": 0,
+          "criticalGaps": []
+        },
+        "strengths": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "gaps": [],
+        "uncertainties": [],
+        "next_step": "All 5 required or preferred job criteria have cited CV evidence. Verify the excerpts and context, then decide whether to move to an internal review or interview."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript service APIs for four years."
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Operated production services with alerts and incident runbooks."
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained backend APIs across four years."
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Reduced p95 latency by 32%."
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed services to AWS."
+        }
+      ]
+    },
+    {
+      "case_id": "T02",
+      "scenario": "Borderline, mixed required evidence",
+      "expected_percent": 57,
+      "expected_tone": "moderate",
+      "expected_profile_warning": null,
+      "expected_profile_fact": "TypeScript",
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "ready",
+      "initial_score_pending": false,
+      "application_status": "ready",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 219,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "ready",
+          "duration_ms": 10891,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 2134,
+        "prompt_tokens": 1405,
+        "retried_criteria": 1,
+        "completion_tokens": 729,
+        "retry_model_calls": 1,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t02@example.test",
+        "phone": null,
+        "skills": [
+          "TypeScript fundamentals course",
+          "Completed a TypeScript fundamentals course."
+        ],
+        "history": [
+          "Joined an on-call rotation but has not owned an incident.",
+          "Maintained an internal REST endpoint for six months."
+        ],
+        "warnings": [
+          "Joined on-call rotation without owning incidents"
+        ],
+        "full_name": "Synthetic Applicant T02"
+      },
+      "evidence": [
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained an internal REST endpoint for six months.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "PARTIAL_EVIDENCE",
+          "excerpt": "Joined an on-call rotation but has not owned an incident.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "typescript_services",
+          "status": "PARTIAL_EVIDENCE",
+          "excerpt": "Completed a TypeScript fundamentals course.",
+          "citation_grounded": true
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 57,
+          "tone": "moderate",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "PARTIAL_EVIDENCE",
+              "excerpt": "Completed a TypeScript fundamentals course.",
+              "weight": 4,
+              "fraction": 0.5,
+              "points": 2,
+              "reason": "Partial evidence with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "PARTIAL_EVIDENCE",
+              "excerpt": "Joined an on-call rotation but has not owned an incident.",
+              "weight": 4,
+              "fraction": 0.5,
+              "points": 2,
+              "reason": "Partial evidence with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Maintained an internal REST endpoint for six months.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            }
+          ],
+          "earnedPoints": 8,
+          "maxPoints": 14,
+          "required": {
+            "met": 1,
+            "total": 3
+          },
+          "preferred": {
+            "met": 0,
+            "total": 2
+          },
+          "gapCount": 4,
+          "criticalGaps": [
+            "Build TypeScript services",
+            "Operate reliable production services"
+          ]
+        },
+        "strengths": [
+          "Relevant backend/API experience"
+        ],
+        "gaps": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Demonstrate measurable outcomes"
+        ],
+        "uncertainties": [
+          "Some criteria lack a verified CV excerpt. This does not establish missing ability."
+        ],
+        "next_step": "1 of 5 job criteria have cited evidence. Confirm those excerpts and review the remaining gaps before choosing the next human step. Missing evidence does not establish missing ability."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "PARTIAL_EVIDENCE",
+          "excerpt": "Completed a TypeScript fundamentals course."
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "PARTIAL_EVIDENCE",
+          "excerpt": "Joined an on-call rotation but has not owned an incident."
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained an internal REST endpoint for six months."
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "case_id": "T03",
+      "scenario": "Missing contact does not change CV evidence score",
+      "expected_percent": 100,
+      "expected_tone": "strong",
+      "expected_profile_warning": null,
+      "expected_profile_fact": "TypeScript",
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "manual_review",
+      "initial_score_pending": false,
+      "application_status": "manual_review",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 218,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "manual_review",
+          "duration_ms": 7862,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 1284,
+        "prompt_tokens": 758,
+        "retried_criteria": 0,
+        "completion_tokens": 526,
+        "retry_model_calls": 0,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": null,
+        "phone": null,
+        "skills": [
+          "TypeScript",
+          "Backend APIs",
+          "AWS",
+          "Built TypeScript service APIs",
+          "Deployed services to AWS"
+        ],
+        "history": [
+          "Operated production services with alerts and runbooks",
+          "maintaining backend APIs",
+          "Reduced checkout errors by 18%"
+        ],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T03"
+      },
+      "evidence": [
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "maintaining backend APIs",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed services to AWS",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Reduced checkout errors by 18%",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Operated production services with alerts and runbooks",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript service APIs",
+          "citation_grounded": true
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 100,
+          "tone": "strong",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Built TypeScript service APIs",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Operated production services with alerts and runbooks",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "maintaining backend APIs",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Reduced checkout errors by 18%",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Deployed services to AWS",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            }
+          ],
+          "earnedPoints": 14,
+          "maxPoints": 14,
+          "required": {
+            "met": 3,
+            "total": 3
+          },
+          "preferred": {
+            "met": 2,
+            "total": 2
+          },
+          "gapCount": 0,
+          "criticalGaps": []
+        },
+        "strengths": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "gaps": [],
+        "uncertainties": [],
+        "next_step": "Confirm the applicant email before sending any message."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript service APIs."
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Operated production services with alerts and runbooks."
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Worked four years maintaining backend APIs."
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Reduced checkout errors by 18%."
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed services to AWS."
+        }
+      ]
+    },
+    {
+      "case_id": "T04",
+      "scenario": "No CV evidence is not a finding of no competence",
+      "expected_percent": 0,
+      "expected_tone": "weak",
+      "expected_profile_warning": null,
+      "expected_profile_fact": null,
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "ready",
+      "initial_score_pending": false,
+      "application_status": "ready",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 128,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "ready",
+          "duration_ms": 8223,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 1274,
+        "prompt_tokens": 737,
+        "retried_criteria": 0,
+        "completion_tokens": 537,
+        "retry_model_calls": 0,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t04@example.test",
+        "phone": null,
+        "skills": [],
+        "history": [],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T04"
+      },
+      "evidence": [
+        {
+          "criterion_id": "backend_experience",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "typescript_services",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 0,
+          "tone": "weak",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            }
+          ],
+          "earnedPoints": 0,
+          "maxPoints": 14,
+          "required": {
+            "met": 0,
+            "total": 3
+          },
+          "preferred": {
+            "met": 0,
+            "total": 2
+          },
+          "gapCount": 5,
+          "criticalGaps": [
+            "Build TypeScript services",
+            "Operate reliable production services",
+            "Relevant backend/API experience"
+          ]
+        },
+        "strengths": [],
+        "gaps": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "uncertainties": [
+          "Some criteria lack a verified CV excerpt. This does not establish missing ability."
+        ],
+        "next_step": "No job criterion has a complete cited excerpt yet. Verify the CV against the role, then choose the next human review step. Missing evidence does not establish missing ability."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "case_id": "T05",
+      "scenario": "Conflicting dates are surfaced while independently documented backend work remains evidence",
+      "expected_percent": 86,
+      "expected_tone": "strong",
+      "expected_profile_warning": [
+        "Conflicting dates",
+        "2022",
+        "2023"
+      ],
+      "expected_profile_fact": "TypeScript",
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "expected_profile_warning": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "ready",
+      "initial_score_pending": false,
+      "application_status": "ready",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 216,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "ready",
+          "duration_ms": 9621,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 1374,
+        "prompt_tokens": 774,
+        "retried_criteria": 0,
+        "completion_tokens": 600,
+        "retry_model_calls": 0,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t05@example.test",
+        "phone": null,
+        "skills": [
+          "TypeScript",
+          "APIs",
+          "Alerts",
+          "Built TypeScript APIs"
+        ],
+        "history": [
+          "configured production alerts",
+          "Backend Engineer at Northstar"
+        ],
+        "warnings": [
+          "Same role listed with two different date ranges: 2020 to 2022 and 2021 to 2023.",
+          "Possible conflicting dates for the same role: 2020 to 2022; 2021 to 2023."
+        ],
+        "full_name": "Synthetic Applicant T05"
+      },
+      "evidence": [
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Backend Engineer at Northstar",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "configured production alerts",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript APIs",
+          "citation_grounded": true
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 86,
+          "tone": "strong",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Built TypeScript APIs",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "configured production alerts",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Backend Engineer at Northstar",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            }
+          ],
+          "earnedPoints": 12,
+          "maxPoints": 14,
+          "required": {
+            "met": 3,
+            "total": 3
+          },
+          "preferred": {
+            "met": 0,
+            "total": 2
+          },
+          "gapCount": 2,
+          "criticalGaps": []
+        },
+        "strengths": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "gaps": [
+          "Demonstrate measurable outcomes",
+          "Deploy services to cloud infrastructure"
+        ],
+        "uncertainties": [
+          "Some criteria lack a verified CV excerpt. This does not establish missing ability."
+        ],
+        "next_step": "3 of 5 job criteria have cited evidence. Confirm those excerpts and review the remaining gaps before choosing the next human step. Missing evidence does not establish missing ability."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript APIs"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "configured production alerts."
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Backend Engineer at Northstar, 2020 to 2022."
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "case_id": "T06",
+      "scenario": "Similar projects are credited only through criterion-linked excerpts",
+      "expected_percent": 100,
+      "expected_tone": "strong",
+      "expected_profile_warning": null,
+      "expected_profile_fact": "TypeScript",
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "ready",
+      "initial_score_pending": false,
+      "application_status": "ready",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 271,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "ready",
+          "duration_ms": 9445,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 1410,
+        "prompt_tokens": 777,
+        "retried_criteria": 0,
+        "completion_tokens": 633,
+        "retry_model_calls": 0,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t06@example.test",
+        "phone": null,
+        "skills": [
+          "TypeScript",
+          "AWS",
+          "JavaScript",
+          "built a TypeScript API with retries",
+          "deployed a production TypeScript service to AWS"
+        ],
+        "history": [
+          "deployed a production TypeScript service to AWS and wrote incident runbooks. Reduced API errors by 12%",
+          "built a TypeScript API with retries",
+          "Reduced API errors by 12%"
+        ],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T06"
+      },
+      "evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "built a TypeScript API with retries",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "deployed a production TypeScript service to AWS and wrote incident runbooks. Reduced API errors by 12%",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "built a TypeScript API with retries",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Reduced API errors by 12%",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "deployed a production TypeScript service to AWS",
+          "citation_grounded": true
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 100,
+          "tone": "strong",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "built a TypeScript API with retries",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "deployed a production TypeScript service to AWS and wrote incident runbooks. Reduced API errors by 12%",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "built a TypeScript API with retries",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Reduced API errors by 12%",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "deployed a production TypeScript service to AWS",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            }
+          ],
+          "earnedPoints": 14,
+          "maxPoints": 14,
+          "required": {
+            "met": 3,
+            "total": 3
+          },
+          "preferred": {
+            "met": 2,
+            "total": 2
+          },
+          "gapCount": 0,
+          "criticalGaps": []
+        },
+        "strengths": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "gaps": [],
+        "uncertainties": [],
+        "next_step": "All 5 required or preferred job criteria have cited CV evidence. Verify the excerpts and context, then decide whether to move to an internal review or interview."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "built a TypeScript API with retries."
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "wrote incident runbooks."
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "built a TypeScript API with retries."
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Reduced API errors by 12%."
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "deployed a production TypeScript service to AWS"
+        }
+      ]
+    },
+    {
+      "case_id": "T07",
+      "scenario": "Whitespace-heavy CV text still verifies exact evidence",
+      "expected_percent": 100,
+      "expected_tone": "strong",
+      "expected_profile_warning": null,
+      "expected_profile_fact": "TypeScript",
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "ready",
+      "initial_score_pending": false,
+      "application_status": "ready",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 225,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "ready",
+          "duration_ms": 8039,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 1261,
+        "prompt_tokens": 765,
+        "retried_criteria": 0,
+        "completion_tokens": 496,
+        "retry_model_calls": 0,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t07@example.test",
+        "phone": null,
+        "skills": [
+          "Delivered a TypeScript API.",
+          "Deployed to AWS."
+        ],
+        "history": [
+          "Added alerts and incident runbooks.",
+          "Maintained backend services for three years. Reduced failed requests by 8%.",
+          "Reduced failed requests by 8%."
+        ],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T07"
+      },
+      "evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Delivered a TypeScript API.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Added alerts and incident runbooks.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained backend services for three years. Reduced failed requests by 8%.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Reduced failed requests by 8%.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed to AWS.",
+          "citation_grounded": true
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 100,
+          "tone": "strong",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Delivered a TypeScript API.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Added alerts and incident runbooks.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Maintained backend services for three years. Reduced failed requests by 8%.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Reduced failed requests by 8%.",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Deployed to AWS.",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            }
+          ],
+          "earnedPoints": 14,
+          "maxPoints": 14,
+          "required": {
+            "met": 3,
+            "total": 3
+          },
+          "preferred": {
+            "met": 2,
+            "total": 2
+          },
+          "gapCount": 0,
+          "criticalGaps": []
+        },
+        "strengths": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "gaps": [],
+        "uncertainties": [],
+        "next_step": "All 5 required or preferred job criteria have cited CV evidence. Verify the excerpts and context, then decide whether to move to an internal review or interview."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Delivered a TypeScript API."
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Added alerts and incident runbooks."
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained backend services for three years."
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Reduced failed requests by 8%."
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed to AWS."
+        }
+      ]
+    },
+    {
+      "case_id": "T08",
+      "scenario": "Unsupported or unreadable CV keeps score pending",
+      "expected_percent": null,
+      "expected_tone": "pending",
+      "expected_profile_warning": null,
+      "expected_profile_fact": null,
+      "expected_case_status": "blocked",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "unreadable_cv_visible": true,
+        "application_preserved": true,
+        "pending_score": true,
+        "document_restored": true,
+        "retry_recovered": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true
+      },
+      "initial_status": "manual_review",
+      "initial_score_pending": true,
+      "application_status": "ready",
+      "retry_status": "ready",
+      "duplicate_delivery": false,
+      "extracted_characters": 64,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "manual_review",
+          "duration_ms": 1022,
+          "error_category": "document"
+        },
+        {
+          "outcome": "ready",
+          "duration_ms": 10329,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 1207,
+        "prompt_tokens": 726,
+        "retried_criteria": 0,
+        "completion_tokens": 481,
+        "retry_model_calls": 0,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t08@example.test",
+        "phone": null,
+        "skills": [],
+        "history": [],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T08"
+      },
+      "evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 0,
+          "tone": "weak",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            }
+          ],
+          "earnedPoints": 0,
+          "maxPoints": 14,
+          "required": {
+            "met": 0,
+            "total": 3
+          },
+          "preferred": {
+            "met": 0,
+            "total": 2
+          },
+          "gapCount": 5,
+          "criticalGaps": [
+            "Build TypeScript services",
+            "Operate reliable production services",
+            "Relevant backend/API experience"
+          ]
+        },
+        "strengths": [],
+        "gaps": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "uncertainties": [
+          "Some criteria lack a verified CV excerpt. This does not establish missing ability."
+        ],
+        "next_step": "No job criterion has a complete cited excerpt yet. Verify the CV against the role, then choose the next human review step. Missing evidence does not establish missing ability."
+      },
+      "error": null,
+      "initial_failure_error": "Document is corrupted, protected, or unsupported",
+      "expected_evidence": []
+    },
+    {
+      "case_id": "T09",
+      "scenario": "Duplicate delivery does not change the pure scoring result",
+      "expected_percent": 100,
+      "expected_tone": "strong",
+      "expected_profile_warning": null,
+      "expected_profile_fact": "TypeScript",
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "duplicate_delivery": true,
+        "single_persisted_application": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "ready",
+      "initial_score_pending": false,
+      "application_status": "ready",
+      "retry_status": null,
+      "duplicate_delivery": true,
+      "extracted_characters": 211,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "ready",
+          "duration_ms": 12172,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 1274,
+        "prompt_tokens": 757,
+        "retried_criteria": 0,
+        "completion_tokens": 517,
+        "retry_model_calls": 0,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t09@example.test",
+        "phone": null,
+        "skills": [
+          "Built TypeScript services.",
+          "Deployed to AWS."
+        ],
+        "history": [
+          "Managed production reliability and incidents.",
+          "Maintained backend APIs.",
+          "Improved request success by 9%."
+        ],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T09"
+      },
+      "evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript services.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Managed production reliability and incidents.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained backend APIs.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Improved request success by 9%.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed to AWS.",
+          "citation_grounded": true
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 100,
+          "tone": "strong",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Built TypeScript services.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Managed production reliability and incidents.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Maintained backend APIs.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Improved request success by 9%.",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Deployed to AWS.",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            }
+          ],
+          "earnedPoints": 14,
+          "maxPoints": 14,
+          "required": {
+            "met": 3,
+            "total": 3
+          },
+          "preferred": {
+            "met": 2,
+            "total": 2
+          },
+          "gapCount": 0,
+          "criticalGaps": []
+        },
+        "strengths": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "gaps": [],
+        "uncertainties": [],
+        "next_step": "All 5 required or preferred job criteria have cited CV evidence. Verify the excerpts and context, then decide whether to move to an internal review or interview."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript services."
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Managed production reliability and incidents."
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained backend APIs."
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Improved request success by 9%."
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed to AWS."
+        }
+      ]
+    },
+    {
+      "case_id": "T10",
+      "scenario": "Prompt injection text is not itself evidence",
+      "expected_percent": 93,
+      "expected_tone": "strong",
+      "expected_profile_warning": null,
+      "expected_profile_fact": "TypeScript",
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "ready",
+      "initial_score_pending": false,
+      "application_status": "ready",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 242,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "ready",
+          "duration_ms": 8475,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 1229,
+        "prompt_tokens": 765,
+        "retried_criteria": 0,
+        "completion_tokens": 464,
+        "retry_model_calls": 0,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t10@example.test",
+        "phone": null,
+        "skills": [
+          "Built TypeScript service APIs.",
+          "Deployed to AWS."
+        ],
+        "history": [
+          "Added production alerts and runbooks.",
+          "Maintained backend services for three years."
+        ],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T10"
+      },
+      "evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript service APIs.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Added production alerts and runbooks.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained backend services for three years.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed to AWS.",
+          "citation_grounded": true
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 93,
+          "tone": "strong",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Built TypeScript service APIs.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Added production alerts and runbooks.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Maintained backend services for three years.",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Deployed to AWS.",
+              "weight": 1,
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
+            }
+          ],
+          "earnedPoints": 13,
+          "maxPoints": 14,
+          "required": {
+            "met": 3,
+            "total": 3
+          },
+          "preferred": {
+            "met": 1,
+            "total": 2
+          },
+          "gapCount": 1,
+          "criticalGaps": []
+        },
+        "strengths": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "gaps": [
+          "Demonstrate measurable outcomes"
+        ],
+        "uncertainties": [
+          "Some criteria lack a verified CV excerpt. This does not establish missing ability."
+        ],
+        "next_step": "4 of 5 job criteria have cited evidence. Confirm those excerpts and review the remaining gaps before choosing the next human step. Missing evidence does not establish missing ability."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript service APIs."
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Added production alerts and runbooks."
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Maintained backend services for three years."
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Deployed to AWS."
+        }
+      ]
+    },
+    {
+      "case_id": "T11",
+      "scenario": "Keyword-heavy claims receive partial or ambiguous credit, not full credit",
+      "expected_percent": 7,
+      "expected_tone": "weak",
+      "expected_profile_warning": null,
+      "expected_profile_fact": null,
+      "expected_case_status": "scored",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true,
+        "expected_job_fit": true,
+        "expected_tone": true,
+        "application_processed": true
+      },
+      "initial_status": "manual_review",
+      "initial_score_pending": false,
+      "application_status": "manual_review",
+      "retry_status": null,
+      "duplicate_delivery": false,
+      "extracted_characters": 153,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "manual_review",
+          "duration_ms": 11188,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 2371,
+        "prompt_tokens": 1438,
+        "retried_criteria": 3,
+        "completion_tokens": 933,
+        "retry_model_calls": 1,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t11@example.test",
+        "phone": null,
+        "skills": [
+          "Familiar with TypeScript",
+          "Interested in backend services"
+        ],
+        "history": [],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T11"
+      },
+      "evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "AMBIGUOUS",
+          "excerpt": "Familiar with TypeScript.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 7,
+          "tone": "weak",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "AMBIGUOUS",
+              "excerpt": "Familiar with TypeScript.",
+              "weight": 4,
+              "fraction": 0.25,
+              "points": 1,
+              "reason": "Ambiguous evidence with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 4,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            }
+          ],
+          "earnedPoints": 1,
+          "maxPoints": 14,
+          "required": {
+            "met": 0,
+            "total": 3
+          },
+          "preferred": {
+            "met": 0,
+            "total": 2
+          },
+          "gapCount": 5,
+          "criticalGaps": [
+            "Build TypeScript services",
+            "Operate reliable production services",
+            "Relevant backend/API experience"
+          ]
+        },
+        "strengths": [],
+        "gaps": [
+          "Build TypeScript services",
+          "Operate reliable production services",
+          "Relevant backend/API experience"
+        ],
+        "uncertainties": [
+          "Some criteria lack a verified CV excerpt. This does not establish missing ability."
+        ],
+        "next_step": "No job criterion has a complete cited excerpt yet. Verify the CV against the role, then choose the next human review step. Missing evidence does not establish missing ability."
+      },
+      "error": null,
+      "initial_failure_error": null,
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "AMBIGUOUS",
+          "excerpt": "Familiar with TypeScript."
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "case_id": "T12",
+      "scenario": "Transient processing failure keeps score pending until recoverable processing completes",
+      "expected_percent": null,
+      "expected_tone": "pending",
+      "expected_profile_warning": null,
+      "expected_profile_fact": "TypeScript",
+      "expected_case_status": "blocked",
+      "status": "passed",
+      "checks": {
+        "intake_saved": true,
+        "failure_visible": true,
+        "application_preserved": true,
+        "no_score_during_failure": true,
+        "document_restored": true,
+        "retry_recovered": true,
+        "cv_extracted": true,
+        "profile_name_grounded": true,
+        "profile_facts_grounded": true,
+        "profile_persisted": true,
+        "form_email_state": true,
+        "expected_evidence_statuses": true,
+        "actual_citations_grounded": true,
+        "reference_excerpts_extracted": true,
+        "one_evidence_per_criterion": true
+      },
+      "initial_status": "failed",
+      "initial_score_pending": true,
+      "application_status": "ready",
+      "retry_status": "ready",
+      "duplicate_delivery": false,
+      "extracted_characters": 120,
+      "extraction_status": "ready",
+      "pipeline_attempts": [
+        {
+          "outcome": "failed",
+          "duration_ms": 828,
+          "error_category": "processing"
+        },
+        {
+          "outcome": "ready",
+          "duration_ms": 9567,
+          "error_category": null
+        }
+      ],
+      "model_usage": {
+        "total_tokens": 2143,
+        "prompt_tokens": 1401,
+        "retried_criteria": 2,
+        "completion_tokens": 742,
+        "retry_model_calls": 1,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "profile": {
+        "email": "synthetic-t12@example.test",
+        "phone": null,
+        "skills": [
+          "Built TypeScript services"
+        ],
+        "history": [
+          "Built TypeScript services and operated production APIs.",
+          "Built TypeScript services"
+        ],
+        "warnings": [],
+        "full_name": "Synthetic Applicant T12"
+      },
+      "evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript services",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "PARTIAL_EVIDENCE",
+          "excerpt": "Built TypeScript services and operated production APIs.",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "backend_experience",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript services",
+          "citation_grounded": true
+        },
+        {
+          "criterion_id": "measurable_outcome",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "cloud_deployment",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        }
+      ],
+      "actual_brief": {
+        "fit": {
+          "available": true,
+          "percent": 71,
+          "tone": "moderate",
+          "rows": [
+            {
+              "criterion": {
+                "id": "typescript_services",
+                "label": "Build TypeScript services",
+                "kind": "required",
+                "category": "skill"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Built TypeScript services",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "production_reliability",
+                "label": "Operate reliable production services",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "PARTIAL_EVIDENCE",
+              "excerpt": "Built TypeScript services and operated production APIs.",
+              "weight": 4,
+              "fraction": 0.5,
+              "points": 2,
+              "reason": "Partial evidence with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "backend_experience",
+                "label": "Relevant backend/API experience",
+                "kind": "required",
+                "category": "experience"
+              },
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Built TypeScript services",
+              "weight": 4,
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
+            },
+            {
+              "criterion": {
+                "id": "measurable_outcome",
+                "label": "Demonstrate measurable outcomes",
+                "kind": "preferred",
+                "category": "achievement"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            },
+            {
+              "criterion": {
+                "id": "cloud_deployment",
+                "label": "Deploy services to cloud infrastructure",
+                "kind": "preferred",
+                "category": "skill"
+              },
+              "status": "NOT_EVIDENCED",
+              "excerpt": null,
+              "weight": 1,
+              "fraction": 0,
+              "points": 0,
+              "reason": "Not documented in the available CV"
+            }
+          ],
+          "earnedPoints": 10,
+          "maxPoints": 14,
+          "required": {
+            "met": 2,
+            "total": 3
+          },
+          "preferred": {
+            "met": 0,
+            "total": 2
+          },
+          "gapCount": 3,
+          "criticalGaps": [
+            "Operate reliable production services"
+          ]
+        },
+        "strengths": [
+          "Build TypeScript services",
+          "Relevant backend/API experience"
+        ],
+        "gaps": [
+          "Operate reliable production services",
+          "Demonstrate measurable outcomes",
+          "Deploy services to cloud infrastructure"
+        ],
+        "uncertainties": [
+          "Some criteria lack a verified CV excerpt. This does not establish missing ability."
+        ],
+        "next_step": "2 of 5 job criteria have cited evidence. Confirm those excerpts and review the remaining gaps before choosing the next human step. Missing evidence does not establish missing ability."
+      },
+      "error": null,
+      "initial_failure_error": "Private document unavailable",
+      "expected_evidence": [
+        {
+          "criterion_id": "typescript_services",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript services"
+        },
+        {
+          "criterion_id": "production_reliability",
+          "status": "PARTIAL_EVIDENCE",
+          "excerpt": "operated production APIs."
+        }
+      ]
+    }
+  ]
+}

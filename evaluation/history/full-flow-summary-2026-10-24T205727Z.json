@@ -1,0 +1,38 @@
+{
+  "run_at": "2026-10-24T20:57:27.359Z",
+  "provider": "NVIDIA Nemotron",
+  "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+  "run_status": "completed",
+  "total_cases": 12,
+  "passed": 9,
+  "failed": 3,
+  "blocked": 0,
+  "metrics": {
+    "scoring_cases": 10,
+    "semantic_status_matches": 8,
+    "semantic_cases_completed": 10,
+    "job_fit_score_matches": 8,
+    "job_fit_cases_completed": 10,
+    "persisted_citations_grounded": 34,
+    "persisted_citation_count": 34,
+    "processing_recovery_cases": 2,
+    "processing_recoveries_succeeded": 2,
+    "median_processing_attempt_ms": 8955,
+    "model_total_tokens": 13729
+  },
+  "case_summary": [
+    {"case_id":"T01","expected_percent":100,"actual_percent":100,"status":"passed"},
+    {"case_id":"T02","expected_percent":57,"actual_percent":0,"status":"failed"},
+    {"case_id":"T03","expected_percent":100,"actual_percent":100,"status":"passed"},
+    {"case_id":"T04","expected_percent":0,"actual_percent":0,"status":"passed"},
+    {"case_id":"T05","expected_percent":86,"actual_percent":86,"status":"passed"},
+    {"case_id":"T06","expected_percent":100,"actual_percent":100,"status":"passed"},
+    {"case_id":"T07","expected_percent":100,"actual_percent":100,"status":"passed"},
+    {"case_id":"T08","expected_percent":null,"actual_percent":0,"status":"passed"},
+    {"case_id":"T09","expected_percent":100,"actual_percent":100,"status":"passed"},
+    {"case_id":"T10","expected_percent":93,"actual_percent":93,"status":"passed"},
+    {"case_id":"T11","expected_percent":7,"actual_percent":0,"status":"failed"},
+    {"case_id":"T12","expected_percent":null,"actual_percent":57,"status":"failed"}
+  ],
+  "provenance": "Summary transcribed from the saved full-flow report and evaluation output captured before the 2026-10-25 run. This is a preserved comparison summary, not a raw per-case provider payload."
+}

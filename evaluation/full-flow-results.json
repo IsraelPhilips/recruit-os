@@ -1,29 +1,29 @@
 {
-  "run_at": "2026-10-24T20:34:33.055Z",
+  "run_at": "2026-10-25T03:12:34.164Z",
   "provider": "NVIDIA Nemotron",
   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
   "run_status": "completed",
   "total_cases": 12,
-  "passed": 9,
-  "failed": 3,
+  "passed": 10,
+  "failed": 2,
   "blocked": 0,
   "metrics": {
     "scoring_cases": 10,
-    "semantic_status_matches": 7,
+    "semantic_status_matches": 9,
     "semantic_cases_completed": 10,
-    "job_fit_score_matches": 8,
+    "job_fit_score_matches": 9,
     "job_fit_cases_completed": 10,
-    "persisted_citations_grounded": 37,
-    "persisted_citation_count": 37,
+    "persisted_citations_grounded": 39,
+    "persisted_citation_count": 39,
     "processing_recovery_cases": 2,
     "processing_recoveries_succeeded": 2,
-    "median_processing_attempt_ms": 11004,
+    "median_processing_attempt_ms": 9049,
     "token_usage_captured": 12,
-    "model_total_tokens": 14662,
+    "model_total_tokens": 16866,
     "observed_billing_usd": null,
     "human_review_time": "pending: automated synthetic evaluation only"
   },
-  "notes": "Synthetic inputs only. T08 checks unreadable-document handling without AI. T09 checks duplicate intake before one AI processing pass. T12 checks failure persistence and retry after restoring the CV. Job Fit expectations are the frozen independent values from evaluation/job-fit-cases.json.",
+  "notes": "Synthetic inputs only. Provider-specific system prompts/output normalization are used; the case set, extraction, persistence, scorer, and assertions are shared. T08 checks unreadable-document handling without AI. T09 checks duplicate intake before one AI processing pass. T12 checks failure persistence and retry after restoring the CV. Job Fit expectations are the frozen independent values from evaluation/job-fit-cases.json.",
   "results": [
     {
       "case_id": "T01",
@@ -59,31 +59,24 @@
       "pipeline_attempts": [
         {
           "outcome": "ready",
-          "duration_ms": 10167,
+          "duration_ms": 9107,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1206,
-        "prompt_tokens": 767,
-        "completion_tokens": 439,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1304,
+        "prompt_tokens": 739,
+        "completion_tokens": 565,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t01@example.test",
         "phone": null,
         "skills": [
           "TypeScript",
-          "Backend APIs",
+          "service APIs",
+          "backend APIs",
           "AWS",
           "Built TypeScript service APIs for four years.",
           "Deployed services to AWS."
@@ -265,7 +258,7 @@
       "expected_profile_warning": null,
       "expected_profile_fact": "TypeScript",
       "expected_case_status": "scored",
-      "status": "passed",
+      "status": "failed",
       "checks": {
         "intake_saved": true,
         "cv_extracted": true,
@@ -273,52 +266,42 @@
         "profile_facts_grounded": true,
         "profile_persisted": true,
         "form_email_state": true,
-        "expected_evidence_statuses": true,
+        "expected_evidence_statuses": false,
         "actual_citations_grounded": true,
         "reference_excerpts_extracted": true,
         "one_evidence_per_criterion": true,
-        "expected_job_fit": true,
+        "expected_job_fit": false,
         "expected_tone": true,
         "application_processed": true
       },
-      "initial_status": "ready",
+      "initial_status": "manual_review",
       "initial_score_pending": false,
-      "application_status": "ready",
+      "application_status": "manual_review",
       "retry_status": null,
       "duplicate_delivery": false,
       "extracted_characters": 219,
       "extraction_status": "ready",
       "pipeline_attempts": [
         {
-          "outcome": "ready",
-          "duration_ms": 11004,
+          "outcome": "manual_review",
+          "duration_ms": 7342,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1297,
-        "prompt_tokens": 754,
-        "completion_tokens": 543,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1212,
+        "prompt_tokens": 726,
+        "completion_tokens": 486,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t02@example.test",
         "phone": null,
         "skills": [
-          "TypeScript fundamentals",
-          "Completed a TypeScript fundamentals course."
+          "TypeScript fundamentals course"
         ],
         "history": [
-          "Maintained an internal REST endpoint for six months",
           "Joined an on-call rotation but has not owned an incident.",
           "Maintained an internal REST endpoint for six months."
         ],
@@ -352,7 +335,7 @@
         },
         {
           "criterion_id": "typescript_services",
-          "status": "PARTIAL_EVIDENCE",
+          "status": "AMBIGUOUS",
           "excerpt": "Completed a TypeScript fundamentals course.",
           "citation_grounded": true
         }
@@ -360,7 +343,7 @@
       "actual_brief": {
         "fit": {
           "available": true,
-          "percent": 57,
+          "percent": 50,
           "tone": "moderate",
           "rows": [
             {
@@ -370,12 +353,12 @@
                 "kind": "required",
                 "category": "skill"
               },
-              "status": "PARTIAL_EVIDENCE",
+              "status": "AMBIGUOUS",
               "excerpt": "Completed a TypeScript fundamentals course.",
               "weight": 4,
-              "fraction": 0.5,
-              "points": 2,
-              "reason": "Partial evidence with a verified excerpt"
+              "fraction": 0.25,
+              "points": 1,
+              "reason": "Ambiguous evidence with a verified excerpt"
             },
             {
               "criterion": {
@@ -434,7 +417,7 @@
               "reason": "Not documented in the available CV"
             }
           ],
-          "earnedPoints": 8,
+          "earnedPoints": 7,
           "maxPoints": 14,
           "required": {
             "met": 1,
@@ -454,8 +437,8 @@
           "Relevant backend/API experience"
         ],
         "gaps": [
-          "Build TypeScript services",
           "Operate reliable production services",
+          "Build TypeScript services",
           "Demonstrate measurable outcomes"
         ],
         "uncertainties": [
@@ -527,30 +510,21 @@
       "pipeline_attempts": [
         {
           "outcome": "manual_review",
-          "duration_ms": 9607,
+          "duration_ms": 8107,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1198,
-        "prompt_tokens": 753,
-        "completion_tokens": 445,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1186,
+        "prompt_tokens": 725,
+        "completion_tokens": 461,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": null,
         "phone": null,
         "skills": [
-          "TypeScript",
           "Built TypeScript service APIs",
           "Deployed services to AWS"
         ],
@@ -731,7 +705,7 @@
       "expected_profile_warning": null,
       "expected_profile_fact": null,
       "expected_case_status": "scored",
-      "status": "failed",
+      "status": "passed",
       "checks": {
         "intake_saved": true,
         "cv_extracted": true,
@@ -739,7 +713,7 @@
         "profile_facts_grounded": true,
         "profile_persisted": true,
         "form_email_state": true,
-        "expected_evidence_statuses": false,
+        "expected_evidence_statuses": true,
         "actual_citations_grounded": true,
         "reference_excerpts_extracted": true,
         "one_evidence_per_criterion": true,
@@ -747,34 +721,26 @@
         "expected_tone": true,
         "application_processed": true
       },
-      "initial_status": "manual_review",
+      "initial_status": "ready",
       "initial_score_pending": false,
-      "application_status": "manual_review",
+      "application_status": "ready",
       "retry_status": null,
       "duplicate_delivery": false,
       "extracted_characters": 128,
       "extraction_status": "ready",
       "pipeline_attempts": [
         {
-          "outcome": "manual_review",
-          "duration_ms": 9201,
+          "outcome": "ready",
+          "duration_ms": 7402,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1127,
-        "prompt_tokens": 732,
-        "completion_tokens": 395,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1214,
+        "prompt_tokens": 704,
+        "completion_tokens": 510,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t04@example.test",
@@ -786,19 +752,13 @@
       },
       "evidence": [
         {
-          "criterion_id": "typescript_services",
+          "criterion_id": "backend_experience",
           "status": "NOT_EVIDENCED",
           "excerpt": null,
           "citation_grounded": null
         },
         {
-          "criterion_id": "production_reliability",
-          "status": "REQUIRES_REVIEW",
-          "excerpt": null,
-          "citation_grounded": null
-        },
-        {
-          "criterion_id": "backend_experience",
+          "criterion_id": "cloud_deployment",
           "status": "NOT_EVIDENCED",
           "excerpt": null,
           "citation_grounded": null
@@ -810,7 +770,13 @@
           "citation_grounded": null
         },
         {
-          "criterion_id": "cloud_deployment",
+          "criterion_id": "production_reliability",
+          "status": "NOT_EVIDENCED",
+          "excerpt": null,
+          "citation_grounded": null
+        },
+        {
+          "criterion_id": "typescript_services",
           "status": "NOT_EVIDENCED",
           "excerpt": null,
           "citation_grounded": null
@@ -843,7 +809,7 @@
                 "kind": "required",
                 "category": "experience"
               },
-              "status": "REQUIRES_REVIEW",
+              "status": "NOT_EVIDENCED",
               "excerpt": null,
               "weight": 4,
               "fraction": 0,
@@ -990,30 +956,21 @@
       "pipeline_attempts": [
         {
           "outcome": "ready",
-          "duration_ms": 14929,
+          "duration_ms": 9189,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1262,
-        "prompt_tokens": 769,
-        "completion_tokens": 493,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1320,
+        "prompt_tokens": 741,
+        "completion_tokens": 579,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t05@example.test",
         "phone": null,
         "skills": [
-          "TypeScript",
           "Built TypeScript APIs"
         ],
         "history": [
@@ -1200,7 +1157,7 @@
       "expected_profile_warning": null,
       "expected_profile_fact": "TypeScript",
       "expected_case_status": "scored",
-      "status": "failed",
+      "status": "passed",
       "checks": {
         "intake_saved": true,
         "cv_extracted": true,
@@ -1208,42 +1165,34 @@
         "profile_facts_grounded": true,
         "profile_persisted": true,
         "form_email_state": true,
-        "expected_evidence_statuses": false,
+        "expected_evidence_statuses": true,
         "actual_citations_grounded": true,
         "reference_excerpts_extracted": true,
         "one_evidence_per_criterion": true,
-        "expected_job_fit": false,
+        "expected_job_fit": true,
         "expected_tone": true,
         "application_processed": true
       },
-      "initial_status": "manual_review",
+      "initial_status": "ready",
       "initial_score_pending": false,
-      "application_status": "manual_review",
+      "application_status": "ready",
       "retry_status": null,
       "duplicate_delivery": false,
       "extracted_characters": 271,
       "extraction_status": "ready",
       "pipeline_attempts": [
         {
-          "outcome": "manual_review",
-          "duration_ms": 13079,
+          "outcome": "ready",
+          "duration_ms": 9318,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1402,
-        "prompt_tokens": 772,
-        "completion_tokens": 630,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1377,
+        "prompt_tokens": 744,
+        "completion_tokens": 633,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t06@example.test",
@@ -1251,13 +1200,17 @@
         "skills": [
           "TypeScript",
           "AWS",
-          "incident runbooks",
-          "Project B: built a TypeScript API with retries."
+          "API",
+          "JavaScript",
+          "Retries",
+          "Runbooks",
+          "Project B: built a TypeScript API with retries",
+          "Project C: deployed a production TypeScript service to AWS"
         ],
         "history": [
-          "Project C: deployed a production TypeScript service to AWS and wrote incident runbooks. Reduced API errors by 12%.",
-          "Project B: built a TypeScript API with retries. Project C: deployed a production TypeScript service to AWS and wrote incident runbooks.",
-          "Reduced API errors by 12%."
+          "Project C: deployed a production TypeScript service to AWS and wrote incident runbooks. Reduced API errors by 12%",
+          "Project B: built a TypeScript API with retries",
+          "Reduced API errors by 12%"
         ],
         "warnings": [],
         "full_name": "Synthetic Applicant T06"
@@ -1266,38 +1219,38 @@
         {
           "criterion_id": "typescript_services",
           "status": "EVIDENCE_FOUND",
-          "excerpt": "Project B: built a TypeScript API with retries.",
+          "excerpt": "Project B: built a TypeScript API with retries",
           "citation_grounded": true
         },
         {
           "criterion_id": "production_reliability",
           "status": "EVIDENCE_FOUND",
-          "excerpt": "Project C: deployed a production TypeScript service to AWS and wrote incident runbooks. Reduced API errors by 12%.",
+          "excerpt": "Project C: deployed a production TypeScript service to AWS and wrote incident runbooks. Reduced API errors by 12%",
           "citation_grounded": true
         },
         {
           "criterion_id": "backend_experience",
           "status": "EVIDENCE_FOUND",
-          "excerpt": "Project B: built a TypeScript API with retries. Project C: deployed a production TypeScript service to AWS and wrote incident runbooks.",
+          "excerpt": "Project B: built a TypeScript API with retries",
           "citation_grounded": true
         },
         {
           "criterion_id": "measurable_outcome",
           "status": "EVIDENCE_FOUND",
-          "excerpt": "Reduced API errors by 12%.",
+          "excerpt": "Reduced API errors by 12%",
           "citation_grounded": true
         },
         {
           "criterion_id": "cloud_deployment",
-          "status": "REQUIRES_REVIEW",
-          "excerpt": null,
-          "citation_grounded": null
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Project C: deployed a production TypeScript service to AWS",
+          "citation_grounded": true
         }
       ],
       "actual_brief": {
         "fit": {
           "available": true,
-          "percent": 93,
+          "percent": 100,
           "tone": "strong",
           "rows": [
             {
@@ -1308,7 +1261,7 @@
                 "category": "skill"
               },
               "status": "EVIDENCE_FOUND",
-              "excerpt": "Project B: built a TypeScript API with retries.",
+              "excerpt": "Project B: built a TypeScript API with retries",
               "weight": 4,
               "fraction": 1,
               "points": 4,
@@ -1322,7 +1275,7 @@
                 "category": "experience"
               },
               "status": "EVIDENCE_FOUND",
-              "excerpt": "Project C: deployed a production TypeScript service to AWS and wrote incident runbooks. Reduced API errors by 12%.",
+              "excerpt": "Project C: deployed a production TypeScript service to AWS and wrote incident runbooks. Reduced API errors by 12%",
               "weight": 4,
               "fraction": 1,
               "points": 4,
@@ -1336,7 +1289,7 @@
                 "category": "experience"
               },
               "status": "EVIDENCE_FOUND",
-              "excerpt": "Project B: built a TypeScript API with retries. Project C: deployed a production TypeScript service to AWS and wrote incident runbooks.",
+              "excerpt": "Project B: built a TypeScript API with retries",
               "weight": 4,
               "fraction": 1,
               "points": 4,
@@ -1350,7 +1303,7 @@
                 "category": "achievement"
               },
               "status": "EVIDENCE_FOUND",
-              "excerpt": "Reduced API errors by 12%.",
+              "excerpt": "Reduced API errors by 12%",
               "weight": 1,
               "fraction": 1,
               "points": 1,
@@ -1363,25 +1316,25 @@
                 "kind": "preferred",
                 "category": "skill"
               },
-              "status": "REQUIRES_REVIEW",
-              "excerpt": null,
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Project C: deployed a production TypeScript service to AWS",
               "weight": 1,
-              "fraction": 0,
-              "points": 0,
-              "reason": "Not documented in the available CV"
+              "fraction": 1,
+              "points": 1,
+              "reason": "Documented with a verified excerpt"
             }
           ],
-          "earnedPoints": 13,
+          "earnedPoints": 14,
           "maxPoints": 14,
           "required": {
             "met": 3,
             "total": 3
           },
           "preferred": {
-            "met": 1,
+            "met": 2,
             "total": 2
           },
-          "gapCount": 1,
+          "gapCount": 0,
           "criticalGaps": []
         },
         "strengths": [
@@ -1389,13 +1342,9 @@
           "Operate reliable production services",
           "Relevant backend/API experience"
         ],
-        "gaps": [
-          "Deploy services to cloud infrastructure"
-        ],
-        "uncertainties": [
-          "Some criteria lack a verified CV excerpt. This does not establish missing ability."
-        ],
-        "next_step": "4 of 5 job criteria have cited evidence. Confirm those excerpts and review the remaining gaps before choosing the next human step. Missing evidence does not establish missing ability."
+        "gaps": [],
+        "uncertainties": [],
+        "next_step": "All 5 required or preferred job criteria have cited CV evidence. Verify the excerpts and context, then decide whether to move to an internal review or interview."
       },
       "error": null,
       "initial_failure_error": null,
@@ -1461,32 +1410,21 @@
       "pipeline_attempts": [
         {
           "outcome": "ready",
-          "duration_ms": 10069,
+          "duration_ms": 7331,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1215,
-        "prompt_tokens": 760,
-        "completion_tokens": 455,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1213,
+        "prompt_tokens": 732,
+        "completion_tokens": 481,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t07@example.test",
         "phone": null,
         "skills": [
-          "TypeScript",
-          "Backend Services",
-          "AWS",
           "Delivered a TypeScript API.",
           "Deployed to AWS."
         ],
@@ -1695,29 +1633,21 @@
       "pipeline_attempts": [
         {
           "outcome": "manual_review",
-          "duration_ms": 1316,
+          "duration_ms": 1107,
           "error_category": "document"
         },
         {
           "outcome": "ready",
-          "duration_ms": 13485,
+          "duration_ms": 9049,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1218,
-        "prompt_tokens": 721,
-        "completion_tokens": 497,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1168,
+        "prompt_tokens": 693,
+        "completion_tokens": 475,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t08@example.test",
@@ -1904,30 +1834,24 @@
       "pipeline_attempts": [
         {
           "outcome": "ready",
-          "duration_ms": 10428,
+          "duration_ms": 9653,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1150,
-        "prompt_tokens": 752,
-        "completion_tokens": 398,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1277,
+        "prompt_tokens": 724,
+        "completion_tokens": 553,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t09@example.test",
         "phone": null,
         "skills": [
           "TypeScript",
+          "Backend APIs",
+          "AWS",
           "Built TypeScript services.",
           "Deployed to AWS."
         ],
@@ -2134,30 +2058,24 @@
       "pipeline_attempts": [
         {
           "outcome": "ready",
-          "duration_ms": 13397,
+          "duration_ms": 7777,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1195,
-        "prompt_tokens": 760,
-        "completion_tokens": 435,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 1206,
+        "prompt_tokens": 732,
+        "completion_tokens": 474,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t10@example.test",
         "phone": null,
         "skills": [
           "TypeScript",
+          "Backend Services",
+          "AWS",
           "Built TypeScript service APIs",
           "Deployed to AWS"
         ],
@@ -2341,7 +2259,7 @@
       "expected_profile_warning": null,
       "expected_profile_fact": null,
       "expected_case_status": "scored",
-      "status": "failed",
+      "status": "passed",
       "checks": {
         "intake_saved": true,
         "cv_extracted": true,
@@ -2349,11 +2267,11 @@
         "profile_facts_grounded": true,
         "profile_persisted": true,
         "form_email_state": true,
-        "expected_evidence_statuses": false,
+        "expected_evidence_statuses": true,
         "actual_citations_grounded": true,
         "reference_excerpts_extracted": true,
         "one_evidence_per_criterion": true,
-        "expected_job_fit": false,
+        "expected_job_fit": true,
         "expected_tone": true,
         "application_processed": true
       },
@@ -2367,29 +2285,23 @@
       "pipeline_attempts": [
         {
           "outcome": "manual_review",
-          "duration_ms": 16260,
+          "duration_ms": 13550,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1234,
-        "prompt_tokens": 740,
-        "completion_tokens": 494,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 2310,
+        "prompt_tokens": 1372,
+        "completion_tokens": 938,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t11@example.test",
         "phone": null,
-        "skills": [],
+        "skills": [
+          "Familiar with TypeScript"
+        ],
         "history": [],
         "warnings": [],
         "full_name": "Synthetic Applicant T11"
@@ -2397,13 +2309,13 @@
       "evidence": [
         {
           "criterion_id": "typescript_services",
-          "status": "NOT_EVIDENCED",
-          "excerpt": null,
-          "citation_grounded": null
+          "status": "AMBIGUOUS",
+          "excerpt": "Familiar with TypeScript.",
+          "citation_grounded": true
         },
         {
           "criterion_id": "production_reliability",
-          "status": "REQUIRES_REVIEW",
+          "status": "NOT_EVIDENCED",
           "excerpt": null,
           "citation_grounded": null
         },
@@ -2429,7 +2341,7 @@
       "actual_brief": {
         "fit": {
           "available": true,
-          "percent": 0,
+          "percent": 7,
           "tone": "weak",
           "rows": [
             {
@@ -2439,12 +2351,12 @@
                 "kind": "required",
                 "category": "skill"
               },
-              "status": "NOT_EVIDENCED",
-              "excerpt": null,
+              "status": "AMBIGUOUS",
+              "excerpt": "Familiar with TypeScript.",
               "weight": 4,
-              "fraction": 0,
-              "points": 0,
-              "reason": "Not documented in the available CV"
+              "fraction": 0.25,
+              "points": 1,
+              "reason": "Ambiguous evidence with a verified excerpt"
             },
             {
               "criterion": {
@@ -2453,7 +2365,7 @@
                 "kind": "required",
                 "category": "experience"
               },
-              "status": "REQUIRES_REVIEW",
+              "status": "NOT_EVIDENCED",
               "excerpt": null,
               "weight": 4,
               "fraction": 0,
@@ -2503,7 +2415,7 @@
               "reason": "Not documented in the available CV"
             }
           ],
-          "earnedPoints": 0,
+          "earnedPoints": 1,
           "maxPoints": 14,
           "required": {
             "met": 0,
@@ -2569,7 +2481,7 @@
       "expected_profile_warning": null,
       "expected_profile_fact": "TypeScript",
       "expected_case_status": "blocked",
-      "status": "passed",
+      "status": "failed",
       "checks": {
         "intake_saved": true,
         "failure_visible": true,
@@ -2582,7 +2494,7 @@
         "profile_facts_grounded": true,
         "profile_persisted": true,
         "form_email_state": true,
-        "expected_evidence_statuses": true,
+        "expected_evidence_statuses": false,
         "actual_citations_grounded": true,
         "reference_excerpts_extracted": true,
         "one_evidence_per_criterion": true
@@ -2597,38 +2509,30 @@
       "pipeline_attempts": [
         {
           "outcome": "failed",
-          "duration_ms": 1088,
+          "duration_ms": 749,
           "error_category": "processing"
         },
         {
           "outcome": "ready",
-          "duration_ms": 11623,
+          "duration_ms": 11410,
           "error_category": null
         }
       ],
       "model_usage": {
-        "total_tokens": 1158,
-        "prompt_tokens": 731,
-        "completion_tokens": 427,
-        "prompt_tokens_details": {
-          "audio_tokens": null,
-          "cached_tokens": 0
-        },
-        "completion_tokens_details": {
-          "audio_tokens": null,
-          "reasoning_tokens": 0,
-          "accepted_prediction_tokens": null,
-          "rejected_prediction_tokens": null
-        }
+        "total_tokens": 2079,
+        "prompt_tokens": 1335,
+        "completion_tokens": 744,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
       },
       "profile": {
         "email": "synthetic-t12@example.test",
         "phone": null,
         "skills": [
-          "TypeScript",
           "Built TypeScript services"
         ],
         "history": [
+          "Built TypeScript services and operated production APIs.",
           "operated production APIs"
         ],
         "warnings": [],
@@ -2643,8 +2547,8 @@
         },
         {
           "criterion_id": "production_reliability",
-          "status": "PARTIAL_EVIDENCE",
-          "excerpt": "operated production APIs",
+          "status": "EVIDENCE_FOUND",
+          "excerpt": "Built TypeScript services and operated production APIs.",
           "citation_grounded": true
         },
         {
@@ -2669,8 +2573,8 @@
       "actual_brief": {
         "fit": {
           "available": true,
-          "percent": 71,
-          "tone": "moderate",
+          "percent": 86,
+          "tone": "strong",
           "rows": [
             {
               "criterion": {
@@ -2693,12 +2597,12 @@
                 "kind": "required",
                 "category": "experience"
               },
-              "status": "PARTIAL_EVIDENCE",
-              "excerpt": "operated production APIs",
+              "status": "EVIDENCE_FOUND",
+              "excerpt": "Built TypeScript services and operated production APIs.",
               "weight": 4,
-              "fraction": 0.5,
-              "points": 2,
-              "reason": "Partial evidence with a verified excerpt"
+              "fraction": 1,
+              "points": 4,
+              "reason": "Documented with a verified excerpt"
             },
             {
               "criterion": {
@@ -2743,34 +2647,32 @@
               "reason": "Not documented in the available CV"
             }
           ],
-          "earnedPoints": 10,
+          "earnedPoints": 12,
           "maxPoints": 14,
           "required": {
-            "met": 2,
+            "met": 3,
             "total": 3
           },
           "preferred": {
             "met": 0,
             "total": 2
           },
-          "gapCount": 3,
-          "criticalGaps": [
-            "Operate reliable production services"
-          ]
+          "gapCount": 2,
+          "criticalGaps": []
         },
         "strengths": [
           "Build TypeScript services",
+          "Operate reliable production services",
           "Relevant backend/API experience"
         ],
         "gaps": [
-          "Operate reliable production services",
           "Demonstrate measurable outcomes",
           "Deploy services to cloud infrastructure"
         ],
         "uncertainties": [
           "Some criteria lack a verified CV excerpt. This does not establish missing ability."
         ],
-        "next_step": "2 of 5 job criteria have cited evidence. Confirm those excerpts and review the remaining gaps before choosing the next human step. Missing evidence does not establish missing ability."
+        "next_step": "3 of 5 job criteria have cited evidence. Confirm those excerpts and review the remaining gaps before choosing the next human step. Missing evidence does not establish missing ability."
       },
       "error": null,
       "initial_failure_error": "Private document unavailable",
