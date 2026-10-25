@@ -45,9 +45,5 @@ For the stated workload of 100 applications and 20 deeper reviews, the existing 
 - [Product specification](docs/PROJECT_SPEC.md)
 - [Evaluation plan](docs/EVALUATION_PLAN.md)
 - [Evaluation package](deliverables/evaluation-package.md)
-- [Working system handoff](deliverables/working-system.md)
-- [Case study](deliverables/case-study.md)
-- [AI collaboration note](deliverables/ai-collaboration-note.md)
-- [Five-minute demo script](deliverables/demo-script.md) and [recording checklist](deliverables/demo-checklist.md)
 
 The `/privacy` and `/terms` pages are public. Recruiter workspace pages require application sign-in.

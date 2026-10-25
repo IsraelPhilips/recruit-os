@@ -27,3 +27,8 @@ evaluation/full-flow-report-post-*.md
 evaluation/provider-comparison-results.json
 evaluation/history/*.md
 evaluation/nvidia-report*.md
+deliverables/ai-collaboration-note.md
+deliverables/case-study.md
+deliverables/demo-checklist.md
+deliverables/demo-script.md
+deliverables/working-system.md
