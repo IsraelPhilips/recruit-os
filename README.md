@@ -11,7 +11,7 @@ RecruitOS turns Google Form applications into review packets with source-linked 
 - Google OAuth connection, Form discovery, question mapping, Forms watches, response reconciliation, and private Drive file retrieval.
 - CV extraction, structured analysis, criterion-level evidence, exact excerpt validation, and recruiter review.
 - Required and preferred evidence scoring with visible criteria, weights, and cited excerpts. The score does not automatically reject, rank, or contact candidates.
-- Editable rejection or next-stage email drafts. Sending requires recipient and message review and explicit recruiter approval through a separate Gmail authorization.
+- Two editable email drafts: below 50% suggests rejection, while 60% or above suggests next stage. Between 50% and 59%, or when a score is pending, the recruiter chooses. Neither draft sends automatically; the recruiter reviews the recipient and full message, then explicitly approves sending through a separate Gmail authorization.
 - Processing status, duplicate protection, retry paths, audit history, and synthetic evaluation fixtures.
 
 Live verification is not complete for every integration path. The recruiter confirmed the deployed app loads and lists the connected Form. A synthetic Google Form response and private CV were retrieved and persisted in a local integration run. Actual Pub/Sub notification delivery, watch renewal, production sync, and cross-account workspace isolation remain to be verified. One synthetic Gmail message was approved and received. Use only synthetic data until privacy, retention, and access controls are reviewed for real applicant use.
@@ -38,7 +38,7 @@ npm run eval:job-fit
 
 The 12-case deterministic scorer evaluation has 10 scoreable cases and two cases that correctly remain pending without a readable CV or successful processing. The latest live synthetic Nemotron full-pipeline run passed all 12 case assertions, with 10/10 evidence-status agreement, 10/10 score agreement, and 39/39 persisted citations grounded in extracted CV text. This is a single synthetic run, not production accuracy. Results, commands, comparisons, and limits are in the [evaluation package](deliverables/evaluation-package.md).
 
-The measured human baseline, recruiter correction time, and model billing cost are pending. A separate time-saving calculation is a projection only. Independent proxy-user feedback and the five-minute screen recording also remain outstanding.
+For the stated workload of 100 applications and 20 deeper reviews, the existing timing assumptions calculate to 200 minutes for manual review and 56.7 minutes for RecruitOS triage and review, a 71.7% estimated difference. These are assumption-based estimates, not timings observed in a recruiter study. The measured 9,445 ms median processing attempt is a separate system metric. Recruiter correction time and model billing cost are unavailable; independent proxy-user feedback and the five-minute screen recording also remain outstanding. See the [evaluation package](deliverables/evaluation-package.md) for the calculations, results, and reproduction details.
 
 ## Project and submission documents
 
