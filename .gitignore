@@ -14,4 +14,15 @@ test-results
 *.p12
 *service-account*.json
 credentials*.json
-*.md
+AGENTS.md
+CODEX_START_PROMPT.md
+docs/decision-log.md
+docs/milestones.md
+docs/outbound-email-plan.md
+docs/progress-log.md
+evaluation/full-flow-results-gemini*.json
+evaluation/full-flow-report-gemini*.md
+evaluation/full-flow-report-post-*.md
+evaluation/provider-comparison-results.json
+evaluation/history/*.md
+evaluation/nvidia-report*.md

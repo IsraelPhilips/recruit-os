@@ -1,12 +1,12 @@
 case_id,check,status,semantic_status,latency_ms
-T01,grounding,pass,not_run,1
+T01,grounding,pass,not_run,0
 T02,grounding,pass,not_run,0
-T03,missing_email,pass,not_run,11
+T03,missing_email,pass,not_run,2
 T04,no_quote,pass,not_run,0
 T05,conflict_pending,blocked,not_run,0
 T06,location,pass,not_run,0
 T07,grounding,pass,not_run,0
-T08,bad_pdf,pass,not_run,1
+T08,bad_pdf,pass,not_run,0
 T09,dedupe_schema,blocked,not_run,0
 T10,injection_quote,pass,not_run,0
 T11,grounding,pass,not_run,0

@@ -1,50 +1,50 @@
 # Evaluation and observed failures
 
-## Runs on 2026-10-21
+## Current results, 2026-10-25
 
-`npm run eval` executed 12 frozen synthetic scenarios as deterministic local checks: 9 pass, 0 fail, 3 pending. Its fixture supplies the proposed semantic status, so this score is not model accuracy. A real Supabase integration test stored one synthetic application, replayed its Form and response ID, confirmed one record, downloaded the private CV, and cleaned up. The live NVIDIA Nemotron evaluation completed 9 of 9 synthetic calls. The initial run matched 5 of 9 original status labels and grounded 4 of 4 returned citations. After changes, the repeat matched 7 of 9 and grounded 6 of 6 returned citations. Raw outputs are preserved in `evaluation/nvidia-results-initial.json` and `evaluation/nvidia-results.json`. Median model call time in the repeat was 1,992 ms, with a 13,067 ms maximum. These are model call times, not submission-to-review times.
+The three local suites are separate:
 
-T03 and T05 expose a label-design issue: their expected `REQUIRES_REVIEW` status describes missing contact and conflicting dates, while the evaluation queried the separate TypeScript criterion. The model returned `NOT_EVIDENCED` for that criterion, which is defensible. Keep both cases in the original denominator and do not quietly relabel them after seeing output. T05 also did not produce a conflict warning, so date discrepancy handling remains an observed gap. The seven cases that directly test TypeScript evidence classification matched in the repeat, but this small synthetic set is not a production accuracy estimate.
+| Suite | Current result | What it tests |
+|---|---|---|
+| `npm run eval` | 9 passed, 0 failed, 3 blocked | Deterministic workflow checks; blocked cases require external persistence or injected failures. |
+| `npm run eval:job-fit` | 12 assertions passed; 10 scoreable results matched, 2 correctly pending | The production scorer's arithmetic, excerpt eligibility, and pending behavior. T08 is unreadable and T12 is processing-failed. |
+| Live full pipeline | 12 passed, 0 failed, 0 blocked | Synthetic intake, extraction, Nemotron analysis, evidence and citation validation, persistence, scoring, recruiter briefing, duplicate handling, and recovery. |
 
-## Incident records
+The final live run used NVIDIA Nemotron on 2026-10-25 at 03:27 UTC. Evidence-status agreement was 10/10 and Job Fit score agreement was 10/10. Persisted citations were grounded in extracted CV text (39/39), and both recovery cases succeeded (2/2). Median processing-attempt duration was 9,445 ms; token usage was 18,087 with 3 focused retry calls across 6 criteria. Billing cost and human review time were not measured. See `evaluation/full-flow-report.md` and `evaluation/full-flow-results-post-evidence-safeguards.json`.
 
-| Incident | Observed actual | Change | Regression evidence | Remaining limit |
-|---|---|---|---|---|
-| Hosted Nemotron timeout | First synthetic CV call hit the 25-second abort deadline | Disabled optional reasoning and raised the fallback-specific timeout to 45 seconds | Same synthetic CV call completed in 2,063 ms after the change | Free endpoint latency and throttling can vary |
-| Hosted Nemotron schema | Next call returned an object in `profile.history[0]` where the contract required a string | Serialize object entries as text for reviewer inspection before Zod validation | Same synthetic CV test passed after normalization | Other schema deviations still fail visibly and require retry or review |
-| T02 and T11 calibration | First model run called both `NOT_EVIDENCED` | Corrected the evaluation criterion label from “Documented TypeScript work” to the frozen generic TypeScript criterion and clarified partial and ambiguous categories in the prompt | Repeat returned `PARTIAL_EVIDENCE` for T02 and `AMBIGUOUS` for T11, with source citations | Prompt and harness changes occurred together, so their separate effects are not measured |
-| T05 discrepancy | Conflicting date ranges yielded no profile warning | No fix yet | Pending | Needs a focused test and reviewer-visible contradiction check |
-| T04 model schema omission | Nemotron omitted nullable `location` from one evidence row; Zod rejected the full response and the application remained failed without a score | Default omitted nullable citation metadata to `null`; source grounding derives the page location from the verified excerpt | Contract regression passed; focused live T04 rerun passed. The full-suite T04 request later timed out and remains separately blocked | Other malformed required fields can still fail visibly and require retry or review |
-| Windows evaluation runtime | `tsx` failed on this host with `os.userInfo` ENOMEM | Switched the deterministic runner to Node type stripping | `npm run eval` completed all 12 case records | Host-specific runtime failure, not a model result |
+The deterministic scorer retains the documented RecruitOS rule: required criteria weigh four times preferred criteria, with evidence status adjusting credit. This is a product rule, not a MUST-mandated formula. No score weights or thresholds changed during the latest fixes.
 
-No human baseline, non-developer usability timing, correction count, Google Form watch, Drive CV retrieval, observed API bill, or completed video has been recorded.
+## Observed failure analysis
 
-## Full backend path verification
+The earlier full-pipeline runs exposed genuine errors and coverage gaps. The original T05 expectation incorrectly removed backend evidence because of conflicting dates even though the criterion did not require duration. T07's quantified 8% reduction supported the outcome criterion. T11's blog reading and interest did not demonstrate practical experience. These labels were corrected independently of model output and documented in the case fixtures.
 
-A generated synthetic text PDF was accepted by the intake contract, stored privately in Supabase, downloaded by the processor, parsed, sent to NVIDIA Nemotron, grounded against the source, and persisted as a ready application with cited TypeScript evidence. The integration test cleaned its job, application, and storage object afterward. Before the fix, the first two runs reached `manual_review` because the PDF library rejected a pooled Node `Buffer` in the test/runtime path. Passing a copied `Uint8Array` and bypassing the library's debug entrypoint made the PDF extraction test and full backend test pass. This is a genuine observed failure and regression, distinct from real Google Form verification.
+Subsequent Nemotron runs observed the following system failures:
 
-## 2026-10-24, scorer evaluation
+| Case | Observed failure | General response | Latest result |
+|---|---|---|---|
+| T04 | Reliability criterion omitted despite relevant CV text. | Added exact criterion-set validation and a focused retry using relevant extracted passages. Unresolved rows remain for human review. | Pass |
+| T06 | Explicit AWS deployment evidence was missed. | Search the full CV, not only the skills section, and retry relevant but negatively labeled criteria. | Pass |
+| T11 | TypeScript familiarity and reliability rows were omitted or inconsistently labeled. | Preserve source-grounded self-assessment as ambiguous and require an explicit row for every criterion. | Pass |
+| T02 | Completed TypeScript coursework was classified inconsistently. | Normalize completed coursework without applied work to partial evidence. | Pass, expected 57% |
+| T12 | Production API operation was either overlooked or overstated as full reliability evidence. | Limit API operation without reliability practices to partial reliability evidence. Preserve score-pending state until retry succeeds. | Pass; recovered score is descriptive |
 
-The production Job Fit Match scorer in `src/lib/job-fit.ts` was tested against 12 independent synthetic scenarios with `npm run eval:job-fit`. Ten applicable cases matched expected percentages and tone bands; zero failed. T08 (unreadable CV) and T12 (failed processing) correctly returned no score and are reported as blocked, not passes. Outputs are `evaluation/job-fit-results.json`, `.csv`, and `evaluation/job-fit-report.md`. The separate workflow runner was rerun with `npm run eval`: 9 pass, 0 fail, 3 blocked (T05 contradiction handling, T09 live database deduplication, T12 controlled transient failure). This matches the historical local 9/12 pass count; those checks do not exercise scorer arithmetic.
+The fixes validate structure and conservative evidence distinctions. They do not prove that a model will classify all future CVs correctly. Citation grounding confirms the text exists in the extracted CV; it does not prove the CV claim itself is true.
 
-The 12-case evaluation reports scoring, workflow, model behavior, and operational estimates separately. Job Fit Match uses the documented RecruitOS product rule: required criteria weigh four times preferred criteria, and evidence status adjusts credit. No scorer weights or thresholds changed. The suite checks source excerpt presence and arithmetic, not whether an LLM semantically assigned the right evidence status. A present bare keyword mislabeled `EVIDENCE_FOUND` can still earn full points; this is the primary remaining quality risk.
+## Before and after
 
-Historical Nemotron text-classification runs remain 5/9 then 7/9 expected-status matches and 4/4 then 6/6 grounded citations. The live 12-case CV pipeline run recorded 5 passes, 6 expected evidence/score failures, and 1 timeout block. Nine scoring cases completed; 4/9 matched both expected evidence labels and Job Fit scores. Persisted excerpts were grounded in extracted CV text (36/36). T04 passed a focused live retest after the schema fix. These results are not a production accuracy estimate.
+The completed 2026-10-25 run before the final evidence safeguards passed 10/12 cases, with 9/10 evidence-status agreement, 9/10 score agreement, 39/39 grounded citations, and 2/2 recoveries. The final run passed 12/12, with 10/10 status agreement, 10/10 score agreement, 39/39 citations, and 2/2 recoveries. This is a measured change between two individual runs, not a stability estimate. Model outputs vary.
 
-The clearest reference disagreements were T02 (course and on-call evidence was classified as ambiguous or absent instead of partial), T05 (conflicting role dates were not flagged and backend experience was credited), and T07 (a limited quantified result received full instead of partial credit). In T06 the cloud criterion was held for review without a verified citation in the final output. T11's reference labels for reading a blog and expressing interest may overstate evidence for production reliability and backend experience; they require adjudication before this case is treated as a model calibration failure. T12 recovered after CV restoration but did not return the expected reliability evidence. No score thresholds or prompts were changed to force agreement.
+The completed 2026-10-24 run recorded 9/12, 8/10 status agreement, 8/10 score agreement, 34/34 grounded citations, and 2/2 recoveries. Historical text-only model runs (5/9 then 7/9 expected status matches) test a different suite and are not combined with full-pipeline results.
 
-The run recorded 9,240 model tokens and a median 11,467 ms processing-attempt duration. Provider billing, recruiter time, and human correction count remain unmeasured.
+## Workflow measurement and open gaps
 
-## 2026-10-24, full-pipeline diagnosis and rerun
+No manual baseline, proxy-recruiter timing study, human correction rate, production accuracy estimate, or observed model bill is available. A separate estimate for 100 applications and 20 deeper reviews calculates to 200 manual minutes and about 56.7 modeled RecruitOS minutes, or 71.7% potential savings. This is a projection from assumptions, not a measured result.
 
-The prior full-flow record at commit `faf1e6c` had six model/reference failures and one timeout. Review of the source text and criterion rubric found three incorrect or under-specified reference labels: T05's conflicting dates do not remove evidence of backend/API work because no duration is required; T07's 8% measured reduction is a complete documented outcome; and T11's blog reading and interest do not evidence practical experience. T12's “operated production APIs” phrase remains partial reliability evidence, though Nemotron also reasonably surfaced it under backend experience. T02's on-call participation without incident ownership remains partial reliability evidence.
+Next evidence to collect:
 
-The production prompt now asks for direct evidence, explicit coursework/exposure distinctions, extracted profile facts, and warnings for conflicting dates. The provider adapter converts object-shaped profile array entries to strings, maps unknown status values to `REQUIRES_REVIEW` without credit, and downgrades a standalone self-reported familiarity phrase to `AMBIGUOUS`. This guard was regression-tested. Job Fit weights and score thresholds did not change.
+1. Verify production sync with a new synthetic submission.
+2. Verify actual Pub/Sub notification delivery and watch renewal.
+3. Observe a non-developer or proxy recruiter completing comparable manual and RecruitOS reviews, with time and corrections recorded.
+4. Record the five-minute demo and check the saved video.
 
-Latest full run: 8 passed, 4 failed, 0 blocked. Evidence status agreement was 9/10 completed scored cases, Job Fit score agreement 9/10, and citation grounding 37/37. T08 and T12 recovery both passed. Median processing attempt was 9,343 ms and model usage was 12,249 tokens. The four failed checks were T02 partial on-call evidence, T03 missing normalized TypeScript despite grounded criterion evidence, T05 missing conflicting-date warning in the normalized profile, and T12 failure to classify operational API exposure as partial reliability evidence. T10 had an HTTP 502 in an earlier repeat and completed in the latest run. Further repeats produced different model classifications, so the one-run pass rate is not a stability measure.
-
-The raw report and case diagnosis are in `evaluation/full-flow-report.md`, `evaluation/full-flow-results.json`, and `evaluation/full-flow-diagnosis.md`. The saved `faf1e6c` run had 5 passed, 6 failed, 1 blocked, 4/9 agreement for both expected labels and scores, and 36/36 grounded excerpts. The latest counts are not a controlled comparison because expected labels and profile completeness assertions were corrected, and model outputs varied across runs. No general accuracy gain is claimed.
-
-The deterministic scoring suite remains 10 applicable passes and 2 blocked from a score by design. The separate workflow suite remains 9 passed, 0 failed, and 3 blocked. Proxy-user feedback, observed recruiter handling time, human corrections, model billing, and the demo recording remain outstanding.
-
-The supplied time-saving projection also needs arithmetic reconciliation. Stated assumptions calculate to 200 manual minutes versus 56.7 modeled RecruitOS minutes for 100 applications and 20 deeper reviews, approximately 71.7% potential savings. The prior 50 minutes/75% result is not consistent with those assumptions. This remains a projection, not a measured outcome. Human timing, correction counts, production accuracy, and observed cost remain pending.
+The latest live run does not establish MUST alignment or production accuracy. Human reviewers retain every hiring decision.

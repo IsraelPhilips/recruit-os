@@ -5,13 +5,13 @@ import {jobFitMatch} from '../src/lib/job-fit';
 import {sourceContains} from '../src/lib/review-summary';
 
 type Case={case_id:string;scenario:string;source:string;process_status:string;evidence:{criterion_id:string;status:string;excerpt:string|null;review_mark?:string}[];expected_percent:number|null;expected_tone:string;expected_case_status?:'blocked';repeat_score?:boolean;metadata_issue?:string;limitation?:string};
-type Fixture={rubric:{source:string;criteria:{id:string;label:string;kind:'required'|'preferred'|'informational';category:string}[];weights:{required:number;preferred:number};status_credit:Record<string,number>;thresholds:{strong_min:number;moderate_min:number};notes:string};cases:Case[]};
+type Fixture={rubric:{source:string;criteria:{id:string;label:string;kind:'required'|'preferred'|'informational';category?:'skill'|'experience'|'achievement'|'other'}[];weights:{required:number;preferred:number};status_credit:Record<string,number>;thresholds:{strong_min:number;moderate_min:number};notes:string};cases:Case[]};
 const file=path.resolve('evaluation/job-fit-cases.json');
 const fixture=JSON.parse(fs.readFileSync(file,'utf8')) as Fixture;
 const results=fixture.cases.map(testCase=>{
   const fit=jobFitMatch(fixture.rubric.criteria,testCase.evidence,testCase.process_status,testCase.source);
   const blocked=testCase.expected_case_status==='blocked';
-  const checks={
+  const checks:{score:boolean;tone:boolean;range:boolean;weight:boolean;credits:boolean;citedCredit:boolean;pendingWhenUnusable:boolean;repeatability?:boolean}={
     score:fit.percent===testCase.expected_percent,
     tone:fit.tone===testCase.expected_tone,
     range:fit.percent===null||(fit.percent>=0&&fit.percent<=100),

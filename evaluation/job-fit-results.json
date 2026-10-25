@@ -1,6 +1,6 @@
 {
   "summary": {
-    "run_at": "2026-10-24T20:35:42.820Z",
+    "run_at": "2026-10-25T04:14:46.967Z",
     "suite": "job-fit-deterministic",
     "source_of_truth": "src/lib/job-fit.ts and docs/PROJECT_SPEC.md section 15",
     "model": null,

@@ -1,6 +1,6 @@
 # Job Fit Match deterministic evaluation
 
-Run: 2026-10-24T20:35:42.820Z. Command: `npm run eval:job-fit`.
+Run: 2026-10-25T04:14:46.967Z. Command: `npm run eval:job-fit`.
 
 10 passed, 0 failed, 2 blocked/not scoreable across 12 cases. Applicable-case pass rate: 10/10. The blocked cases correctly remain blocked because an unreadable CV (T08) or failed processing (T12) cannot support a score.
 
