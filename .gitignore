@@ -9,6 +9,7 @@ node_modules
 coverage
 playwright-report
 test-results
+output/pdf/
 .DS_Store
 *.pem
 *.p12
