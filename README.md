@@ -5,6 +5,13 @@ RecruitOS turns Google Form applications into review packets with source-linked 
 **Live application:** [recruit-os-mu.vercel.app](https://recruit-os-mu.vercel.app)
 **Stack:** Next.js, TypeScript, Supabase, Google Forms and Drive APIs, Google OAuth, Cloud Pub/Sub, NVIDIA Nemotron or Gemini.
 
+## MUST demo access
+
+- **Live app:** [recruit-os-mu.vercel.app](https://recruit-os-mu.vercel.app)
+- **Demo account:** `israelphilipsdev@gmail.com`
+- **Password:** Provided to MUST separately through a private channel.
+- **Google integrations:** The demo account is authorized for the connected Google Form and Gmail workflow. Form discovery and response synchronization are available; Pub/Sub notification delivery, watch renewal, and production synchronization have not been fully verified. See the verification limits below.
+
 ## What works
 
 - Public signup with a private workspace for each recruiter account.
@@ -14,7 +21,7 @@ RecruitOS turns Google Form applications into review packets with source-linked 
 - Two editable email drafts: below 50% suggests rejection, while 60% or above suggests next stage. Between 50% and 59%, or when a score is pending, the recruiter chooses. Neither draft sends automatically; the recruiter reviews the recipient and full message, then explicitly approves sending through a separate Gmail authorization.
 - Processing status, duplicate protection, retry paths, audit history, and synthetic evaluation fixtures.
 
-Live verification is not complete for every integration path. The recruiter confirmed the deployed app loads and lists the connected Form. A synthetic Google Form response and private CV were retrieved and persisted in a local integration run. Actual Pub/Sub notification delivery, watch renewal, production sync, and cross-account workspace isolation remain to be verified. One synthetic Gmail message was approved and received. Use only synthetic data until privacy, retention, and access controls are reviewed for real applicant use.
+Live verification is not complete for every integration path. The deployed app loads and lists the connected Form. A synthetic Google Form response and private CV were retrieved and persisted in a local integration run. Actual Pub/Sub notification delivery, watch renewal, production sync, and cross-account workspace isolation remain to be verified. One synthetic Gmail message was approved and received. Use only synthetic data until privacy, retention, and access controls are reviewed for real applicant use.
 
 ## Start locally
 
